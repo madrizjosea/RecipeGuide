@@ -12,17 +12,18 @@ const getAllDiets = async (req, res, next) => {
 
     // Parsing the diet types into an iterable
     const dietsFromRecipes = new Set(
-      recipes.data.results.map(recipe => recipe.diets).flat(1)
+      recipes.data.results.map(recipe => recipe.diets).flat()
     );
     const dietTypes = [...dietsFromRecipes];
-    
+
     // Finding or creating each diet type
     const diets = dietTypes.map(dietType => {
-      return new Promise(async (resolve, reject) => {
-        const dietsCreation = await Diet.findOrCreate({
-          where: { name: dietType },
-        });
-        resolve(dietsCreation);
+      return new Promise((resolve, reject) => {
+        resolve(
+          Diet.findOrCreate({
+            where: { name: dietType },
+          })
+        );
         reject(error => next(error));
       });
     });
