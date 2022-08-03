@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAllRecipes, getRecipeById } = require('../controllers/recipe.js');
+const { getAllRecipes, getRecipeById } = require('../controllers/recipe.controller.js');
 
 const router = Router();
 
