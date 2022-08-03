@@ -1,9 +1,9 @@
 require('dotenv').config();
 const axios = require('axios');
-const { Recipe, Diet } = require('../db.js');
+const { Recipe } = require('../db.js');
 const { API_KEY } = process.env;
 
-// Initial request for the home page
+// Initial request to fetch all recipes
 const getAllRecipes = async (req, res, next) => {
   try {
     const apiRecipes = await axios.get(
@@ -17,7 +17,34 @@ const getAllRecipes = async (req, res, next) => {
         image: recipe.image,
       };
     });
+    console.log(recipes);
     res.status(200).json(recipes);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Request when the id is passed through parameters
+const getRecipeById = async (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const apiRecipe = await axios.get(
+      `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
+    );
+    const data = apiRecipe.data;
+    console.log(data);
+    const recipe = {
+      id: data.id,
+      title: data.title,
+      image: data.image,
+      dishTypes: data.dishTypes,
+      diets: data.diets,
+      healthScore: data.healthScore,
+      summary: data.summary,
+      steps: data.instructions,
+    };
+    res.status(200).json(recipe);
   } catch (error) {
     next(error);
   }
@@ -25,4 +52,5 @@ const getAllRecipes = async (req, res, next) => {
 
 module.exports = {
   getAllRecipes,
+  getRecipeById,
 };
