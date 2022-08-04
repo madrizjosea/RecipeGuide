@@ -1,6 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
-const { Recipe } = require('../db.js');
+const { Recipe, Diet } = require('../db.js');
 const { API_KEY } = process.env;
 
 // This formats data for the Redux store
@@ -30,14 +30,10 @@ const getRecipes = async (req, res, next) => {
         recipe.title.toLowerCase().includes(name.toLowerCase())
       );
       recipesByName.length
-        ? recipes.push(
-            recipesByName.map(recipeFormater)
-          )
+        ? recipes.push(recipesByName.map(recipeFormater))
         : res.status(404).send('This recipe does not exist');
     } else {
-      recipes.push(
-        apiRecipes.data.results.map(recipeFormater)
-      );
+      recipes.push(apiRecipes.data.results.map(recipeFormater));
     }
     res.status(200).json(recipes);
   } catch (error) {
@@ -50,24 +46,68 @@ const getRecipeById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const apiRecipe = await axios.get(
-      `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
-    );
+    if (id.toString().split('-').length > 1) {
+      await Recipe.findByPk(id, {
+        where: { id: id },
+        include: [
+          {
+            model: Diet,
+            attributes: ['name'],
+            through: { attributes: [] },
+          },
+        ],
+      }).then(recipe => res.status(200).json(recipe));
 
-    const data = apiRecipe.data;
+    } else {
 
-    const recipe = {
-      id: data.id,
-      title: data.title,
-      image: data.image,
-      dishTypes: data.dishTypes,
-      diets: data.diets,
-      healthScore: data.healthScore,
-      summary: data.summary,
-      steps: data.instructions,
-    };
+      const apiRecipe = await axios.get(
+        `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}&addRecipeInformation=true`
+      );
+      const { data } = apiRecipe;
+      // Steps formating
+      const steps = await data.analyzedInstructions[0].steps.map(
+        s => `${s.number}. ${s.step}`
+      );
 
-    res.status(200).json(recipe);
+      const recipe = {
+        id: data.id,
+        title: data.title,
+        image: data.image,
+        dishTypes: data.dishTypes,
+        diets: data.diets,
+        healthScore: data.healthScore,
+        summary: data.summary,
+        steps: steps,
+      };
+
+      res.status(200).json(recipe);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// POST request to create a new Recipe
+const createRecipe = async (req, res, next) => {
+  const { name, summary, healthScore, diets, steps, image } = req.body;
+
+  try {
+    const newRecipe = await Recipe.create({
+      name,
+      summary,
+      healthScore,
+      diets,
+      steps,
+      image,
+    });
+
+    // Diet parsing and assosiation
+    diets.map(async diet => {
+      const filteredDiets = await Diet.findAll({ where: { name: diet } });
+      newRecipe.addDiet(filteredDiets[0]);
+    });
+
+    res.status(201).send('Your recipe was created successfuly');
   } catch (error) {
     next(error);
   }
@@ -76,4 +116,5 @@ const getRecipeById = async (req, res, next) => {
 module.exports = {
   getRecipes,
   getRecipeById,
+  createRecipe,
 };
