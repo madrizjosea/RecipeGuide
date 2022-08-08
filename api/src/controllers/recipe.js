@@ -10,6 +10,7 @@ const recipeFormater = recipe => {
     title: recipe.title,
     diets: recipe.diets,
     image: recipe.image,
+    healthScore: recipe.healthScore,
   };
 };
 
@@ -30,10 +31,10 @@ const getRecipes = async (req, res, next) => {
         recipe.title.toLowerCase().includes(name.toLowerCase())
       );
       recipesByName.length
-        ? recipes.push(recipesByName.map(recipeFormater))
+        ? (recipes = recipesByName.map(recipeFormater))
         : res.status(404).send('This recipe does not exist');
     } else {
-      recipes.push(apiRecipes.data.results.map(recipeFormater));
+      recipes = apiRecipes.data.results.map(recipeFormater);
     }
     res.status(200).json(recipes);
   } catch (error) {
@@ -57,9 +58,7 @@ const getRecipeById = async (req, res, next) => {
           },
         ],
       }).then(recipe => res.status(200).json(recipe));
-
     } else {
-
       const apiRecipe = await axios.get(
         `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}&addRecipeInformation=true`
       );
