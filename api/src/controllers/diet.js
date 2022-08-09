@@ -1,14 +1,13 @@
 require('dotenv').config();
-const axios = require('axios');
+const axios = require('../axios');
 const { Diet } = require('../db.js');
 const { API_KEY } = process.env;
 
 const getAllDiets = async (req, res, next) => {
-  
   try {
     // Recipes contain diet types
     const recipes = await axios.get(
-      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`
+      `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`
     );
 
     // Parsing the diet types into an iterable
@@ -18,7 +17,7 @@ const getAllDiets = async (req, res, next) => {
     const dietTypes = Array.from(dietsFromRecipes);
 
     // Finding or creating each diet type
-    const diets = dietTypes.map(dietType => {
+    const rawDietTypes = dietTypes.map(dietType => {
       return new Promise((resolve, reject) => {
         resolve(
           Diet.findOrCreate({
@@ -28,12 +27,13 @@ const getAllDiets = async (req, res, next) => {
         reject(error => next(error));
       });
     });
-    await Promise.all(diets);
+    await Promise.all(rawDietTypes);
 
     // Sending back all the diet types
-    const dbDiets = await Diet.findAll();
-    res.status(201).json(dbDiets);
-
+    const diets = await Diet.findAll().then(diets =>
+      diets.map(diet => diet.name)
+    );
+    res.status(201).json(diets);
   } catch (error) {
     next(error);
   }
