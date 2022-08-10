@@ -1,18 +1,18 @@
 // Importing the axios instance
-import axios from '../../axios';
+import axios from '../../axios/index.js';
 
 // All action types
-export const GET_ALL_RECIPES = 'GET_ALL_RECIPES',
-  GET_ALL_DIETS = 'GET_ALL_DIETS',
-  GET_RECIPE_DETAILS = 'GET_RECIPE_DETAILS';
+export const GET_ALL_RECIPES = 'GET_ALL_RECIPES';
+export const GET_ALL_DIETS = 'GET_ALL_DIETS';
+export const GET_DETAILS = 'GET_DETAILS';
 
 // Get all recipes
 export function getAllRecipes() {
   return async function (dispatch) {
-    const recipes = await axios.get('/recipes');
+    const { data } = await axios.get('/recipes');
     return dispatch({
       type: GET_ALL_RECIPES,
-      payload: recipes.data,
+      payload: data,
     });
   };
 }
@@ -20,10 +20,10 @@ export function getAllRecipes() {
 // Get all diets
 export function getAllDiets() {
   return async function (dispatch) {
-    const diets = await axios.get('/diets');
+    const { data } = await axios.get('/diets');
     return dispatch({
       type: GET_ALL_DIETS,
-      payload: diets.data,
+      payload: data,
     });
   };
 }
@@ -31,10 +31,10 @@ export function getAllDiets() {
 // Get recipe detail by id
 export function getRecipeDetails(id) {
   return async function (dispatch) {
-    const recipeDetails = await axios.get('/recipes/:' + id);
+    const { data } = await axios.get(`/recipes/${id}`);
     return dispatch({
-      type: GET_RECIPE_DETAILS,
-      payload: recipeDetails.data,
+      type: GET_DETAILS,
+      payload: data,
     });
   };
 }
