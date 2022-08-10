@@ -7,13 +7,12 @@ import s from './Recipes.module.css';
 function Recipes() {
 
   const dispatch = useDispatch();
+  const recipes = useSelector(state => state.recipes);
 
   useEffect(() => {
-    dispatch(getAllRecipes());
-  }, [dispatch]);
-  
-  const recipes = useSelector(state => state.recipes);
-  
+    if (!recipes.length) dispatch(getAllRecipes());
+  }, [dispatch, recipes]);
+
   return (
     <div className={s.container}>
       {recipes &&

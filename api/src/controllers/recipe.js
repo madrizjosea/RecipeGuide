@@ -21,7 +21,7 @@ const getRecipes = async (req, res, next) => {
   const { name } = req.query;
   try {
     const apiRecipes = await axios.get(
-      `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`
+      `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`
     );
 
     // Name query handler
@@ -64,7 +64,7 @@ const getRecipeById = async (req, res, next) => {
       );
       const { data } = apiRecipe;
       // Steps formating
-      const steps = await data.analyzedInstructions[0].steps.map(
+      const steps = await data.analyzedInstructions[0]?.steps.map(
         s => `${s.number}. ${s.step}`
       );
 
