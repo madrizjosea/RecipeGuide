@@ -2,16 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { getRecipeDetails } from '../../redux/actions';
-import ReactMarkdown from 'react-markdown';
+// import s from './Details.module.css';
 
 function Details() {
-
   const dispatch = useDispatch();
   const { id } = useParams();
   const details = useSelector(state => state.recipeDetails);
 
   useEffect(() => {
-    if (!details.title) {
+    if (!details.id) {
       dispatch(getRecipeDetails(id));
     }
   }, [dispatch, details, id]);
@@ -29,7 +28,7 @@ function Details() {
           ))}
           <p>Health Score: {details?.healthScore}</p>
           <h2>Sumamry:</h2>
-          <ReactMarkdown>{details?.summary}</ReactMarkdown>
+          <p>{details?.summary}</p>
           <h2>Diets:</h2>
           {details?.diets?.map((diet, i) => (
             <p key={i}>{diet}</p>

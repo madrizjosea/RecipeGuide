@@ -1,4 +1,9 @@
-import { GET_ALL_RECIPES, GET_ALL_DIETS, GET_DETAILS } from '../actions';
+import {
+  GET_ALL_RECIPES,
+  GET_ALL_DIETS,
+  GET_DETAILS,
+  CLEAR_DETAILS,
+} from '../actions';
 
 const initialState = {
   recipes: [],
@@ -24,6 +29,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         recipeDetails: action.payload,
+      };
+    case CLEAR_DETAILS:
+      return {
+        ...state,
+        recipeDetails: {},
       };
     default:
       return {

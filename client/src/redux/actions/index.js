@@ -5,6 +5,7 @@ import axios from '../../axios/index.js';
 export const GET_ALL_RECIPES = 'GET_ALL_RECIPES';
 export const GET_ALL_DIETS = 'GET_ALL_DIETS';
 export const GET_DETAILS = 'GET_DETAILS';
+export const CLEAR_DETAILS = 'CLEAR_DETAILS';
 
 // Get all recipes
 export function getAllRecipes() {
@@ -37,4 +38,13 @@ export function getRecipeDetails(id) {
       payload: data,
     });
   };
+}
+
+// Clear details in state
+export function clearDetails() {
+  return function(dispatch) {
+    return dispatch({
+      type: CLEAR_DETAILS,
+    })
+  }
 }

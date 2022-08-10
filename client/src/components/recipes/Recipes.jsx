@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllRecipes } from '../../redux/actions/index.js';
+import { getAllRecipes, clearDetails } from '../../redux/actions/index.js';
 import Card from '../card/Card.jsx';
 import s from './Recipes.module.css';
 
@@ -10,6 +10,7 @@ function Recipes() {
   const recipes = useSelector(state => state.recipes);
 
   useEffect(() => {
+    dispatch(clearDetails())
     if (!recipes.length) dispatch(getAllRecipes());
   }, [dispatch, recipes]);
 

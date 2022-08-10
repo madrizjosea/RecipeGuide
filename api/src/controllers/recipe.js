@@ -75,7 +75,7 @@ const getRecipeById = async (req, res, next) => {
         dishTypes: data.dishTypes,
         diets: data.diets,
         healthScore: data.healthScore,
-        summary: data.summary,
+        summary: data.summary.replaceAll(/<(“[^”]”|'[^’]’|[^'”>])*>/g, ''),
         steps: steps,
       };
 
