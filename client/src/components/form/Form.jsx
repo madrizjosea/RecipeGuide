@@ -1,62 +1,143 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+
+const diets = [
+  'dairy free',
+  'fodmap friendly',
+  'gluten free',
+  'ketogenic',
+  'lacto ovo vegetarian',
+  'paleolithic',
+  'pescatarian',
+  'primal',
+  'vegan',
+  'whole 30',
+];
 
 const Form = () => {
-  const [steps, setSteps] = useState([]);
-  const diets = ['lacto ovo vegetarian', 'whole 30', 'pescatarian'];
+  const [stepInput, setStepInput] = useState('');
+  const [state, setState] = useState({
+    title: '',
+    summary: '',
+    healthScore: 0,
+    steps: [],
+    diets: [],
+    image: '',
+  });
 
-  const addStep = e => {
+  // Form handlers
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setState(prev => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+  const handleSubmit = () => {};
+
+  // Step creation handlers
+  const handleStepChange = e => {
+    let { value } = e.target;
+    setStepInput(value);
+  };
+
+  const handleStepSubmit = e => {
     e.preventDefault();
-    setSteps([...steps, <input type="text" />]);
+    setState(prev => {
+      return {
+        ...prev,
+        steps: [...prev.steps, stepInput],
+      };
+    });
+    setStepInput('');
   };
 
   const deleteStep = (e, id) => {
     e.preventDefault();
-    setSteps(steps.filter((step, idx) => idx !== id));
+    setState(prev => {
+      return {
+        ...prev,
+        steps: prev.steps.filter((step, idx) => idx !== id),
+      };
+    });
   };
 
+  // Diets handlers
+  const handleDietChange = e => {
+    let { value } = e.target;
+    e.preventDefault();
+    setState(prev => {
+      return {
+        ...prev,
+        diets: [...prev.diets, value],
+      };
+    });
+  };
+
+  console.log('This is the state: ', state);
+
   return (
-    <>
-      <Link to={'/recipes'}>
-        <button>Home</button>
-      </Link>
-      <button>Reset fields</button>
-      <form>
+    <form onSubmit={e => handleSubmit(e)}>
+      <div>
+        <label>Title</label>
+        <input type="text" name="title" onChange={handleChange} />
+      </div>
+      <div>
+        <label>Summary</label>
+        <textarea name="summary" onChange={handleChange}></textarea>
+      </div>
+      <div>
+        <label>Health Score</label>
+        <input type="number" name="healthScore" onChange={handleChange} />
+      </div>
+      <div>
+        <label>Steps</label>
         <div>
-          <label>Name: </label>
-          <input type="text" name="title" />
-        </div>
-        <div>
-          <label>Summary: </label>
-          <textarea></textarea>
-        </div>
-        <div>
-          <label>Steps: </label>
-          <button onClick={e => addStep(e)}>Step +</button>
-          {steps?.map((step, idx) => (
+          <input
+            value={stepInput}
+            type="text"
+            name={'stepInput'}
+            onChange={handleStepChange}
+          />
+          <button onClick={e => handleStepSubmit(e)}>+</button>
+          {state.steps.map((step, idx) => (
             <div key={idx}>
-              <input type="text" />
-              <button onClick={e => deleteStep(e, idx)}>X</button>
+              {step}
+              <button onClick={e => deleteStep(e, idx)}>x</button>
             </div>
           ))}
         </div>
-        <div>
-          <label>Diets: </label>
-          <select name="diets">
-            {diets.map((diet, idx) => (
-              <option key={idx} value={diet}>
-                {diet.charAt(0).toUpperCase() + diet.slice(1)}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Image: </label>
-          <input type="url" name="image" />
-        </div>
-        <button>Create recipe</button>
-      </form>
-    </>
+      </div>
+      <div>
+        <label>Diets</label>
+        <ul>
+          {diets.map((diet, idx) => {
+            return (
+              <li key={idx}>
+                <input
+                  type="checkbox"
+                  id={idx}
+                  name={diet}
+                  value={diet}
+                  onChange={e => handleDietChange(e)}
+                />
+                <label htmlFor={idx}>{diet}</label>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div>
+        <img src={state.image} alt="your-recipe" />
+      </div>
+      <div>
+        <label>Image</label>
+        <input type="url" name="image" onChange={handleChange} />
+      </div>
+      <button>Create recipe</button>
+    </form>
   );
 };
 

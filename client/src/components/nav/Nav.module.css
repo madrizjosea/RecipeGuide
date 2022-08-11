@@ -1,0 +1,10 @@
+.container {
+  box-sizing: border-box;
+  display: block;
+  font-size: 17px;
+  font-weight: 400;
+  height: 70px;
+  letter-spacing: 0.51px;
+  line-height: 27.03px;
+  position: relative;
+}
