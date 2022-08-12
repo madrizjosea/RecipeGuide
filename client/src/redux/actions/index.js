@@ -6,6 +6,7 @@ export const GET_ALL_RECIPES = 'GET_ALL_RECIPES';
 export const GET_ALL_DIETS = 'GET_ALL_DIETS';
 export const GET_DETAILS = 'GET_DETAILS';
 export const CLEAR_DETAILS = 'CLEAR_DETAILS';
+export const GET_RECIPE_BY_NAME = 'GET_RECIPE_BY_NAME';
 
 // Get all recipes
 export function getAllRecipes() {
@@ -13,6 +14,17 @@ export function getAllRecipes() {
     const { data } = await axios.get('/recipes');
     return dispatch({
       type: GET_ALL_RECIPES,
+      payload: data,
+    });
+  };
+}
+
+// Get Recipe by name
+export function getRecipeByName(name) {
+  return async function (dispatch) {
+    const { data } = await axios.get(`/recipes?title=${name}`);
+    return dispatch({
+      type: GET_RECIPE_BY_NAME,
       payload: data,
     });
   };
@@ -42,9 +54,9 @@ export function getRecipeDetails(id) {
 
 // Clear details in state
 export function clearDetails() {
-  return function(dispatch) {
+  return function (dispatch) {
     return dispatch({
       type: CLEAR_DETAILS,
-    })
-  }
+    });
+  };
 }

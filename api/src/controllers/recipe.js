@@ -4,7 +4,7 @@ const { Recipe, Diet } = require('../db.js');
 const { API_KEY } = process.env;
 
 // This formats data for the Redux store
-const recipeFormater = recipe => {
+const formater = recipe => {
   return {
     id: recipe.id,
     title: recipe.title,
@@ -18,37 +18,65 @@ const recipeFormater = recipe => {
 
 // GET request to fetch all recipes
 const getRecipes = async (req, res, next) => {
-  const { name } = req.query;
   try {
     const apiRecipes = await axios.get(
       `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`
     );
+    const apiFormated = apiRecipes.data.results.map(formater);
 
-    // Name query handler
-    let recipes = [];
-    if (name) {
-      let recipesByName = await apiRecipes.data.results.filter(recipe =>
-        recipe.title.toLowerCase().includes(name.toLowerCase())
-      );
-      recipesByName.length
-        ? (recipes = recipesByName.map(recipeFormater))
-        : res.status(404).send('This recipe does not exist');
-    } else {
-      recipes = apiRecipes.data.results.map(recipeFormater);
-    }
-    res.status(200).json(recipes);
+    const dbRecipes = await Recipe.findAll({
+      include: [
+        {
+          model: Diet,
+          attributes: ['name'],
+          through: { attributes: [] },
+        },
+      ],
+    });
+    const allRecipes = [...dbRecipes, ...apiFormated];
+
+    res.status(200).json(allRecipes);
   } catch (error) {
     next(error);
   }
 };
 
-// GET request when the id is passed through parameters
+// Get request by Title
+const getRecipeByTitle = async (req, res, next) => {
+  const { title } = req.query;
+  try {
+    const apiRecipes = await axios.get(
+      `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&titleMatch=${title}`
+    );
+    const apiFormated = apiRecipes.data.results.map(formater);
+
+    const dbRecipes = await Recipe.findAll({
+      where: {
+        title: title,
+      },
+      include: [
+        {
+          model: Diet,
+          attributes: ['name'],
+          through: { attributes: [] },
+        },
+      ],
+    });
+    const allRecipes = [...apiFormated, ...dbRecipes];
+
+    res.send(200).json(allRecipes);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// GET request by id
 const getRecipeById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
     if (id.toString().split('-').length > 1) {
-      await Recipe.findByPk(id, {
+      const dbRecipe = await Recipe.findByPk(id, {
         where: { id: id },
         include: [
           {
@@ -57,7 +85,8 @@ const getRecipeById = async (req, res, next) => {
             through: { attributes: [] },
           },
         ],
-      }).then(recipe => res.status(200).json(recipe));
+      })
+      res.status(200).json(dbRecipe);
     } else {
       const apiRecipe = await axios.get(
         `${id}/information?apiKey=${API_KEY}&addRecipeInformation=true`
@@ -88,11 +117,11 @@ const getRecipeById = async (req, res, next) => {
 
 // POST request to create a new Recipe
 const createRecipe = async (req, res, next) => {
-  const { name, summary, healthScore, diets, steps, image } = req.body;
+  const { title, summary, healthScore, diets, steps, image } = req.body;
 
   try {
     const newRecipe = await Recipe.create({
-      name,
+      title,
       summary,
       healthScore,
       diets,
@@ -116,4 +145,5 @@ module.exports = {
   getRecipes,
   getRecipeById,
   createRecipe,
+  getRecipeByTitle
 };
