@@ -7,20 +7,20 @@ import s from './Recipes.module.css';
 
 function Recipes() {
   const dispatch = useDispatch();
-  const recipes = useSelector(state => state.recipes);
+  const state = useSelector(state => state);
 
   useEffect(() => {
-    dispatch(clearDetails());
-    if (!recipes.length) dispatch(getAllRecipes());
-  }, [dispatch, recipes]);
+    if (state.recipeDetails.id) dispatch(clearDetails());
+    if (!state.recipes.length) dispatch(getAllRecipes());
+  }, [dispatch, state]);
 
   return (
     <div className={s.container}>
       <Link to={'/create'}>
         <button>Create a recipe</button>
       </Link>
-      {recipes &&
-        recipes.map(recipe => {
+      {state.recipes &&
+        state.recipes.map(recipe => {
           return (
             <Card
               key={recipe.id}

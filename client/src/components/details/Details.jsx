@@ -10,10 +10,8 @@ function Details() {
   const details = useSelector(state => state.recipeDetails);
 
   useEffect(() => {
-    if (!details.id) {
-      dispatch(getRecipeDetails(id));
-    }
-  }, [dispatch, details, id]);
+    dispatch(getRecipeDetails(id));
+  }, [dispatch, id]);
 
   return (
     <>

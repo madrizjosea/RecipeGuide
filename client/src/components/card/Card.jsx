@@ -13,7 +13,7 @@ class Card extends Component {
     return (
       <div className={s.container}>
         <h3>{this.props.title}</h3>
-        <Link to={`/recipes/${this.props.id}`}>
+        <Link to={`/details/${this.props.id}`}>
           <img
             onClick={() => this.handleClick(this.props.id)}
             src={this.props.image}

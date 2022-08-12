@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllDiets } from '../../redux/actions';
 // import { Link } from 'react-router-dom';
 
-const diets = [
-  'dairy free',
-  'fodmap friendly',
-  'gluten free',
-  'ketogenic',
-  'lacto ovo vegetarian',
-  'paleolithic',
-  'pescatarian',
-  'primal',
-  'vegan',
-  'whole 30',
-];
-
 const Form = () => {
+
+  const dispatch = useDispatch();
+  const diets = useSelector(state => state.diets);
+  useEffect(() => {
+    if (!diets.length) dispatch(getAllDiets());
+  }, [dispatch, diets]);
+
+  // Initial states
   const [stepInput, setStepInput] = useState('');
   const [state, setState] = useState({
     title: '',
@@ -35,6 +32,7 @@ const Form = () => {
       };
     });
   };
+
   const handleSubmit = () => {};
 
   // Step creation handlers
@@ -64,41 +62,61 @@ const Form = () => {
     });
   };
 
-  // Diets handlers
+  // Diets handler
   const handleDietChange = e => {
-    let { value } = e.target;
-    e.preventDefault();
-    setState(prev => {
-      return {
-        ...prev,
-        diets: [...prev.diets, value],
-      };
-    });
+    let { name } = e.target;
+    !state.diets.includes(name)
+      ? setState(prev => {
+          return {
+            ...prev,
+            diets: [...prev.diets, name],
+          };
+        })
+      : setState(prev => {
+          return {
+            ...prev,
+            diets: prev.diets.filter(diet => diet !== name),
+          };
+        });
   };
 
-  console.log('This is the state: ', state);
+  console.log('This is the state\n', state);
 
   return (
     <form onSubmit={e => handleSubmit(e)}>
       <div>
         <label>Title</label>
-        <input type="text" name="title" onChange={handleChange} />
+        <input
+          type="text"
+          name="title"
+          value={state.title}
+          onChange={handleChange}
+        />
       </div>
       <div>
         <label>Summary</label>
-        <textarea name="summary" onChange={handleChange}></textarea>
+        <textarea
+          name="summary"
+          value={state.summary}
+          onChange={handleChange}
+        ></textarea>
       </div>
       <div>
         <label>Health Score</label>
-        <input type="number" name="healthScore" onChange={handleChange} />
+        <input
+          type="number"
+          name="healthScore"
+          value={state.healthScore}
+          onChange={handleChange}
+        />
       </div>
       <div>
         <label>Steps</label>
         <div>
           <input
-            value={stepInput}
             type="text"
             name={'stepInput'}
+            value={stepInput}
             onChange={handleStepChange}
           />
           <button onClick={e => handleStepSubmit(e)}>+</button>
