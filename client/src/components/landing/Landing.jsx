@@ -5,7 +5,7 @@ function Landing() {
   return (
     <div>
       <h1>Landing page</h1>
-      <Link to={'/recipes'}>
+      <Link to={'/browse'}>
         <button>Recipes</button>
       </Link>
     </div>

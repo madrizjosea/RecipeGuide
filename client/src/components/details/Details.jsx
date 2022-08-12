@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { getRecipeDetails } from '../../redux/actions';
+import { getRecipeDetails, clearDetails } from '../../redux/actions';
 // import s from './Details.module.css';
 
 function Details() {
@@ -11,6 +11,9 @@ function Details() {
 
   useEffect(() => {
     dispatch(getRecipeDetails(id));
+    return () => {
+      dispatch(clearDetails());
+    }
   }, [dispatch, id]);
 
   return (
@@ -37,7 +40,7 @@ function Details() {
           ) : (
             <p>There are no steps for this recipe</p>
           )}
-          <Link to={'/recipes'}>
+          <Link to={'/browse'}>
             <button>Home</button>
           </Link>
         </div>

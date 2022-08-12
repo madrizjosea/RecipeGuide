@@ -12,17 +12,25 @@ class Card extends Component {
   render() {
     return (
       <div className={s.container}>
-        <h3>{this.props.title}</h3>
-        <Link to={`/details/${this.props.id}`}>
-          <img
-            onClick={() => this.handleClick(this.props.id)}
-            src={this.props.image}
-            alt="recipe"
-            width="195"
-            height="220"
-          />
-        </Link>
-        <p>Health Score: {this.props.score}</p>
+        <div className={s.devider}>
+          <h3>{this.props.title}</h3>
+          <Link to={`/browse/recipe/${this.props.id}`}>
+            <img
+              onClick={() => this.handleClick(this.props.id)}
+              src={this.props.image}
+              alt="recipe"
+              width="195"
+              height="200"
+            />
+          </Link>
+        </div>
+        <div className={s.devider}>
+          <ul>
+            {this.props.diets.map(diet => (
+              <li>{diet}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }

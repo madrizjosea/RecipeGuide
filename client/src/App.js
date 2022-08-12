@@ -9,11 +9,11 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <Route path={'/'} component={Nav} />
+      <Route path={'/browse'} component={Nav} />
       <Route exact path={'/'} component={Landing} />
-      <Route exact path={'/recipes'} component={Recipes} />
-      <Route exact path={'/create'} component={Form} />
-      <Route path={'/details/:id'} component={Details} />
+      <Route exact path={'/browse'} component={Recipes} />
+      <Route exact path={'/browse/create'} component={Form} />
+      <Route path={'/browse/recipe/:id'} component={Details} />
     </div>
   );
 }
