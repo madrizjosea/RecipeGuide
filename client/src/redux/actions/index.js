@@ -20,9 +20,9 @@ export function getAllRecipes() {
 }
 
 // Get Recipe by name
-export function getRecipeByName(name) {
+export function getRecipeByName(title) {
   return async function (dispatch) {
-    const { data } = await axios.get(`/recipes?title=${name}`);
+    const { data } = await axios.get(`/recipes?title=${title}`);
     return dispatch({
       type: GET_RECIPE_BY_NAME,
       payload: data,
