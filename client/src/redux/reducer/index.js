@@ -19,6 +19,7 @@ const initialState = {
   diets: [],
   loading: false,
   errorMsg: '',
+  filterErrorMsg: '',
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -56,6 +57,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         recipes: action.payload,
+        filtered: action.payload,
       };
     case GET_DIETS:
       return {
@@ -75,13 +77,8 @@ const rootReducer = (state = initialState, action) => {
       };
     case SORT:
       switch (action.payload) {
-        case 'default':
-          return {
-            ...state,
-            filtered: state.recipes,
-          }
         case 'A-Z':
-          let recipesToSortAsc = [...state.recipes];
+          let recipesToSortAsc = [...state.filtered];
           let sortedAlphaAsc = recipesToSortAsc.sort((a, b) => {
             if (a.title.toLowerCase() > b.title.toLowerCase()) {
               return 1;
@@ -96,7 +93,7 @@ const rootReducer = (state = initialState, action) => {
             filtered: sortedAlphaAsc,
           };
         case 'Z-A':
-          let recipesToSortDesc = [...state.recipes];
+          let recipesToSortDesc = [...state.filtered];
           let sortedAlphaDesc = recipesToSortDesc.sort((a, b) => {
             if (a.title.toLowerCase() < b.title.toLowerCase()) {
               return 1;
@@ -113,6 +110,7 @@ const rootReducer = (state = initialState, action) => {
         default:
           return {
             ...state,
+            filtered: state.recipes,
           };
       }
     case FILTER_BY_DIET:
@@ -126,10 +124,17 @@ const rootReducer = (state = initialState, action) => {
           filteredRecipes.push(recipe);
         }
       });
-      return {
-        ...state,
-        filtered: filteredRecipes.length > 0 ? filteredRecipes : state.recipes,
-      };
+      if (filteredRecipes.length > 0) {
+        return {
+          ...state,
+          filtered: filteredRecipes,
+        };
+      } else {
+        return {
+          ...state,
+          filterErrorMsg: 'No recipes found for this diet',
+        };
+      }
     default:
       return {
         ...state,

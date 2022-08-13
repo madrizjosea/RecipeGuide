@@ -9,6 +9,7 @@ import {
 import Card from '../../components/Card/Card.jsx';
 import Search from '../../components/Search/Search.jsx';
 import Filter from '../../components/Filter/Filter';
+import Sort from '../../components/Sort/Sort.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
 import s from './Home.module.css';
 
@@ -21,11 +22,11 @@ function Home() {
       dispatch(getDiets());
       dispatch(getRecipes());
     }
-  }, [dispatch, state.recipes.length]);
+  }, [dispatch, state.recipes.length, state.filtered]);
 
-
-  const handleFilters = () => {
-    dispatch(sortBy('default'));
+  // Filters handling
+  const handleFiltersReset = () => {
+    dispatch(getRecipes())
   };
 
   return (
@@ -36,22 +37,20 @@ function Home() {
         <div>
           <div className={s.menus}>
             <Search />
-            <Filter
-              filterName="Sort Recipes"
+            <Sort
+              label="Sort options"
               options={[
                 { name: 'Alphabetically', values: ['A-Z', 'Z-A'] },
                 { name: 'Health Score', values: ['0-100', '100-0'] },
               ]}
               dispatchHandler={sortBy}
-              values={[]}
             />
             <Filter
-              options={[]}
-              filterName="Filter by Diet"
-              values={state.diets && state.diets}
+              label="Filter by diet"
+              options={state.diets && state.diets}
               dispatchHandler={filterByDiet}
             />
-            <button onClick={handleFilters}>Reset Filters</button>
+            <button onClick={handleFiltersReset}>Reset Filters</button>
           </div>
           <div className={s.recipes}>
             {state.filtered &&
