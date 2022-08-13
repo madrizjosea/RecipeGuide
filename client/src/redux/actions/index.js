@@ -1,21 +1,25 @@
 import axios from '../../axios';
 
-export const GET_RECIPES = 'GET_RECIPES',
+export const GET_REQUEST_FAILURE = 'GET_REQUEST_FAILURE',
+  GET_RECIPES = 'GET_RECIPES',
   GET_RECIPES_SUCCESS = 'GET_RECIPES_SUCCESS',
-  GET_RECIPES_FAIL = 'GET_RECIPES_FAIL',
   GET_DETAILS = 'GET_DETAILS',
   GET_DETAILS_SUCCESS = 'GET_DETAILS_SUCCESS',
-  GET_DETAILS_FAIL = 'GET_DETAILS_FAIL',
   GET_BY_TITLE = 'GET_BY_TITLE',
   GET_BY_TITLE_SUCCESS = 'GET_BY_TITLE_SUCCESS',
-  GET_BY_TITLE_FAIL = 'GET_BY_TITLE_FAIL',
   GET_DIETS = 'GET_DIETS',
   GET_DIETS_SUCCESS = 'GET_DIETS_SUCCESS',
-  GET_DIETS_FAIL = 'GET_DIETS_FAIL',
   CLEAR_DETAILS = 'CLEAR_DETAILS',
   SORT = 'SORT',
-  SORT_ALPHA_ASC = 'SORT_ALPHA_ASC',
-  SORT_ALPHA_DESC = 'SORT_ALPHA_DESC';
+  FILTER_BY_DIET = 'FILTER_BY_DIET';
+
+// If requests fail
+export const getRequestFailure = errorMsg => {
+  return {
+    type: GET_REQUEST_FAILURE,
+    payload: errorMsg,
+  };
+};
 
 // Get all recipes
 export const getRecipesRequest = () => {
@@ -31,13 +35,6 @@ export const getRecipesSuccess = recipes => {
   };
 };
 
-export const getRecipesFailure = errorMsg => {
-  return {
-    type: GET_RECIPES_FAIL,
-    payload: errorMsg,
-  };
-};
-
 export const getRecipes = () => {
   return dispatch => {
     dispatch(getRecipesRequest());
@@ -49,7 +46,7 @@ export const getRecipes = () => {
       })
       .catch(error => {
         const { message } = error;
-        dispatch(getRecipesFailure(message));
+        dispatch(getRequestFailure(message));
       });
   };
 };
@@ -68,13 +65,6 @@ export const getDetailsSuccess = recipes => {
   };
 };
 
-export const getDetailsFailure = errorMsg => {
-  return {
-    type: GET_DETAILS_FAIL,
-    payload: errorMsg,
-  };
-};
-
 export const getDetails = id => {
   return dispatch => {
     dispatch(getDetailsRequest());
@@ -86,7 +76,7 @@ export const getDetails = id => {
       })
       .catch(error => {
         const { message } = error;
-        dispatch(getDetailsFailure(message));
+        dispatch(getRequestFailure(message));
       });
   };
 };
@@ -105,13 +95,6 @@ export const getByTitleSuccess = recipe => {
   };
 };
 
-export const getByTitleFailure = errorMsg => {
-  return {
-    type: GET_BY_TITLE_FAIL,
-    payload: errorMsg,
-  };
-};
-
 export const getByTitle = title => {
   return dispatch => {
     dispatch(getByTitleRequest());
@@ -123,7 +106,7 @@ export const getByTitle = title => {
       })
       .catch(error => {
         const { message } = error;
-        dispatch(getByTitleFailure(message));
+        dispatch(getRequestFailure(message));
       });
   };
 };
@@ -142,13 +125,6 @@ export const getDietsSuccess = diets => {
   };
 };
 
-export const getDietsFailure = errorMsg => {
-  return {
-    type: GET_DIETS_FAIL,
-    payload: errorMsg,
-  };
-};
-
 export const getDiets = () => {
   return dispatch => {
     dispatch(getDietsRequest());
@@ -160,19 +136,18 @@ export const getDiets = () => {
       })
       .catch(error => {
         const { message } = error;
-        dispatch(getDietsFailure(message));
+        dispatch(getRequestFailure(message));
       });
   };
 };
 
-// Clear details
+// Clearing, resting, sorting and filtering
 export const clearDetails = () => {
   return {
     type: CLEAR_DETAILS,
   };
 };
 
-// Sorting
 export const sortBy = value => {
   return {
     type: SORT,
@@ -180,14 +155,9 @@ export const sortBy = value => {
   };
 };
 
-export const sortAlphaAsc = () => {
+export const filterByDiet = value => {
   return {
-    type: SORT_ALPHA_ASC,
-  };
-};
-
-export const sortAlphaDesc = () => {
-  return {
-    type: SORT_ALPHA_DESC,
+    type: FILTER_BY_DIET,
+    payload: value,
   };
 };

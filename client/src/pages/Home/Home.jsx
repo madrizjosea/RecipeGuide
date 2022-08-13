@@ -4,8 +4,7 @@ import {
   getRecipes,
   getDiets,
   sortBy,
-  sortAlphaAsc,
-  sortAlphaDesc,
+  filterByDiet,
 } from '../../redux/actions';
 import Card from '../../components/Card/Card.jsx';
 import Search from '../../components/Search/Search.jsx';
@@ -24,19 +23,9 @@ function Home() {
     }
   }, [dispatch, state.recipes.length]);
 
-  useEffect(() => {
-    switch (state.sortBy) {
-      case 'A-Z':
-        return dispatch(sortAlphaAsc());
-      case 'Z-A':
-        return dispatch(sortAlphaDesc());
-      default:
-        break;
-    }
-  }, [dispatch, state.sortBy]);
 
   const handleFilters = () => {
-    dispatch(getRecipes());
+    dispatch(sortBy('default'));
   };
 
   return (
@@ -60,13 +49,13 @@ function Home() {
               options={[]}
               filterName="Filter by Diet"
               values={state.diets && state.diets}
-              // dispatchHandler={filterRecipes}
+              dispatchHandler={filterByDiet}
             />
             <button onClick={handleFilters}>Reset Filters</button>
           </div>
           <div className={s.recipes}>
-            {state.recipes &&
-              state.recipes.map(recipe => {
+            {state.filtered &&
+              state.filtered.map(recipe => {
                 return (
                   <Card
                     key={recipe.id}
