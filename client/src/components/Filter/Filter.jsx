@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-function Filter({ option, values, dispatchHandler }) {
+function Filter({ filterName, options, values, dispatchHandler }) {
   const dispatch = useDispatch();
   const [filterValue, setFilterValue] = useState('');
-  
+
   const handleFilter = e => {
     const { value } = e.target;
     setFilterValue(value);
@@ -13,14 +13,39 @@ function Filter({ option, values, dispatchHandler }) {
   };
   return (
     <>
-      <select onChange={e => handleFilter(e)} value={filterValue}>
-        <option>{option} Options</option>
-        {values?.map((value, idx) => (
-          <option key={idx} value={value}>
-            {value}
-          </option>
-        ))}
-      </select>
+      {options.length && options.length > 0 ? (
+        <section>
+          <select
+            name={filterName}
+            onChange={e => handleFilter(e)}
+            value={filterValue}
+          >
+            <option>{filterName}</option>
+            {options?.map((option, idx) => (
+              <optgroup key={idx} label={option.name}>
+                {option.values?.map((value, idx) => (
+                  <option key={idx} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </section>
+      ) : (
+        values.length && (
+          <section>
+            <select onChange={e => handleFilter(e)} value={filterValue}>
+              <option>{filterName}</option>
+              {values?.map((value, idx) => (
+                <option key={idx} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </section>
+        )
+      )}
     </>
   );
 }

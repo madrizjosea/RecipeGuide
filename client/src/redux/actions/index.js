@@ -9,7 +9,7 @@ export const GET_RECIPES = 'GET_RECIPES',
   GET_BY_TITLE = 'GET_BY_TITLE',
   GET_BY_TITLE_SUCCESS = 'GET_BY_TITLE_SUCCESS',
   GET_BY_TITLE_FAIL = 'GET_BY_TITLE_FAIL',
-  GET_DIETS = 'GET_DIETS_REQUEST',
+  GET_DIETS = 'GET_DIETS',
   GET_DIETS_SUCCESS = 'GET_DIETS_SUCCESS',
   GET_DIETS_FAIL = 'GET_DIETS_FAIL',
   CLEAR_DETAILS = 'CLEAR_DETAILS',
@@ -40,7 +40,7 @@ export const getRecipesFailure = errorMsg => {
 
 export const getRecipes = () => {
   return dispatch => {
-    dispatch(getRecipesRequest);
+    dispatch(getRecipesRequest());
     axios
       .get('/recipes')
       .then(response => {
@@ -77,7 +77,7 @@ export const getDetailsFailure = errorMsg => {
 
 export const getDetails = id => {
   return dispatch => {
-    dispatch(getDetailsRequest);
+    dispatch(getDetailsRequest());
     axios
       .get(`/recipes/${id}`)
       .then(response => {
@@ -114,7 +114,7 @@ export const getByTitleFailure = errorMsg => {
 
 export const getByTitle = title => {
   return dispatch => {
-    dispatch(getByTitleRequest);
+    dispatch(getByTitleRequest());
     axios
       .get(`/recipes?title=${title}`)
       .then(response => {
@@ -151,7 +151,7 @@ export const getDietsFailure = errorMsg => {
 
 export const getDiets = () => {
   return dispatch => {
-    dispatch(getDietsRequest);
+    dispatch(getDietsRequest());
     axios
       .get('/diets')
       .then(response => {

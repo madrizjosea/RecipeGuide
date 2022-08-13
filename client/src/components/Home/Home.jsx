@@ -6,12 +6,12 @@ import {
   sortBy,
   sortAlphaAsc,
   sortAlphaDesc,
-  resetFilters,
 } from '../../redux/actions';
 import Card from '../Card/Card.jsx';
 import s from './Home.module.css';
 import Search from '../Search/Search.jsx';
 import Filter from '../Filter/Filter';
+import Loader from '../Loader/Loader.jsx';
 
 function Home() {
   const dispatch = useDispatch();
@@ -36,40 +36,51 @@ function Home() {
   }, [dispatch, state.sortBy]);
 
   const handleFilters = () => {
-    dispatch(getRecipes())
+    dispatch(getRecipes());
   };
-
+  console.log(state.loading)
   return (
     <div className={s.container}>
-      <div className={s.menus}>
-        <Search />
-        <Filter
-          option="Sort"
-          values={['A-Z', 'Z-A', '0-100', '100-0']}
-          dispatchHandler={sortBy}
-        />
-        <Filter
-          option="Filter"
-          values={state.diets && state.diets}
-          // dispatchHandler={filterRecipes}
-        />
-        <button onClick={handleFilters}>Reset Filters</button>
-      </div>
-      <div className={s.recipes}>
-        {state.recipes &&
-          state.recipes.map(recipe => {
-            return (
-              <Card
-                key={recipe.id}
-                id={recipe.id}
-                title={recipe.title}
-                image={recipe.image}
-                score={recipe.healthScore}
-                diets={recipe.diets}
-              />
-            );
-          })}
-      </div>
+      {state.loading && state.loading === true ? (
+        <Loader />
+      ) : (
+        <div>
+          <div className={s.menus}>
+            <Search />
+            <Filter
+              filterName="Sort Recipes"
+              options={[
+                { name: 'Alphabetically', values: ['A-Z', 'Z-A'] },
+                { name: 'Health Score', values: ['0-100', '100-0'] },
+              ]}
+              dispatchHandler={sortBy}
+              values={[]}
+            />
+            <Filter
+              options={[]}
+              filterName="Filter by Diet"
+              values={state.diets && state.diets}
+              // dispatchHandler={filterRecipes}
+            />
+            <button onClick={handleFilters}>Reset Filters</button>
+          </div>
+          <div className={s.recipes}>
+            {state.recipes &&
+              state.recipes.map(recipe => {
+                return (
+                  <Card
+                    key={recipe.id}
+                    id={recipe.id}
+                    title={recipe.title}
+                    image={recipe.image}
+                    score={recipe.healthScore}
+                    diets={recipe.diets}
+                  />
+                );
+              })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
