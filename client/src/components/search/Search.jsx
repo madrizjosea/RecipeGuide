@@ -19,6 +19,9 @@ class Search extends Component {
     e.preventDefault();
     let title = this.state.value.toLowerCase();
     this.props.getByTitle(title);
+    this.setState({
+      value: '',
+    });
   }
 
   render() {

@@ -6,6 +6,7 @@ import {
   sortBy,
   sortAlphaAsc,
   sortAlphaDesc,
+  resetFilters,
 } from '../../redux/actions';
 import Card from '../Card/Card.jsx';
 import s from './Home.module.css';
@@ -34,6 +35,10 @@ function Home() {
     }
   }, [dispatch, state.sortBy]);
 
+  const handleFilters = () => {
+    dispatch(getRecipes())
+  };
+
   return (
     <div className={s.container}>
       <div className={s.menus}>
@@ -48,6 +53,7 @@ function Home() {
           values={state.diets && state.diets}
           // dispatchHandler={filterRecipes}
         />
+        <button onClick={handleFilters}>Reset Filters</button>
       </div>
       <div className={s.recipes}>
         {state.recipes &&

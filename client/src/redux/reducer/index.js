@@ -23,8 +23,8 @@ const initialState = {
   diets: [],
   loading: false,
   errorMsg: '',
-  sortBy: '',
-  filterBy: '',
+  sortBy: 'unsorted',
+  filterBy: 'unfiltered',
 };
 
 const rootReducer = (state = initialState, action) => {

@@ -191,4 +191,3 @@ export const sortAlphaDesc = () => {
     type: SORT_ALPHA_DESC,
   };
 };
-
