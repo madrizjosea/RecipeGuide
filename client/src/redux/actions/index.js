@@ -12,7 +12,10 @@ export const GET_RECIPES = 'GET_RECIPES',
   GET_DIETS = 'GET_DIETS_REQUEST',
   GET_DIETS_SUCCESS = 'GET_DIETS_SUCCESS',
   GET_DIETS_FAIL = 'GET_DIETS_FAIL',
-  CLEAR_DETAILS = 'CLEAR_DETAILS';
+  CLEAR_DETAILS = 'CLEAR_DETAILS',
+  SORT = 'SORT',
+  SORT_ALPHA_ASC = 'SORT_ALPHA_ASC',
+  SORT_ALPHA_DESC = 'SORT_ALPHA_DESC';
 
 // Get all recipes
 export const getRecipesRequest = () => {
@@ -168,3 +171,24 @@ export const clearDetails = () => {
     type: CLEAR_DETAILS,
   };
 };
+
+// Sorting
+export const sortBy = value => {
+  return {
+    type: SORT,
+    payload: value,
+  };
+};
+
+export const sortAlphaAsc = () => {
+  return {
+    type: SORT_ALPHA_ASC,
+  };
+};
+
+export const sortAlphaDesc = () => {
+  return {
+    type: SORT_ALPHA_DESC,
+  };
+};
+

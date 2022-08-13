@@ -40,7 +40,7 @@ function Details() {
           ) : (
             <p>There are no steps for this recipe</p>
           )}
-          <Link to={'/browse'}>
+          <Link to={'/home'}>
             <button>Home</button>
           </Link>
         </div>

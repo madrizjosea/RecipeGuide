@@ -12,6 +12,9 @@ import {
   GET_DIETS_SUCCESS,
   GET_DIETS_FAIL,
   CLEAR_DETAILS,
+  SORT,
+  SORT_ALPHA_ASC,
+  SORT_ALPHA_DESC,
 } from '../actions';
 
 const initialState = {
@@ -20,6 +23,8 @@ const initialState = {
   diets: [],
   loading: false,
   errorMsg: '',
+  sortBy: '',
+  filterBy: '',
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -96,6 +101,39 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         details: {},
+      };
+    case SORT:
+      return {
+        ...state,
+        sortBy: action.payload,
+      };
+    case SORT_ALPHA_ASC:
+      let sortedAlphaAsc = state.recipes.sort(function (a, b) {
+        if (a.title.toLowerCase() > b.title.toLowerCase()) {
+          return 1;
+        }
+        if (b.title.toLowerCase() > a.title.toLowerCase()) {
+          return -1;
+        }
+        return 0;
+      });
+      return {
+        ...state,
+        recipes: sortedAlphaAsc,
+      };
+    case SORT_ALPHA_DESC:
+      let sortedAlphaDesc = state.recipes.sort(function (a, b) {
+        if (a.title.toLowerCase() < b.title.toLowerCase()) {
+          return 1;
+        }
+        if (b.title.toLowerCase() < a.title.toLowerCase()) {
+          return -1;
+        }
+        return 0;
+      });
+      return {
+        ...state,
+        recipes: sortedAlphaDesc,
       };
     default:
       return {
