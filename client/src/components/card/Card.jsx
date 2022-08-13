@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import s from './Card.module.css';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { getRecipeDetails } from '../../redux/actions';
+// import { connect } from 'react-redux';
+// import { getDetails } from '../../redux/actions';
 
 class Card extends Component {
-  handleClick = id => {
-    this.props.getRecipeDetails(id);
-  };
+  // handleClick = id => {
+  //   this.props.getDetails(id);
+  // };
 
   render() {
     return (
@@ -16,7 +16,7 @@ class Card extends Component {
           <h3>{this.props.title}</h3>
           <Link to={`/browse/recipe/${this.props.id}`}>
             <img
-              onClick={() => this.handleClick(this.props.id)}
+              // onClick={() => this.handleClick(this.props.id)}
               src={this.props.image}
               alt="recipe"
               width="195"
@@ -38,8 +38,8 @@ class Card extends Component {
   }
 }
 
-export const mapDispatchToProps = {
-  getRecipeDetails,
-};
+// export const mapDispatchToProps = {
+//   getDetails,
+// };
 
-export default connect(null, mapDispatchToProps)(Card);
+export default Card;

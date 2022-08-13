@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllRecipes } from '../../redux/actions/index.js';
-// import { Link } from 'react-router-dom';
+import { getRecipes } from '../../redux/actions';
 import Card from '../card/Card.jsx';
 import s from './Recipes.module.css';
 import Search from '../search/Search.jsx';
 
 function Recipes() {
   const dispatch = useDispatch();
-  const state = useSelector(state => state);
+  const recipes = useSelector(state => state.recipes);
 
   useEffect(() => {
-    if (!state.recipes.length) dispatch(getAllRecipes());
-  }, [dispatch, state.recipes.length]);
+    if (!recipes.length) dispatch(getRecipes());
+  }, [dispatch, recipes.length]);
 
   return (
     <div className={s.container}>
@@ -20,8 +19,8 @@ function Recipes() {
         <Search />
       </div>
       <div className={s.recipes}>
-        {state.recipes &&
-          state.recipes.map(recipe => {
+        {recipes &&
+          recipes.map(recipe => {
             return (
               <Card
                 key={recipe.id}

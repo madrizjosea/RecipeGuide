@@ -81,20 +81,20 @@ const getRecipeById = async (req, res, next) => {
       res.status(200).json(dbRecipe);
     } else {
       const apiRecipe = await getById(id);
-
+      
       // Steps formating
       const steps = await apiRecipe.analyzedInstructions[0]?.steps.map(
         s => `${s.number}. ${s.step}`
       );
 
       const recipe = {
-        id: data.id,
-        title: data.title,
-        image: data.image,
-        dishTypes: data.dishTypes,
-        diets: data.diets,
-        healthScore: data.healthScore,
-        summary: data.summary.replaceAll(/<(“[^”]”|'[^’]’|[^'”>])*>/g, ''),
+        id: apiRecipe.id,
+        title: apiRecipe.title,
+        image: apiRecipe.image,
+        dishTypes: apiRecipe.dishTypes,
+        diets: apiRecipe.diets,
+        healthScore: apiRecipe.healthScore,
+        summary: apiRecipe.summary.replaceAll(/<(“[^”]”|'[^’]’|[^'”>])*>/g, ''),
         steps: steps,
       };
 

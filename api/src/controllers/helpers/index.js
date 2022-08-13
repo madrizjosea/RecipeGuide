@@ -20,7 +20,7 @@ const getById = async id => {
   const { data } = await axios.get(
     `${id}/information?apiKey=${API_KEY}&addRecipeInformation=true`
   );
-  return data.results;
+  return data;
 };
 
 const getDiets = async () => {

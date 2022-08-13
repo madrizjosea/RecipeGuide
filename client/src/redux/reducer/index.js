@@ -1,45 +1,101 @@
 import {
-  GET_ALL_RECIPES,
-  GET_ALL_DIETS,
+  GET_RECIPES,
+  GET_RECIPES_SUCCESS,
+  GET_RECIPES_FAIL,
   GET_DETAILS,
+  GET_DETAILS_SUCCESS,
+  GET_DETAILS_FAIL,
+  GET_BY_TITLE,
+  GET_BY_TITLE_SUCCESS,
+  GET_BY_TITLE_FAIL,
+  GET_DIETS,
+  GET_DIETS_SUCCESS,
+  GET_DIETS_FAIL,
   CLEAR_DETAILS,
-  GET_RECIPE_BY_NAME,
 } from '../actions';
 
 const initialState = {
   recipes: [],
+  details: {},
   diets: [],
-  recipeDetails: {},
-  // any other necesary global states
+  loading: false,
+  errorMsg: '',
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    // all needed actions
-    case GET_ALL_RECIPES:
+    case GET_RECIPES:
       return {
         ...state,
+        loading: true,
+      };
+    case GET_RECIPES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
         recipes: action.payload,
       };
-    case GET_RECIPE_BY_NAME:
+    case GET_RECIPES_FAIL:
       return {
         ...state,
-        recipes: action.payload,
-      };
-    case GET_ALL_DIETS:
-      return {
-        ...state,
-        diets: action.payload,
+        loading: false,
+        errorMsg: action.payload,
       };
     case GET_DETAILS:
       return {
         ...state,
-        recipeDetails: action.payload,
+        loading: true,
+      };
+    case GET_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        details: action.payload,
+      };
+    case GET_DETAILS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        errorMsg: action.payload,
+      };
+    case GET_BY_TITLE:
+      return {
+        ...state,
+        loading: true,
+      };
+    case GET_BY_TITLE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        recipes: action.payload,
+      };
+    case GET_BY_TITLE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        errorMsg: action.payload,
+      };
+    case GET_DIETS:
+      return {
+        ...state,
+        loading: true,
+      };
+    case GET_DIETS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        diets: action.payload,
+      };
+    case GET_DIETS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        errorMsg: action.payload,
       };
     case CLEAR_DETAILS:
       return {
         ...state,
-        recipeDetails: {},
+        details: {},
       };
     default:
       return {

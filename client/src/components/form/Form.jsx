@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllDiets } from '../../redux/actions';
+import { getDiets } from '../../redux/actions';
 // import { Link } from 'react-router-dom';
 
 const Form = () => {
 
   const dispatch = useDispatch();
   const diets = useSelector(state => state.diets);
+
   useEffect(() => {
-    if (!diets.length) dispatch(getAllDiets());
-  }, [dispatch, diets]);
+    dispatch(getDiets());
+  }, [dispatch]);
 
   // Initial states
   const [stepInput, setStepInput] = useState('');

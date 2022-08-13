@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { getRecipeDetails, clearDetails } from '../../redux/actions';
+import { getDetails, clearDetails } from '../../redux/actions';
 // import s from './Details.module.css';
 
 function Details() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const details = useSelector(state => state.recipeDetails);
+  const details = useSelector(state => state.details);
 
   useEffect(() => {
-    dispatch(getRecipeDetails(id));
+    dispatch(getDetails(id));
     return () => {
       dispatch(clearDetails());
     }
