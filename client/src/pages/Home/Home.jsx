@@ -7,11 +7,11 @@ import {
   sortAlphaAsc,
   sortAlphaDesc,
 } from '../../redux/actions';
-import Card from '../Card/Card.jsx';
+import Card from '../../components/Card/Card.jsx';
+import Search from '../../components/Search/Search.jsx';
+import Filter from '../../components/Filter/Filter';
+import Loader from '../../components/Loader/Loader.jsx';
 import s from './Home.module.css';
-import Search from '../Search/Search.jsx';
-import Filter from '../Filter/Filter';
-import Loader from '../Loader/Loader.jsx';
 
 function Home() {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ function Home() {
   const handleFilters = () => {
     dispatch(getRecipes());
   };
-  console.log(state.loading)
+
   return (
     <div className={s.container}>
       {state.loading && state.loading === true ? (
