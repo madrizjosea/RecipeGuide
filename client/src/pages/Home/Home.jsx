@@ -5,17 +5,28 @@ import {
   getDiets,
   sortBy,
   filterByDiet,
+  setPageNumber,
 } from '../../redux/actions';
-import Card from '../../components/Card/Card.jsx';
 import Search from '../../components/Search/Search.jsx';
 import Filter from '../../components/Filter/Filter';
 import Sort from '../../components/Sort/Sort.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
+import Recipes from '../../components/Recipes/Recipes.jsx';
+import Pagination from '../../components/Pagination/Pagination.jsx';
 import s from './Home.module.css';
 
 function Home() {
   const dispatch = useDispatch();
   const state = useSelector(state => state);
+
+  // Pagination variables
+  const recipesPerPage = 9,
+    indexOfLastRecipe = state.currentPage * recipesPerPage,
+    indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage,
+    currentRecipes = state.filtered.slice(
+      indexOfFirstRecipe,
+      indexOfLastRecipe
+    );
 
   useEffect(() => {
     if (!state.recipes.length) {
@@ -26,7 +37,7 @@ function Home() {
 
   // Filters handling
   const handleFiltersReset = () => {
-    dispatch(getRecipes())
+    dispatch(getRecipes());
   };
 
   return (
@@ -35,6 +46,11 @@ function Home() {
         <Loader />
       ) : (
         <div>
+          <Pagination
+            itemsPerPage={recipesPerPage && recipesPerPage}
+            totalItems={state.filtered.length}
+            dispatchHandler={setPageNumber}
+          />
           <div className={s.menus}>
             <Search />
             <Sort
@@ -52,21 +68,12 @@ function Home() {
             />
             <button onClick={handleFiltersReset}>Reset Filters</button>
           </div>
-          <div className={s.recipes}>
-            {state.filtered &&
-              state.filtered.map(recipe => {
-                return (
-                  <Card
-                    key={recipe.id}
-                    id={recipe.id}
-                    title={recipe.title}
-                    image={recipe.image}
-                    score={recipe.healthScore}
-                    diets={recipe.diets}
-                  />
-                );
-              })}
-          </div>
+          <Recipes recipes={currentRecipes} />
+          <Pagination
+            itemsPerPage={recipesPerPage && recipesPerPage}
+            totalItems={state.filtered.length}
+            dispatchHandler={setPageNumber}
+          />
         </div>
       )}
     </div>

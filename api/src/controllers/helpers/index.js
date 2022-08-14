@@ -11,7 +11,7 @@ const getByTitle = async title => {
 
 const getAll = async () => {
   const { data } = await axios.get(
-    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=10`
+    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`
   );
   return data.results;
 };

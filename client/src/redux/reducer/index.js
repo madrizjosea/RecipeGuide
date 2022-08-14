@@ -10,6 +10,7 @@ import {
   CLEAR_DETAILS,
   SORT,
   FILTER_BY_DIET,
+  SET_PAGE_NUMBER,
 } from '../actions';
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
   loading: false,
   errorMsg: '',
   filterErrorMsg: '',
+  currentPage: 1,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -75,6 +77,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         details: {},
       };
+    case SET_PAGE_NUMBER:
+      return {
+        ...state,
+        currentPage: action.payload,
+      };
     case SORT:
       switch (action.payload) {
         case 'A-Z':
@@ -127,11 +134,13 @@ const rootReducer = (state = initialState, action) => {
       if (filteredRecipes.length > 0) {
         return {
           ...state,
+          currentPage: 1,
           filtered: filteredRecipes,
         };
       } else {
         return {
           ...state,
+          currentPage: 1,
           filterErrorMsg: 'No recipes found for this diet',
         };
       }

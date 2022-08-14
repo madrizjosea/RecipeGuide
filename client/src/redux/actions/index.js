@@ -11,7 +11,8 @@ export const GET_REQUEST_FAILURE = 'GET_REQUEST_FAILURE',
   GET_DIETS_SUCCESS = 'GET_DIETS_SUCCESS',
   CLEAR_DETAILS = 'CLEAR_DETAILS',
   SORT = 'SORT',
-  FILTER_BY_DIET = 'FILTER_BY_DIET';
+  FILTER_BY_DIET = 'FILTER_BY_DIET',
+  SET_PAGE_NUMBER = 'SET_PAGE_NUMBER';
 
 // If requests fail
 export const getRequestFailure = errorMsg => {
@@ -141,7 +142,7 @@ export const getDiets = () => {
   };
 };
 
-// Clearing, resting, sorting and filtering
+// Clearing, reseting, sorting, filtering and pagination
 export const clearDetails = () => {
   return {
     type: CLEAR_DETAILS,
@@ -159,5 +160,12 @@ export const filterByDiet = value => {
   return {
     type: FILTER_BY_DIET,
     payload: value,
+  };
+};
+
+export const setPageNumber = number => {
+  return {
+    type: SET_PAGE_NUMBER,
+    payload: number,
   };
 };
