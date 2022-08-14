@@ -5,7 +5,8 @@ const {
   getAll,
   getByTitle,
   getById,
-  formater,
+  apiRecipeFormater,
+  dbRecipeFormater,
 } = require('./helpers');
 
 // GET request to fetch all recipes
@@ -15,8 +16,7 @@ const getRecipes = async (req, res, next) => {
   if (title) {
     try {
       const apiRecipes = await getByTitle(title);
-      const apiFormated = apiRecipes.map(formater);
-
+      const apiFormated = apiRecipes.map(apiRecipeFormater);
       const dbRecipes = await Recipe.findAll({
         where: {
           title: {
@@ -31,8 +31,8 @@ const getRecipes = async (req, res, next) => {
           },
         ],
       });
-      const allRecipes = [...apiFormated, ...dbRecipes];
-
+      const dbFormated = dbRecipes.map(dbRecipeFormater);
+      const allRecipes = [...dbFormated, ...apiFormated];
       !allRecipes.length
         ? res.status(404).send('This recipe does not exist')
         : res.status(200).json(allRecipes);
@@ -42,8 +42,7 @@ const getRecipes = async (req, res, next) => {
   } else {
     try {
       const apiRecipes = await getAll();
-      const apiFormated = apiRecipes.map(formater);
-
+      const apiFormated = apiRecipes.map(apiRecipeFormater);
       const dbRecipes = await Recipe.findAll({
         include: [
           {
@@ -53,8 +52,8 @@ const getRecipes = async (req, res, next) => {
           },
         ],
       });
-      const allRecipes = [...dbRecipes, ...apiFormated];
-
+      const dbFormated = dbRecipes.map(dbRecipeFormater);
+      const allRecipes = [...dbFormated, ...apiFormated];
       res.status(200).json(allRecipes);
     } catch (error) {
       next(error);
@@ -65,7 +64,6 @@ const getRecipes = async (req, res, next) => {
 // GET request by id
 const getRecipeById = async (req, res, next) => {
   const { id } = req.params;
-
   try {
     if (id.toString().split('-').length > 1) {
       const dbRecipe = await Recipe.findByPk(id, {
@@ -81,12 +79,10 @@ const getRecipeById = async (req, res, next) => {
       res.status(200).json(dbRecipe);
     } else {
       const apiRecipe = await getById(id);
-      
       // Steps formating
       const steps = await apiRecipe.analyzedInstructions[0]?.steps.map(
         s => `${s.number}. ${s.step}`
       );
-
       const recipe = {
         id: apiRecipe.id,
         title: apiRecipe.title,
@@ -97,7 +93,6 @@ const getRecipeById = async (req, res, next) => {
         summary: apiRecipe.summary.replaceAll(/<(“[^”]”|'[^’]’|[^'”>])*>/g, ''),
         steps: steps,
       };
-
       res.status(200).json(recipe);
     }
   } catch (error) {
@@ -108,23 +103,19 @@ const getRecipeById = async (req, res, next) => {
 // POST request to create a new Recipe
 const createRecipe = async (req, res, next) => {
   const { title, summary, healthScore, diets, steps, image } = req.body;
-
   try {
     const newRecipe = await Recipe.create({
       title,
       summary,
       healthScore,
-      diets,
       steps,
       image,
     });
-
     // Diet parsing and assosiation
     diets.map(async diet => {
       const filteredDiets = await Diet.findAll({ where: { name: diet } });
       newRecipe.addDiet(filteredDiets[0]);
     });
-
     res.status(201).send('Your recipe was created successfuly');
   } catch (error) {
     next(error);

@@ -30,7 +30,7 @@ const getDiets = async () => {
   return data.results;
 };
 
-const formater = recipe => {
+const apiRecipeFormater = recipe => {
   return {
     id: recipe.id,
     title: recipe.title,
@@ -40,8 +40,21 @@ const formater = recipe => {
   };
 };
 
+const dbRecipeFormater = recipe => {
+  let parsedDiets = [];
+  recipe.diets.forEach(diet => parsedDiets.push(diet.name));
+  return {
+    id: recipe.id,
+    title: recipe.title,
+    diets: parsedDiets,
+    image: recipe.image,
+    healthScore: recipe.healthScore,
+  };
+};
+
 module.exports = {
-  formater,
+  apiRecipeFormater,
+  dbRecipeFormater,
   getAll,
   getByTitle,
   getById,

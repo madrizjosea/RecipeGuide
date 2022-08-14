@@ -14,11 +14,9 @@ class Card extends Component {
         </div>
         <div className={s.devider}>
           <ul>
-            {this.props.id.toString().split('-').length > 1
-              ? this.props.diets.map(diet => (
-                  <li key={diet.name}>{diet.name}</li>
-                ))
-              : this.props.diets.map(diet => <li key={diet}>{diet}</li>)}
+            {this.props.diets.map(diet => (
+              <li key={diet}>{diet}</li>
+            ))}
           </ul>
         </div>
       </div>
