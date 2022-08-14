@@ -9,6 +9,7 @@ import {
   GET_DIETS,
   GET_DIETS_SUCCESS,
   CLEAR_DETAILS,
+  RESET_FILTERS,
   SORT,
   FILTER_BY_DIET,
   SET_PAGE_NUMBER,
@@ -33,7 +34,7 @@ const rootReducer = (state = initialState, action) => {
         loading: false,
         currentPage: 1,
         errorMsg: action.payload,
-      }
+      };
     case GET_RECIPES:
       return {
         ...state,
@@ -89,6 +90,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         details: {},
+      };
+    case RESET_FILTERS:
+      return {
+        ...state,
+        filtered: [...state.recipes],
       };
     case SET_PAGE_NUMBER:
       return {

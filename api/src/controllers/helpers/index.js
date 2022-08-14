@@ -4,7 +4,7 @@ const { API_KEY } = process.env;
 
 const getByTitle = async title => {
   const { data } = await axios.get(
-    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&titleMatch=${title}`
+    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&titleMatch=${title}&number=100`
   );
   return data.results;
 };

@@ -4,6 +4,7 @@ import {
   getRecipes,
   getDiets,
   sortBy,
+  resetDietFilters,
   filterByDiet,
   setPageNumber,
 } from '../../redux/actions';
@@ -36,7 +37,11 @@ function Home() {
   }, [dispatch, state.recipes.length, state.filtered]);
 
   // Filters handling
-  const handleFiltersReset = () => {
+  const handleDietsReset = () => {
+    dispatch(resetDietFilters());
+  };
+
+  const handleRecipesReset = () => {
     dispatch(getRecipes());
   };
 
@@ -49,7 +54,8 @@ function Home() {
       ) : (
         <div>
           <Pagination
-            itemsPerPage={recipesPerPage && recipesPerPage}
+            currentPage={state.currentPage}
+            itemsPerPage={recipesPerPage}
             totalItems={state.filtered.length}
             dispatchHandler={setPageNumber}
           />
@@ -68,11 +74,15 @@ function Home() {
               options={state.diets && state.diets}
               dispatchHandler={filterByDiet}
             />
-            <button onClick={handleFiltersReset}>Reset Filters</button>
+            <div>
+              <button onClick={handleDietsReset}>Remove Diet Filter</button>
+              <button onClick={handleRecipesReset}>Reset Recipes</button>
+            </div>
           </div>
           <Recipes recipes={currentRecipes} />
           <Pagination
-            itemsPerPage={recipesPerPage && recipesPerPage}
+            currentPage={state.currentPage}
+            itemsPerPage={recipesPerPage}
             totalItems={state.filtered.length}
             dispatchHandler={setPageNumber}
           />

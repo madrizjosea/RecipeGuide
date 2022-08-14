@@ -10,6 +10,7 @@ export const GET_REQUEST_FAILURE = 'GET_REQUEST_FAILURE',
   GET_DIETS = 'GET_DIETS',
   GET_DIETS_SUCCESS = 'GET_DIETS_SUCCESS',
   CLEAR_DETAILS = 'CLEAR_DETAILS',
+  RESET_FILTERS = 'RESET_FILTERS',
   SORT = 'SORT',
   FILTER_BY_DIET = 'FILTER_BY_DIET',
   SET_PAGE_NUMBER = 'SET_PAGE_NUMBER';
@@ -143,6 +144,12 @@ export const getDiets = () => {
 };
 
 // Clearing, reseting, sorting, filtering and pagination
+export const resetDietFilters = () => {
+  return {
+    type: RESET_FILTERS,
+  };
+};
+
 export const clearDetails = () => {
   return {
     type: CLEAR_DETAILS,
