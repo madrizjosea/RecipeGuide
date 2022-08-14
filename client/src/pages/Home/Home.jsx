@@ -44,6 +44,8 @@ function Home() {
     <div className={s.container}>
       {state.loading && state.loading === true ? (
         <Loader />
+      ) : state.errorMsg ? (
+        <div>{state.errorMsg}</div>
       ) : (
         <div>
           <Pagination

@@ -1,4 +1,5 @@
 import {
+  GET_REQUEST_FAILURE,
   GET_RECIPES,
   GET_RECIPES_SUCCESS,
   GET_DETAILS,
@@ -26,6 +27,13 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_REQUEST_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        currentPage: 1,
+        errorMsg: action.payload,
+      }
     case GET_RECIPES:
       return {
         ...state,
@@ -35,6 +43,8 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        currentPage: 1,
+        errorMsg: '',
         recipes: action.payload,
         filtered: action.payload,
       };
@@ -47,6 +57,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        errorMsg: '',
         details: action.payload,
       };
     case GET_BY_TITLE:
@@ -58,6 +69,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        errorMsg: '',
         recipes: action.payload,
         filtered: action.payload,
       };
@@ -70,6 +82,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        errorMsg: '',
         diets: action.payload,
       };
     case CLEAR_DETAILS:
