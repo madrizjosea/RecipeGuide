@@ -1,0 +1,27 @@
+.error {
+  padding: 0.3rem;
+}
+
+.error h5 {
+  margin: 0px;
+  color: #dc3545;
+}
+
+.error h2 {
+  margin: 0px;
+  color: #dc3545;
+}
+
+.success {
+  padding: 0.3rem;
+}
+
+.success h5 {
+  margin: 0px;
+  color: #198754;
+}
+
+.success h2 {
+  margin: 0px;
+  color: #198754;
+}
