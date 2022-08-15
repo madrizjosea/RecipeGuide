@@ -7,6 +7,8 @@ export const GET_REQUEST_FAILURE = 'GET_REQUEST_FAILURE',
   GET_DETAILS_SUCCESS = 'GET_DETAILS_SUCCESS',
   GET_BY_TITLE = 'GET_BY_TITLE',
   GET_BY_TITLE_SUCCESS = 'GET_BY_TITLE_SUCCESS',
+  POST_RECIPE = 'POST_RECIPE',
+  POST_RECIPE_SUCCESS = 'POST_RECIPE_SUCCESS',
   GET_DIETS = 'GET_DIETS',
   GET_DIETS_SUCCESS = 'GET_DIETS_SUCCESS',
   CLEAR_DETAILS = 'CLEAR_DETAILS',
@@ -60,10 +62,10 @@ export const getDetailsRequest = () => {
   };
 };
 
-export const getDetailsSuccess = recipes => {
+export const getDetailsSuccess = recipe => {
   return {
     type: GET_DETAILS_SUCCESS,
-    payload: recipes,
+    payload: recipe,
   };
 };
 
@@ -106,6 +108,32 @@ export const getByTitle = title => {
         const { data } = response;
         dispatch(getByTitleSuccess(data));
       })
+      .catch(error => {
+        const { message } = error;
+        dispatch(getRequestFailure(message));
+      });
+  };
+};
+
+// Submit a recipe
+export const postRecipeRequest = () => {
+  return {
+    type: POST_RECIPE,
+  };
+};
+
+export const postRecipeSuccess = () => {
+  return {
+    type: POST_RECIPE_SUCCESS,
+  };
+};
+
+export const postRecipe = recipe => {
+  return dispatch => {
+    dispatch(postRecipeRequest());
+    axios
+      .post('/recipes', recipe)
+      .then(response => dispatch(postRecipeSuccess()))
       .catch(error => {
         const { message } = error;
         dispatch(getRequestFailure(message));

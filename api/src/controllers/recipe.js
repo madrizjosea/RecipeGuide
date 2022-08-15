@@ -2,12 +2,10 @@ require('dotenv').config();
 const { Op } = require('sequelize');
 const { Recipe, Diet } = require('../db.js');
 const {
-  getAll,
-  getByTitle,
-  getById,
   apiRecipeFormater,
   dbRecipeFormater,
-} = require('./helpers');
+} = require('../helpers/recipeFormaters.js');
+const { getAll, getByTitle, getById } = require('../helpers/requestHelpers.js');
 
 // GET request to fetch all recipes
 const getRecipes = async (req, res, next) => {
@@ -76,7 +74,8 @@ const getRecipeById = async (req, res, next) => {
           },
         ],
       });
-      res.status(200).json(dbRecipe);
+      const dbFormated = dbRecipeFormater(dbRecipe);
+      res.status(200).json(dbFormated);
     } else {
       const apiRecipe = await getById(id);
       // Steps formating

@@ -1,4 +1,10 @@
 body {
+  background: rgb(248,249,250);
+  /* background: radial-gradient(
+    circle,
+    rgba(250, 237, 205, 1) 0%,
+    rgba(212, 163, 115, 1) 100%
+  ); */
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

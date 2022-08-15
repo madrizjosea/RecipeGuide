@@ -6,6 +6,8 @@ import {
   GET_DETAILS_SUCCESS,
   GET_BY_TITLE,
   GET_BY_TITLE_SUCCESS,
+  POST_RECIPE,
+  POST_RECIPE_SUCCESS,
   GET_DIETS,
   GET_DIETS_SUCCESS,
   CLEAR_DETAILS,
@@ -73,6 +75,16 @@ const rootReducer = (state = initialState, action) => {
         errorMsg: '',
         recipes: action.payload,
         filtered: action.payload,
+      };
+    case POST_RECIPE:
+      return {
+        ...state,
+        loading: true,
+      };
+    case POST_RECIPE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
       };
     case GET_DIETS:
       return {

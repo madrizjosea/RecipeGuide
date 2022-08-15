@@ -30,11 +30,11 @@ function Home() {
     );
 
   useEffect(() => {
-    if (!state.recipes.length) {
+    if (!state.filtered.length) {
       dispatch(getDiets());
       dispatch(getRecipes());
     }
-  }, [dispatch, state.recipes.length, state.filtered]);
+  }, [dispatch, state.filtered.length, state.recipes.length]);
 
   // Filters handling
   const handleDietsReset = () => {

@@ -1,14 +1,15 @@
 .card {
+  display: block;
   border-radius: 15px;
-  border: 1px solid gainsboro;
-  width: 295px;
+  border: 0.2rem solid #ced4da;
+  width: 297px;
   margin: 15px;
 }
 
 .card img {
-  height: 219px;
-  border-radius: 15px 15px 0px 0px;
-  margin-bottom: 5px;
+  height: 217px;
+  width: fit-content;
+  border-radius: 14px 14px 0px 0px;
 }
 
 .content {
@@ -17,6 +18,18 @@
   text-align: center;
 }
 
-li {
+.diets {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.diets li {
   list-style-type: none;
+}
+
+.diet {
+  margin: 1px;
+  padding: 0px 10px 0px 10px;
 }

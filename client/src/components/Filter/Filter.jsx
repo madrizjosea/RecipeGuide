@@ -1,14 +1,17 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-function Filter({ label, options, dispatchHandler }) {
+function Filter({ label, options, dispatchHandler, eventHandler }) {
   const dispatch = useDispatch();
 
   const handleFilter = e => {
     const { value } = e.target;
-    dispatch(dispatchHandler(value));
+    console.log(value)
+    if (dispatchHandler) dispatch(dispatchHandler(value));
+    eventHandler(value);
+    
   };
-
+  
   return (
     <div>
       <select onChange={e => handleFilter(e)}>

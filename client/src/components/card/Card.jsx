@@ -12,11 +12,13 @@ class Card extends Component {
         <div className={s.content}>
           <h3 className={s.title}>{this.props.title}</h3>
           <p>Health Score: {this.props.score}</p>
-          <ul>
+          <div className={s.diets}>
             {this.props.diets.map(diet => (
-              <li key={diet}>{diet}</li>
+              <div className={s.diet} key={diet}>
+                {diet}
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     );

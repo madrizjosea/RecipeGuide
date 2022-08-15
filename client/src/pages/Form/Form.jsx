@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDiets } from '../../redux/actions';
+import { postRecipe, getDiets, getRecipes } from '../../redux/actions';
 import { recipeValidator } from '../../helpers/recipeValidator.js';
+import Filter from '../../components/Filter/Filter.jsx';
+import Warning from '../../components/Warning/Warning.jsx';
 import s from './Form.module.css';
 
 const Form = () => {
@@ -28,6 +30,8 @@ const Form = () => {
     steps: [],
     diets: [],
     image: '',
+    submit: false,
+    submitMsg: '',
   });
 
   // Form handlers
@@ -49,20 +53,35 @@ const Form = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    // if (
-    //   !inputError.title &&
-    //   !inputError.summary &&
-    //   !inputError.diets &&
-    //   !inputError.healthScore &&
-    //   !inputError.image
-    // ) {
-    // post request dispatch
-    // } else {
-    setInputError({
-      ...inputError,
-      sumbit: `Please check all fields before submiting`,
+    if (
+      (!inputError.title && input.title) ||
+      (!inputError.summary && input.summary) ||
+      (!inputError.healthScore && input.healthScore) ||
+      (!inputError.diets && input.diets) ||
+      (!inputError.image && input.image)
+    ) {
+      setInput(prev => {
+        return {
+          ...prev,
+          submit: true,
+          submitMsg: `Please, check all fields in the form`,
+        };
+      });
+    }
+    // Dispatch post request
+    const recipe = { ...input };
+    dispatch(postRecipe(recipe));
+    dispatch(getRecipes(recipe));
+    setInput({
+      title: '',
+      summary: '',
+      healthScore: 0,
+      steps: [],
+      diets: [],
+      image: '',
+      submit: false,
+      submitMsg: `Recipe created successfully`,
     });
-    // }
   };
 
   // Step creation handlers
@@ -95,49 +114,67 @@ const Form = () => {
   };
 
   // Diets handler
-  const handleDietChange = e => {
-    let { name } = e.target;
-    !input.diets.includes(name)
+  const handleDietChange = value => {
+    !input.diets.includes(value)
       ? setInput(prev => {
           return {
             ...prev,
-            diets: [...prev.diets, name],
+            diets: [...prev.diets, value],
           };
         })
       : setInput(prev => {
           return {
             ...prev,
-            diets: prev.diets.filter(diet => diet !== name),
+            diets: prev.diets.filter(diet => diet !== value),
           };
         });
   };
 
-  
+  const deleteDiet = (e, id) => {
+    e.preventDefault();
+    setInput(prev => {
+      return {
+        ...prev,
+        diets: prev.diets.filter((diet, idx) => idx !== id),
+      };
+    });
+  };
+
   return (
-    <main className={s.container}>
-      <form onSubmit={e => handleSubmit(e)}>
-        <div>
-          <label>Title</label>
+    <div className={s.container}>
+      <form className={s.form} onSubmit={e => handleSubmit(e)}>
+        <div className={s.header}>
+          <h2>Create a Recipe</h2>
+        </div>
+        <div className={s.formInput}>
+          <label className={s.formLabel}>Title</label>
           <input
+            placeholder="Recipe title..."
             type="text"
             name="title"
             value={input.title}
             onChange={e => handleChange(e)}
+            className={s.formControl}
           />
-          {inputError.title && <p>{inputError.title}</p>}
+          {inputError.title && (
+            <Warning error={true} message={inputError.title} />
+          )}
         </div>
-        <div>
-          <label>Summary</label>
+        <div className={s.formInput}>
+          <label className={s.formLabel}>Summary</label>
           <textarea
             type="text"
             name="summary"
             value={input.summary}
             onChange={e => handleChange(e)}
+            className={s.formControl}
           ></textarea>
-          {inputError.summary && <p>{inputError.summary}</p>}
+          {inputError.summary && (
+            <Warning error={true} message={inputError.summary} />
+          )}
         </div>
-        <div>
-          <label>Health Score</label>
+        <div className={s.formInput}>
+          <label className={s.formLabel}>Health Score</label>
           <input
             type="number"
             min="0"
@@ -145,17 +182,22 @@ const Form = () => {
             name="healthScore"
             value={input.healthScore}
             onChange={e => handleChange(e)}
+            className={s.formControl}
           />
-          {inputError.healthScore && <p>{inputError.healthScore}</p>}
+          {inputError.healthScore && (
+            <Warning error={true} message={inputError.healthScore} />
+          )}
         </div>
-        <div>
-          <label>Steps</label>
+        <div className={s.formInput}>
+          <label className={s.formLabel}>Steps</label>
           <div>
             <input
               type="text"
+              placeholder="Add a detailed step instruction"
               name={'stepInput'}
               value={stepInput}
               onChange={e => handleStepChange(e)}
+              className={s.formControl}
             />
             <button onClick={e => handleStepSubmit(e)}>+</button>
             {input.steps.map((step, idx) => (
@@ -166,37 +208,51 @@ const Form = () => {
             ))}
           </div>
         </div>
-        <div>
-          <label>Diets</label>
-          {inputError.diets && <p>{inputError.diets}</p>}
-          <ul>
-            {diets.map((diet, idx) => {
-              return (
-                <li key={idx}>
-                  <input
-                    type="checkbox"
-                    id={idx}
-                    name={diet}
-                    value={diet}
-                    onChange={e => handleDietChange(e)}
-                  />
-                  <label htmlFor={idx}>{diet}</label>
-                </li>
-              );
-            })}
-          </ul>
+        <div className={s.formInput}>
+          <label className={s.formLabel}>Diets</label>
+          {inputError.diets && (
+            <Warning error={true} message={inputError.diets} />
+          )}
+          <Filter
+            label="Choose diets"
+            options={diets && diets}
+            eventHandler={handleDietChange}
+          />
+          {input.diets &&
+            input.diets.map((diet, idx) => (
+              <div key={idx}>
+                {diet}
+                <button onClick={e => deleteDiet(e, idx)}>x</button>
+              </div>
+            ))}
         </div>
-        <div>
-          <label>Image</label>
-          <input type="url" name="image" onChange={e => handleChange(e)} />
-          {inputError.image && <p>{inputError.image}</p>}
+        <div className={s.formInput}>
+          <label className={s.formLabel}>Image</label>
+          <input
+            type="url"
+            name="image"
+            onChange={e => handleChange(e)}
+            className={s.formControl}
+          />
+          {inputError.image && (
+            <Warning error={true} message={inputError.image} />
+          )}
         </div>
-        <input type="submit" value="Create Recipe" />
+        <button type="submit">Create Recipe</button>
+        {input.submitMsg && (
+          <Warning
+            header={true}
+            error={input.submit}
+            message={input.submitMsg}
+          />
+        )}
       </form>
-      <div>
-        <img src={input.image} alt="your-recipe" />
-      </div>
-    </main>
+      {/* {input.image && !inputError.image && (
+        <div className={s.recipeImgContainer}>
+          <img src={input.image} alt="your-recipe" />
+        </div>
+      )} */}
+    </div>
   );
 };
 

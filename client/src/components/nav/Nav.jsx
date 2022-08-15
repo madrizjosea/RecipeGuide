@@ -5,9 +5,8 @@ import s from './Nav.module.css';
 const Nav = () => {
   return (
     <nav className={s.container}>
-      <ul>
+      <ul className={s.links}>
         <li>
-          {' '}
           <NavLink to="/home">Home</NavLink>
         </li>
         <li>

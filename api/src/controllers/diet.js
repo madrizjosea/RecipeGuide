@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Diet } = require('../db.js');
-const { getDiets } = require('./helpers');
+const { getDiets } = require('../helpers/requestHelpers.js');
 
 const getAllDiets = async (req, res, next) => {
   try {

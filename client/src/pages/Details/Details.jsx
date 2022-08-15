@@ -13,9 +13,10 @@ function Details() {
     dispatch(getDetails(id));
     return () => {
       dispatch(clearDetails());
-    }
+    };
   }, [dispatch, id]);
 
+  console.log(details);
   return (
     <>
       {details.title ? (
@@ -24,16 +25,17 @@ function Details() {
           <p>{details?.title}</p>
           <img src={details?.image} alt="recipe" />
           <h2>Dish Types:</h2>
-          {details?.dishTypes?.map((type, i) => (
-            <p key={i}>{type}</p>
-          ))}
+          {details.dishTypes &&
+            details.dishTypes.map((type, i) => <p key={i}>{type}</p>)}
           <p>Health Score: {details?.healthScore}</p>
           <h2>Sumamry:</h2>
           <p>{details?.summary}</p>
           <h2>Diets:</h2>
-          {details?.diets?.map((diet, i) => (
-            <p key={i}>{diet}</p>
-          ))}
+          {details.diets ? (
+            details.diets.map((diet, i) => <p key={i}>{diet}</p>)
+          ) : (
+            <p>There are no diets related to this recipe</p>
+          )}
           <h2>Steps:</h2>
           {details.steps ? (
             details.steps.map((step, i) => <p key={i}>{step}</p>)
