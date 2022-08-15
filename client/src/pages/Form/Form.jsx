@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDiets } from '../../redux/actions';
+import { recipeValidator } from '../../helpers/recipeValidator.js';
 import s from './Form.module.css';
 
 const Form = () => {
@@ -13,7 +14,14 @@ const Form = () => {
 
   // Initial states
   const [stepInput, setStepInput] = useState('');
-  const [state, setState] = useState({
+  const [inputError, setInputError] = useState({
+    title: '',
+    summary: '',
+    healthScore: '',
+    diets: '',
+    image: '',
+  });
+  const [input, setInput] = useState({
     title: '',
     summary: '',
     healthScore: 0,
@@ -25,15 +33,37 @@ const Form = () => {
   // Form handlers
   const handleChange = e => {
     const { name, value } = e.target;
-    setState(prev => {
+    setInput(prev => {
       return {
         ...prev,
         [name]: value,
       };
     });
+    setInputError(
+      recipeValidator({
+        ...input,
+        [name]: value,
+      })
+    );
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = e => {
+    e.preventDefault();
+    // if (
+    //   !inputError.title &&
+    //   !inputError.summary &&
+    //   !inputError.diets &&
+    //   !inputError.healthScore &&
+    //   !inputError.image
+    // ) {
+    // post request dispatch
+    // } else {
+    setInputError({
+      ...inputError,
+      sumbit: `Please check all fields before submiting`,
+    });
+    // }
+  };
 
   // Step creation handlers
   const handleStepChange = e => {
@@ -43,18 +73,20 @@ const Form = () => {
 
   const handleStepSubmit = e => {
     e.preventDefault();
-    setState(prev => {
-      return {
-        ...prev,
-        steps: [...prev.steps, stepInput],
-      };
-    });
+    if (stepInput) {
+      setInput(prev => {
+        return {
+          ...prev,
+          steps: [...prev.steps, stepInput],
+        };
+      });
+    }
     setStepInput('');
   };
 
   const deleteStep = (e, id) => {
     e.preventDefault();
-    setState(prev => {
+    setInput(prev => {
       return {
         ...prev,
         steps: prev.steps.filter((step, idx) => idx !== id),
@@ -65,14 +97,14 @@ const Form = () => {
   // Diets handler
   const handleDietChange = e => {
     let { name } = e.target;
-    !state.diets.includes(name)
-      ? setState(prev => {
+    !input.diets.includes(name)
+      ? setInput(prev => {
           return {
             ...prev,
             diets: [...prev.diets, name],
           };
         })
-      : setState(prev => {
+      : setInput(prev => {
           return {
             ...prev,
             diets: prev.diets.filter(diet => diet !== name),
@@ -80,19 +112,7 @@ const Form = () => {
         });
   };
 
-  // Form reseter
-  const handleReset = e => {
-    e.preventDefault();
-    setState({
-      title: '',
-      summary: '',
-      healthScore: 0,
-      steps: [],
-      diets: [],
-      image: '',
-    });
-  };
-
+  
   return (
     <main className={s.container}>
       <form onSubmit={e => handleSubmit(e)}>
@@ -101,26 +121,32 @@ const Form = () => {
           <input
             type="text"
             name="title"
-            value={state.title}
-            onChange={handleChange}
+            value={input.title}
+            onChange={e => handleChange(e)}
           />
+          {inputError.title && <p>{inputError.title}</p>}
         </div>
         <div>
           <label>Summary</label>
           <textarea
+            type="text"
             name="summary"
-            value={state.summary}
-            onChange={handleChange}
+            value={input.summary}
+            onChange={e => handleChange(e)}
           ></textarea>
+          {inputError.summary && <p>{inputError.summary}</p>}
         </div>
         <div>
           <label>Health Score</label>
           <input
             type="number"
+            min="0"
+            max="100"
             name="healthScore"
-            value={state.healthScore}
-            onChange={handleChange}
+            value={input.healthScore}
+            onChange={e => handleChange(e)}
           />
+          {inputError.healthScore && <p>{inputError.healthScore}</p>}
         </div>
         <div>
           <label>Steps</label>
@@ -129,10 +155,10 @@ const Form = () => {
               type="text"
               name={'stepInput'}
               value={stepInput}
-              onChange={handleStepChange}
+              onChange={e => handleStepChange(e)}
             />
             <button onClick={e => handleStepSubmit(e)}>+</button>
-            {state.steps.map((step, idx) => (
+            {input.steps.map((step, idx) => (
               <div key={idx}>
                 {step}
                 <button onClick={e => deleteStep(e, idx)}>x</button>
@@ -142,6 +168,7 @@ const Form = () => {
         </div>
         <div>
           <label>Diets</label>
+          {inputError.diets && <p>{inputError.diets}</p>}
           <ul>
             {diets.map((diet, idx) => {
               return (
@@ -161,13 +188,13 @@ const Form = () => {
         </div>
         <div>
           <label>Image</label>
-          <input type="url" name="image" onChange={handleChange} />
+          <input type="url" name="image" onChange={e => handleChange(e)} />
+          {inputError.image && <p>{inputError.image}</p>}
         </div>
-        <button onClick={e => handleReset(e)}>Reset Fields</button>
-        <button>Create recipe</button>
+        <input type="submit" value="Create Recipe" />
       </form>
       <div>
-        <img src={state.image} alt="your-recipe" />
+        <img src={input.image} alt="your-recipe" />
       </div>
     </main>
   );

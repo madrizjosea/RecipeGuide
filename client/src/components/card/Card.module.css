@@ -1,26 +1,20 @@
-.container {
-  box-sizing: border-box;
-  border: 2px solid black;
-  display: flex;
-  flex-direction: row;
-  height: 325px;
-  margin-top: 16px;
-  margin-left: 10px;
-  margin-right: 10px;
-  padding-left: 8px;
-  padding-right: 8px;
-  text-align: center;
-  align-items: center;
-  width: 475px;
+.card {
+  border-radius: 15px;
+  border: 1px solid gainsboro;
+  width: 295px;
+  margin: 15px;
 }
 
-.devider {
-  box-sizing: border-box;
-  display: flexbox;
-  align-self: center;
-  padding-left: 8px;
-  padding-right: 8px;
-  justify-content: center;
+.card img {
+  height: 219px;
+  border-radius: 15px 15px 0px 0px;
+  margin-bottom: 5px;
+}
+
+.content {
+  display: block;
+  padding: 10px;
+  text-align: center;
 }
 
 li {

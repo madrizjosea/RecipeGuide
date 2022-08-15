@@ -1,9 +1,10 @@
 import React from 'react';
 import Card from '../Card/Card.jsx';
+import s from './Recipes.module.css';
 
 const Recipes = ({ recipes }) => {
   return (
-    <div>
+    <div className={s.container}>
       {recipes &&
         recipes.map(recipe => {
           return (
