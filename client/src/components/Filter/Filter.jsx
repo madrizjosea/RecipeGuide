@@ -6,12 +6,10 @@ function Filter({ label, options, dispatchHandler, eventHandler }) {
 
   const handleFilter = e => {
     const { value } = e.target;
-    console.log(value)
     if (dispatchHandler) dispatch(dispatchHandler(value));
-    eventHandler(value);
-    
+    else if (eventHandler) eventHandler(value);
   };
-  
+
   return (
     <div>
       <select onChange={e => handleFilter(e)}>

@@ -3,14 +3,14 @@ const { API_KEY } = process.env;
 
 const getByTitle = async title => {
   const { data } = await axios.get(
-    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&titleMatch=${title}&number=100`
+    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&titleMatch=${title}&number=25`
   );
   return data.results;
 };
 
 const getAll = async () => {
   const { data } = await axios.get(
-    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`
+    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=25`
   );
   return data.results;
 };
@@ -24,7 +24,7 @@ const getById = async id => {
 
 const getDiets = async () => {
   const { data } = await axios.get(
-    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=50`
+    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=25`
   );
   return data.results;
 };

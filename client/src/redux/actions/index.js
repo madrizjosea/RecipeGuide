@@ -1,6 +1,6 @@
 import axios from '../../axios';
 
-export const GET_REQUEST_FAILURE = 'GET_REQUEST_FAILURE',
+export const REQUEST_FAILURE = 'REQUEST_FAILURE',
   GET_RECIPES = 'GET_RECIPES',
   GET_RECIPES_SUCCESS = 'GET_RECIPES_SUCCESS',
   GET_DETAILS = 'GET_DETAILS',
@@ -13,14 +13,15 @@ export const GET_REQUEST_FAILURE = 'GET_REQUEST_FAILURE',
   GET_DIETS_SUCCESS = 'GET_DIETS_SUCCESS',
   CLEAR_DETAILS = 'CLEAR_DETAILS',
   RESET_FILTERS = 'RESET_FILTERS',
+  CLEAR_ERROR = 'CLEAR_ERROR',
   SORT = 'SORT',
   FILTER_BY_DIET = 'FILTER_BY_DIET',
   SET_PAGE_NUMBER = 'SET_PAGE_NUMBER';
 
 // If requests fail
-export const getRequestFailure = errorMsg => {
+export const requestFailure = errorMsg => {
   return {
-    type: GET_REQUEST_FAILURE,
+    type: REQUEST_FAILURE,
     payload: errorMsg,
   };
 };
@@ -50,7 +51,7 @@ export const getRecipes = () => {
       })
       .catch(error => {
         const { message } = error;
-        dispatch(getRequestFailure(message));
+        dispatch(requestFailure(message));
       });
   };
 };
@@ -75,12 +76,10 @@ export const getDetails = id => {
     axios
       .get(`/recipes/${id}`)
       .then(response => {
-        const { data } = response;
-        dispatch(getDetailsSuccess(data));
+        dispatch(getDetailsSuccess(response.data));
       })
       .catch(error => {
-        const { message } = error;
-        dispatch(getRequestFailure(message));
+        dispatch(requestFailure(error.response.data || error.message));
       });
   };
 };
@@ -92,10 +91,10 @@ export const getByTitleRequest = () => {
   };
 };
 
-export const getByTitleSuccess = recipe => {
+export const getByTitleSuccess = recipes => {
   return {
     type: GET_BY_TITLE_SUCCESS,
-    payload: recipe,
+    payload: recipes,
   };
 };
 
@@ -105,12 +104,10 @@ export const getByTitle = title => {
     axios
       .get(`/recipes?title=${title}`)
       .then(response => {
-        const { data } = response;
-        dispatch(getByTitleSuccess(data));
+        dispatch(getByTitleSuccess(response.data));
       })
       .catch(error => {
-        const { message } = error;
-        dispatch(getRequestFailure(message));
+        dispatch(requestFailure(error.response.data || error.message));
       });
   };
 };
@@ -135,8 +132,7 @@ export const postRecipe = recipe => {
       .post('/recipes', recipe)
       .then(response => dispatch(postRecipeSuccess()))
       .catch(error => {
-        const { message } = error;
-        dispatch(getRequestFailure(message));
+        dispatch(requestFailure(error.response.data || error.message));
       });
   };
 };
@@ -161,12 +157,10 @@ export const getDiets = () => {
     axios
       .get('/diets')
       .then(response => {
-        const { data } = response;
-        dispatch(getDietsSuccess(data));
+        dispatch(getDietsSuccess(response.data));
       })
       .catch(error => {
-        const { message } = error;
-        dispatch(getRequestFailure(message));
+        dispatch(requestFailure(error.response.data || error.message));
       });
   };
 };
@@ -182,6 +176,12 @@ export const clearDetails = () => {
   return {
     type: CLEAR_DETAILS,
   };
+};
+
+export const clearErrorMsg = () => {
+  return {
+    type: CLEAR_ERROR,
+  }
 };
 
 export const sortBy = value => {

@@ -8,8 +8,20 @@ import s from './Form.module.css';
 
 const Form = () => {
   const dispatch = useDispatch();
-  const diets = useSelector(state => state.diets);
-
+  const errorStatus = useSelector(state => state.requestError);
+  // const diets = useSelector(state => state.diets);
+  const diets = [
+    'dairy free',
+    'fodmap friendly',
+    'gluten free',
+    'ketogenic',
+    'lacto ovo vegetarian',
+    'paleolithic',
+    'pescatarian',
+    'primal',
+    'vegan',
+    'whole 30',
+  ];
   useEffect(() => {
     dispatch(getDiets());
   }, [dispatch]);
@@ -22,6 +34,8 @@ const Form = () => {
     healthScore: '',
     diets: '',
     image: '',
+    submit: true,
+    submitMsg: '',
   });
   const [input, setInput] = useState({
     title: '',
@@ -30,8 +44,6 @@ const Form = () => {
     steps: [],
     diets: [],
     image: '',
-    submit: false,
-    submitMsg: '',
   });
 
   // Form handlers
@@ -54,34 +66,52 @@ const Form = () => {
   const handleSubmit = e => {
     e.preventDefault();
     if (
-      (!inputError.title && input.title) ||
-      (!inputError.summary && input.summary) ||
-      (!inputError.healthScore && input.healthScore) ||
-      (!inputError.diets && input.diets) ||
-      (!inputError.image && input.image)
+      !inputError.title &&
+      input.title &&
+      !inputError.summary &&
+      input.summary &&
+      !inputError.healthScore &&
+      !inputError.diets &&
+      input.diets.length > 0 &&
+      !inputError.image &&
+      input.image
     ) {
-      setInput(prev => {
+      dispatch(postRecipe(input));
+      if (!errorStatus) {
+        dispatch(getRecipes());
+        setInput({
+          title: '',
+          summary: '',
+          healthScore: 0,
+          steps: [],
+          diets: [],
+          image: '',
+        });
+        setInputError(prev => {
+          return {
+            ...prev,
+            submit: false,
+            submitMsg: `Recipe created successfuly`,
+          };
+        });
+      } else {
+        setInputError(prev => {
+          return {
+            ...prev,
+            submit: true,
+            submitMsg: `Creation failed (Server Error)`,
+          };
+        });
+      }
+    } else {
+      setInputError(prev => {
         return {
           ...prev,
           submit: true,
-          submitMsg: `Please, check all fields in the form`,
+          submitMsg: `Fill out the form before submiting`,
         };
       });
     }
-    // Dispatch post request
-    const recipe = { ...input };
-    dispatch(postRecipe(recipe));
-    dispatch(getRecipes(recipe));
-    setInput({
-      title: '',
-      summary: '',
-      healthScore: 0,
-      steps: [],
-      diets: [],
-      image: '',
-      submit: false,
-      submitMsg: `Recipe created successfully`,
-    });
   };
 
   // Step creation handlers
@@ -139,7 +169,7 @@ const Form = () => {
       };
     });
   };
-
+  
   return (
     <div className={s.container}>
       <form className={s.form} onSubmit={e => handleSubmit(e)}>
@@ -238,12 +268,12 @@ const Form = () => {
             <Warning error={true} message={inputError.image} />
           )}
         </div>
-        <button type="submit">Create Recipe</button>
-        {input.submitMsg && (
+        <input type="submit" value="Create Recipe" />
+        {inputError.submitMsg && (
           <Warning
             header={true}
-            error={input.submit}
-            message={input.submitMsg}
+            error={inputError.submit}
+            message={inputError.submitMsg}
           />
         )}
       </form>

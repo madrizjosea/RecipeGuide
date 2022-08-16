@@ -9,6 +9,8 @@ export const recipeValidator = inputs => {
     healthScore: '',
     diets: '',
     image: '',
+    submit: false,
+    submitMsg: '',
   };
 
   if (!inputs.title) {
@@ -32,7 +34,7 @@ export const recipeValidator = inputs => {
   }
 
   if (parseInt(inputs.healthScore) < 0 || parseInt(inputs.healthScore) > 100) {
-    errorMsgs.healthScore = `Give your recipe a health score between 0 and 100`
+    errorMsgs.healthScore = `Give your recipe a health score between 0 and 100`;
   } else {
     errorMsgs.healthScore = '';
   }
@@ -41,6 +43,20 @@ export const recipeValidator = inputs => {
     errorMsgs.image = `Introduce a valid image address`;
   } else {
     errorMsgs.image = '';
+  }
+
+  if (
+    errorMsgs.title ||
+    errorMsgs.summary ||
+    errorMsgs.diets ||
+    errorMsgs.healthScore ||
+    errorMsgs.image
+  ) {
+    errorMsgs.submit = true;
+    errorMsgs.submitMsg = `Check all fields before submiting`;
+  } else {
+    errorMsgs.submit = false;
+    errorMsgs.submitMsg = '';
   }
 
   return errorMsgs;

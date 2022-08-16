@@ -1,5 +1,5 @@
 import {
-  GET_REQUEST_FAILURE,
+  REQUEST_FAILURE,
   GET_RECIPES,
   GET_RECIPES_SUCCESS,
   GET_DETAILS,
@@ -12,6 +12,7 @@ import {
   GET_DIETS_SUCCESS,
   CLEAR_DETAILS,
   RESET_FILTERS,
+  CLEAR_ERROR,
   SORT,
   FILTER_BY_DIET,
   SET_PAGE_NUMBER,
@@ -23,19 +24,19 @@ const initialState = {
   details: {},
   diets: [],
   loading: false,
-  errorMsg: '',
+  requestError: '',
   filterErrorMsg: '',
   currentPage: 1,
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_REQUEST_FAILURE:
+    case REQUEST_FAILURE:
       return {
         ...state,
         loading: false,
         currentPage: 1,
-        errorMsg: action.payload,
+        requestError: action.payload,
       };
     case GET_RECIPES:
       return {
@@ -47,7 +48,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         currentPage: 1,
-        errorMsg: '',
+        requestError: '',
         recipes: action.payload,
         filtered: action.payload,
       };
@@ -60,7 +61,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        errorMsg: '',
+        requestError: '',
         details: action.payload,
       };
     case GET_BY_TITLE:
@@ -72,7 +73,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        errorMsg: '',
+        requestError: '',
         recipes: action.payload,
         filtered: action.payload,
       };
@@ -95,13 +96,18 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        errorMsg: '',
+        requestError: '',
         diets: action.payload,
       };
     case CLEAR_DETAILS:
       return {
         ...state,
         details: {},
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        requestError: '',
       };
     case RESET_FILTERS:
       return {

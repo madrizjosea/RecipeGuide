@@ -14,6 +14,7 @@ import Sort from '../../components/Sort/Sort.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
 import Recipes from '../../components/Recipes/Recipes.jsx';
 import Pagination from '../../components/Pagination/Pagination.jsx';
+import Error from '../../components/Error/Error.jsx';
 import s from './Home.module.css';
 
 function Home() {
@@ -30,11 +31,9 @@ function Home() {
     );
 
   useEffect(() => {
-    if (!state.filtered.length) {
-      dispatch(getDiets());
-      dispatch(getRecipes());
-    }
-  }, [dispatch, state.filtered.length, state.recipes.length]);
+    dispatch(getDiets());
+    dispatch(getRecipes());
+  }, [dispatch]);
 
   // Filters handling
   const handleDietsReset = () => {
@@ -49,8 +48,10 @@ function Home() {
     <div className={s.container}>
       {state.loading && state.loading === true ? (
         <Loader />
-      ) : state.errorMsg ? (
-        <div>{state.errorMsg}</div>
+      ) : state.requestError ? (
+        <Error
+          customMsg={`Click the button bellow and try searching for a different recipe or browse our catalog`}
+        />
       ) : (
         <div>
           <Pagination
@@ -75,7 +76,7 @@ function Home() {
               dispatchHandler={filterByDiet}
             />
             <div>
-              <button onClick={handleDietsReset}>Remove Diet Filter</button>
+              <button onClick={handleDietsReset}>Reset Filters</button>
               <button onClick={handleRecipesReset}>Reset Recipes</button>
             </div>
           </div>

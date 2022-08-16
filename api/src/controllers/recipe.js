@@ -31,11 +31,11 @@ const getRecipes = async (req, res, next) => {
       });
       const dbFormated = dbRecipes.map(dbRecipeFormater);
       const allRecipes = [...dbFormated, ...apiFormated];
-      !allRecipes.length
+      allRecipes.length === 0
         ? res.status(404).send('This recipe does not exist')
         : res.status(200).json(allRecipes);
     } catch (error) {
-      next(error);
+      next(error.response.data || error.message);
     }
   } else {
     try {
@@ -54,7 +54,8 @@ const getRecipes = async (req, res, next) => {
       const allRecipes = [...dbFormated, ...apiFormated];
       res.status(200).json(allRecipes);
     } catch (error) {
-      next(error);
+      console.log(error.response.data)
+      next(error.response.data || error.message);
     }
   }
 };
@@ -95,7 +96,7 @@ const getRecipeById = async (req, res, next) => {
       res.status(200).json(recipe);
     }
   } catch (error) {
-    next(error);
+    next(error.response.data || error.message);
   }
 };
 
@@ -117,7 +118,7 @@ const createRecipe = async (req, res, next) => {
     });
     res.status(201).send('Your recipe was created successfuly');
   } catch (error) {
-    next(error);
+    next(error.response.data || error.message);
   }
 };
 

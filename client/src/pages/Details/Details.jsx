@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getDetails, clearDetails } from '../../redux/actions';
+import Loader from '../../components/Loader/Loader.jsx';
 // import s from './Details.module.css';
 
 function Details() {
@@ -16,9 +17,8 @@ function Details() {
     };
   }, [dispatch, id]);
 
-  console.log(details);
   return (
-    <>
+    <div>
       {details.title ? (
         <div>
           <h1>Recipe Details</h1>
@@ -42,14 +42,11 @@ function Details() {
           ) : (
             <p>There are no steps for this recipe</p>
           )}
-          <Link to={'/home'}>
-            <button>Home</button>
-          </Link>
         </div>
       ) : (
-        <h1>Loading</h1>
+        <Loader />
       )}
-    </>
+    </div>
   );
 }
 
