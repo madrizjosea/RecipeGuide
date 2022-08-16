@@ -71,6 +71,7 @@ const Form = () => {
       !inputError.summary &&
       input.summary &&
       !inputError.healthScore &&
+      input.healthScore &&
       !inputError.diets &&
       input.diets.length > 0 &&
       !inputError.image &&
@@ -169,7 +170,7 @@ const Form = () => {
       };
     });
   };
-  
+
   return (
     <div className={s.container}>
       <form className={s.form} onSubmit={e => handleSubmit(e)}>
@@ -262,6 +263,7 @@ const Form = () => {
             type="url"
             name="image"
             onChange={e => handleChange(e)}
+            value={input.image}
             className={s.formControl}
           />
           {inputError.image && (

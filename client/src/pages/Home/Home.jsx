@@ -31,9 +31,9 @@ function Home() {
     );
 
   useEffect(() => {
-    dispatch(getDiets());
-    dispatch(getRecipes());
-  }, [dispatch]);
+    if (state.filtered.length < 1) dispatch(getRecipes());
+    if (state.diets.length < 1) dispatch(getDiets());
+  }, [dispatch, state.filtered.length, state.diets.length]);
 
   // Filters handling
   const handleDietsReset = () => {

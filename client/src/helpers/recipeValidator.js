@@ -27,14 +27,19 @@ export const recipeValidator = inputs => {
     errorMsgs.summary = '';
   }
 
-  if (!inputs.diets.length) {
+  if (inputs.diets.length < 1) {
     errorMsgs.diets = `Your recipe must belong to at least one diet type`;
   } else {
     errorMsgs.diets = '';
   }
 
-  if (parseInt(inputs.healthScore) < 0 || parseInt(inputs.healthScore) > 100) {
+  if (!inputs.healthScore) {
     errorMsgs.healthScore = `Give your recipe a health score between 0 and 100`;
+  } else if (
+    parseInt(inputs.healthScore) < 0 ||
+    parseInt(inputs.healthScore) > 100
+  ) {
+    errorMsgs.healthScore = `The health score must be between 0 and 100`;
   } else {
     errorMsgs.healthScore = '';
   }

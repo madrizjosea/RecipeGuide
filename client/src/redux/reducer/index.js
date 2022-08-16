@@ -122,8 +122,8 @@ const rootReducer = (state = initialState, action) => {
     case SORT:
       switch (action.payload) {
         case 'A-Z':
-          let recipesToSortAsc = [...state.filtered];
-          let sortedAlphaAsc = recipesToSortAsc.sort((a, b) => {
+          let recipesToSortAlphaAsc = [...state.filtered];
+          let sortedAlphaAsc = recipesToSortAlphaAsc.sort((a, b) => {
             if (a.title.toLowerCase() > b.title.toLowerCase()) {
               return 1;
             }
@@ -137,8 +137,8 @@ const rootReducer = (state = initialState, action) => {
             filtered: sortedAlphaAsc,
           };
         case 'Z-A':
-          let recipesToSortDesc = [...state.filtered];
-          let sortedAlphaDesc = recipesToSortDesc.sort((a, b) => {
+          let recipesToSortAlphaDesc = [...state.filtered];
+          let sortedAlphaDesc = recipesToSortAlphaDesc.sort((a, b) => {
             if (a.title.toLowerCase() < b.title.toLowerCase()) {
               return 1;
             }
@@ -151,10 +151,27 @@ const rootReducer = (state = initialState, action) => {
             ...state,
             filtered: sortedAlphaDesc,
           };
+        case '0-100':
+          let recipesToSortScoreAsc = [...state.filtered];
+          let sortedScoreAsc = recipesToSortScoreAsc.sort((a, b) => {
+            return a.healthScore - b.healthScore;
+          });
+          return {
+            ...state,
+            filtered: sortedScoreAsc,
+          };
+        case '100-0':
+          let recipesToSortScoreDesc = [...state.filtered];
+          let sortedScoreDesc = recipesToSortScoreDesc.sort((a, b) => {
+            return b.healthScore - a.healthScore;
+          });
+          return {
+            ...state,
+            filtered: sortedScoreDesc,
+          };
         default:
           return {
             ...state,
-            filtered: state.recipes,
           };
       }
     case FILTER_BY_DIET:
