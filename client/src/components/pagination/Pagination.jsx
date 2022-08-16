@@ -1,12 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-export default function Pagination({
-  currentPage,
-  itemsPerPage,
-  totalItems,
-  dispatchHandler,
-}) {
+export default function Pagination({ currentPage, itemsPerPage, totalItems, dispatchHandler }) {
+
   const dispatch = useDispatch();
   const pageNumbers = [];
 

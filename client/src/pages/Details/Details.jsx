@@ -19,10 +19,10 @@ function Details() {
 
   return (
     <div>
-      {details.title ? (
+      {details.name ? (
         <div>
           <h1>Recipe Details</h1>
-          <p>{details?.title}</p>
+          <p>{details?.name}</p>
           <img src={details?.image} alt="recipe" />
           <h2>Dish Types:</h2>
           {details.dishTypes &&

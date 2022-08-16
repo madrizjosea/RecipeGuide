@@ -4,8 +4,8 @@ import {
   GET_RECIPES_SUCCESS,
   GET_DETAILS,
   GET_DETAILS_SUCCESS,
-  GET_BY_TITLE,
-  GET_BY_TITLE_SUCCESS,
+  GET_BY_NAME,
+  GET_BY_NAME_SUCCESS,
   POST_RECIPE,
   POST_RECIPE_SUCCESS,
   GET_DIETS,
@@ -16,7 +16,7 @@ import {
   SORT,
   FILTER_BY_DIET,
   SET_PAGE_NUMBER,
-} from '../actions';
+} from '../actions/types.js';
 
 const initialState = {
   recipes: [],
@@ -64,18 +64,18 @@ const rootReducer = (state = initialState, action) => {
         requestError: '',
         details: action.payload,
       };
-    case GET_BY_TITLE:
+    case GET_BY_NAME:
       return {
         ...state,
         loading: true,
       };
-    case GET_BY_TITLE_SUCCESS:
+    case GET_BY_NAME_SUCCESS:
       return {
         ...state,
         loading: false,
         requestError: '',
-        recipes: action.payload,
         filtered: action.payload,
+        currentPage: 1,
       };
     case POST_RECIPE:
       return {
@@ -113,6 +113,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         filtered: [...state.recipes],
+        currentPage: 1,
       };
     case SET_PAGE_NUMBER:
       return {
@@ -124,10 +125,10 @@ const rootReducer = (state = initialState, action) => {
         case 'A-Z':
           let recipesToSortAlphaAsc = [...state.filtered];
           let sortedAlphaAsc = recipesToSortAlphaAsc.sort((a, b) => {
-            if (a.title.toLowerCase() > b.title.toLowerCase()) {
+            if (a.name.toLowerCase() > b.name.toLowerCase()) {
               return 1;
             }
-            if (b.title.toLowerCase() > a.title.toLowerCase()) {
+            if (b.name.toLowerCase() > a.name.toLowerCase()) {
               return -1;
             }
             return 0;
@@ -139,10 +140,10 @@ const rootReducer = (state = initialState, action) => {
         case 'Z-A':
           let recipesToSortAlphaDesc = [...state.filtered];
           let sortedAlphaDesc = recipesToSortAlphaDesc.sort((a, b) => {
-            if (a.title.toLowerCase() < b.title.toLowerCase()) {
+            if (a.name.toLowerCase() < b.name.toLowerCase()) {
               return 1;
             }
-            if (b.title.toLowerCase() < a.title.toLowerCase()) {
+            if (b.name.toLowerCase() < a.name.toLowerCase()) {
               return -1;
             }
             return 0;

@@ -4,38 +4,53 @@ import { Link } from 'react-router-dom';
 import { clearErrorMsg } from '../../redux/actions';
 
 function Error({ customMsg }) {
-  const error = useSelector(state => state.requestError);
+  const requestError = useSelector(state => state.requestError);
+  const filterError = useSelector(state => state.filterErrorMsg);
   const dispatch = useDispatch();
 
   let currentError = {
-    message: error,
+    message: customMsg,
     isDefault: true,
   };
 
-  if (error === 'Network Error') {
-    currentError.message = 'Server down, please try again later';
+  if (requestError && requestError === 'Network Error') {
+    currentError.message = 'The server is down';
     currentError.isDefault = false;
-  } else if (error.split('0').length > 1) {
-    currentError.message = 'Server error';
+  } else if (requestError && requestError.split('0').length > 1) {
+    currentError.message = 'Server response error';
     currentError.isDefault = false;
+  } else {
+    currentError.message = requestError;
+    currentError.isDefault = true;
   }
 
-  function handleClick(e) {
+  if (filterError) {
+    currentError.message = filterError;
+    currentError.isDefault = true;
+  }
+
+  function handleClick() {
     dispatch(clearErrorMsg());
   }
 
   return (
     <div>
       <h2>{currentError.message}</h2>
-      {customMsg && <p>{customMsg}</p>}
+
       {currentError.isDefault === true ? (
-        <Link to="/home">
-          <button onClick={handleClick}>Home</button>
-        </Link>
+        <div>
+          <p>{customMsg}</p>
+          <Link to="/home">
+            <button onClick={handleClick}>Home</button>
+          </Link>
+        </div>
       ) : (
-        <Link to="/">
-          <button onClick={handleClick}>Landing</button>
-        </Link>
+        <div>
+          <p>We're working in a solution. Try again later.</p>
+          <Link to="/">
+            <button onClick={handleClick}>Landing</button>
+          </Link>
+        </div>
       )}
     </div>
   );

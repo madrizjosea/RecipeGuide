@@ -1,22 +1,24 @@
 import axios from '../../axios';
 
-export const REQUEST_FAILURE = 'REQUEST_FAILURE',
-  GET_RECIPES = 'GET_RECIPES',
-  GET_RECIPES_SUCCESS = 'GET_RECIPES_SUCCESS',
-  GET_DETAILS = 'GET_DETAILS',
-  GET_DETAILS_SUCCESS = 'GET_DETAILS_SUCCESS',
-  GET_BY_TITLE = 'GET_BY_TITLE',
-  GET_BY_TITLE_SUCCESS = 'GET_BY_TITLE_SUCCESS',
-  POST_RECIPE = 'POST_RECIPE',
-  POST_RECIPE_SUCCESS = 'POST_RECIPE_SUCCESS',
-  GET_DIETS = 'GET_DIETS',
-  GET_DIETS_SUCCESS = 'GET_DIETS_SUCCESS',
-  CLEAR_DETAILS = 'CLEAR_DETAILS',
-  RESET_FILTERS = 'RESET_FILTERS',
-  CLEAR_ERROR = 'CLEAR_ERROR',
-  SORT = 'SORT',
-  FILTER_BY_DIET = 'FILTER_BY_DIET',
-  SET_PAGE_NUMBER = 'SET_PAGE_NUMBER';
+import {
+  REQUEST_FAILURE,
+  GET_RECIPES,
+  GET_RECIPES_SUCCESS,
+  GET_DETAILS,
+  GET_DETAILS_SUCCESS,
+  GET_BY_NAME,
+  GET_BY_NAME_SUCCESS,
+  POST_RECIPE,
+  POST_RECIPE_SUCCESS,
+  GET_DIETS,
+  GET_DIETS_SUCCESS,
+  CLEAR_DETAILS,
+  RESET_FILTERS,
+  CLEAR_ERROR,
+  SORT,
+  FILTER_BY_DIET,
+  SET_PAGE_NUMBER,
+} from '../actions/types.js';
 
 // If requests fail
 export const requestFailure = errorMsg => {
@@ -84,27 +86,27 @@ export const getDetails = id => {
   };
 };
 
-// Get recipe by title
-export const getByTitleRequest = () => {
+// Get recipe by name
+export const getByNameRequest = () => {
   return {
-    type: GET_BY_TITLE,
+    type: GET_BY_NAME,
   };
 };
 
-export const getByTitleSuccess = recipes => {
+export const getByNameSuccess = recipes => {
   return {
-    type: GET_BY_TITLE_SUCCESS,
+    type: GET_BY_NAME_SUCCESS,
     payload: recipes,
   };
 };
 
-export const getByTitle = title => {
+export const getByName = name => {
   return dispatch => {
-    dispatch(getByTitleRequest());
+    dispatch(getByNameRequest());
     axios
-      .get(`/recipes?title=${title}`)
+      .get(`/recipes?name=${name}`)
       .then(response => {
-        dispatch(getByTitleSuccess(response.data));
+        dispatch(getByNameSuccess(response.data));
       })
       .catch(error => {
         dispatch(requestFailure(error.response.data || error.message));
@@ -181,7 +183,7 @@ export const clearDetails = () => {
 export const clearErrorMsg = () => {
   return {
     type: CLEAR_ERROR,
-  }
+  };
 };
 
 export const sortBy = value => {

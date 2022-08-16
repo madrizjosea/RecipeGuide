@@ -11,7 +11,7 @@ const Recipes = ({ recipes }) => {
             <Card
               key={recipe.id}
               id={recipe.id}
-              title={recipe.title}
+              name={recipe.name}
               image={recipe.image}
               score={recipe.healthScore}
               diets={recipe.diets}

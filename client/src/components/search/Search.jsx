@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getByTitle } from '../../redux/actions';
+import { getByName } from '../../redux/actions';
+
+
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -17,8 +19,8 @@ class Search extends Component {
 
   handleSearch(e) {
     e.preventDefault();
-    let title = this.state.value.toLowerCase();
-    this.props.getByTitle(title);
+    let name = this.state.value.toLowerCase();
+    this.props.getByName(name);
     this.setState({
       value: '',
     });
@@ -40,7 +42,7 @@ class Search extends Component {
 }
 
 export const mapDispatchToProps = {
-  getByTitle,
+  getByName,
 };
 
 export default connect(null, mapDispatchToProps)(Search);

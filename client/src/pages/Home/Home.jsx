@@ -31,9 +31,11 @@ function Home() {
     );
 
   useEffect(() => {
-    if (state.filtered.length < 1) dispatch(getRecipes());
-    if (state.diets.length < 1) dispatch(getDiets());
-  }, [dispatch, state.filtered.length, state.diets.length]);
+    if (!state.filtered.length) {
+      dispatch(getDiets());
+      dispatch(getRecipes());
+    }
+  }, [dispatch, state.filtered.length, state.recipes.length]);
 
   // Filters handling
   const handleDietsReset = () => {
@@ -50,44 +52,48 @@ function Home() {
         <Loader />
       ) : state.requestError ? (
         <Error
-          customMsg={`Click the button bellow and try searching for a different recipe or browse our catalog`}
+          customMsg={`Double check the name you entered. Click the button bellow and try searching for a different recipe or browse our catalog`}
         />
+      ) : state.filterErrorMsg ? (
+        <Error customMsg={state.filterErrorMsg} />
       ) : (
-        <div>
-          <Pagination
-            currentPage={state.currentPage}
-            itemsPerPage={recipesPerPage}
-            totalItems={state.filtered.length}
-            dispatchHandler={setPageNumber}
-          />
-          <div className={s.menus}>
-            <Search />
-            <Sort
-              label="Sort options"
-              options={[
-                { name: 'Alphabetically', values: ['A-Z', 'Z-A'] },
-                { name: 'Health Score', values: ['0-100', '100-0'] },
-              ]}
-              dispatchHandler={sortBy}
+        state.filtered.length > 0 && (
+          <div>
+            <Pagination
+              currentPage={state.currentPage}
+              itemsPerPage={recipesPerPage}
+              totalItems={state.filtered.length}
+              dispatchHandler={setPageNumber}
             />
-            <Filter
-              label="Filter by diet"
-              options={state.diets && state.diets}
-              dispatchHandler={filterByDiet}
-            />
-            <div>
-              <button onClick={handleDietsReset}>Reset Filters</button>
-              <button onClick={handleRecipesReset}>Reset Recipes</button>
+            <div className={s.menus}>
+              <Search />
+              <Sort
+                label="Sort options"
+                options={[
+                  { name: 'Alphabetically', values: ['A-Z', 'Z-A'] },
+                  { name: 'Health Score', values: ['0-100', '100-0'] },
+                ]}
+                dispatchHandler={sortBy}
+              />
+              <Filter
+                label="Filter by diet"
+                options={state.diets && state.diets}
+                dispatchHandler={filterByDiet}
+              />
+              <div>
+                <button onClick={handleDietsReset}>Reset Filters</button>
+                <button onClick={handleRecipesReset}>Reset Recipes</button>
+              </div>
             </div>
+            <Recipes recipes={currentRecipes} />
+            <Pagination
+              currentPage={state.currentPage}
+              itemsPerPage={recipesPerPage}
+              totalItems={state.filtered.length}
+              dispatchHandler={setPageNumber}
+            />
           </div>
-          <Recipes recipes={currentRecipes} />
-          <Pagination
-            currentPage={state.currentPage}
-            itemsPerPage={recipesPerPage}
-            totalItems={state.filtered.length}
-            dispatchHandler={setPageNumber}
-          />
-        </div>
+        )
       )}
     </div>
   );

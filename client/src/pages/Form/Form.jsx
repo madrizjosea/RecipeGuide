@@ -9,19 +9,8 @@ import s from './Form.module.css';
 const Form = () => {
   const dispatch = useDispatch();
   const errorStatus = useSelector(state => state.requestError);
-  // const diets = useSelector(state => state.diets);
-  const diets = [
-    'dairy free',
-    'fodmap friendly',
-    'gluten free',
-    'ketogenic',
-    'lacto ovo vegetarian',
-    'paleolithic',
-    'pescatarian',
-    'primal',
-    'vegan',
-    'whole 30',
-  ];
+  const diets = useSelector(state => state.diets);
+  
   useEffect(() => {
     dispatch(getDiets());
   }, [dispatch]);
@@ -29,7 +18,7 @@ const Form = () => {
   // Initial states
   const [stepInput, setStepInput] = useState('');
   const [inputError, setInputError] = useState({
-    title: '',
+    name: '',
     summary: '',
     healthScore: '',
     diets: '',
@@ -38,7 +27,7 @@ const Form = () => {
     submitMsg: '',
   });
   const [input, setInput] = useState({
-    title: '',
+    name: '',
     summary: '',
     healthScore: 0,
     steps: [],
@@ -66,8 +55,8 @@ const Form = () => {
   const handleSubmit = e => {
     e.preventDefault();
     if (
-      !inputError.title &&
-      input.title &&
+      !inputError.name &&
+      input.name &&
       !inputError.summary &&
       input.summary &&
       !inputError.healthScore &&
@@ -81,7 +70,7 @@ const Form = () => {
       if (!errorStatus) {
         dispatch(getRecipes());
         setInput({
-          title: '',
+          name: '',
           summary: '',
           healthScore: 0,
           steps: [],
@@ -178,17 +167,17 @@ const Form = () => {
           <h2>Create a Recipe</h2>
         </div>
         <div className={s.formInput}>
-          <label className={s.formLabel}>Title</label>
+          <label className={s.formLabel}>Name</label>
           <input
             placeholder="Recipe title..."
             type="text"
-            name="title"
-            value={input.title}
+            name="name"
+            value={input.name}
             onChange={e => handleChange(e)}
             className={s.formControl}
           />
-          {inputError.title && (
-            <Warning error={true} message={inputError.title} />
+          {inputError.name && (
+            <Warning error={true} message={inputError.name} />
           )}
         </div>
         <div className={s.formInput}>

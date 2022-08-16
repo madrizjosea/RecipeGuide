@@ -10,7 +10,7 @@ class Card extends Component {
           <img src={this.props.image} alt="recipe" />
         </Link>
         <div className={s.content}>
-          <h3 className={s.title}>{this.props.title}</h3>
+          <h3 className={s.name}>{this.props.name}</h3>
           <p>Health Score: {this.props.score}</p>
           <div className={s.diets}>
             {this.props.diets.map(diet => (

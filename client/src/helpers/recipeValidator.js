@@ -1,10 +1,10 @@
 export const recipeValidator = inputs => {
   // Reggular expresions for testing
-  const titleRegex = /^([a-zA-Z ]+)$/i;
+  const nameRegex = /^([a-zA-Z ]+)$/i;
   const imageRegex = /^https?:\/\/.*\/.*\.(png|gif|webp|jpeg|jpg)\??.*$/i;
 
   let errorMsgs = {
-    title: '',
+    name: '',
     summary: '',
     healthScore: '',
     diets: '',
@@ -13,12 +13,12 @@ export const recipeValidator = inputs => {
     submitMsg: '',
   };
 
-  if (!inputs.title) {
-    errorMsgs.title = `Introduce a title for your recipe`;
-  } else if (inputs.title && !titleRegex.test(inputs.title)) {
-    errorMsgs.title = `The title can't contain special characters`;
+  if (!inputs.name) {
+    errorMsgs.name = `Introduce a name for your recipe`;
+  } else if (inputs.name && !nameRegex.test(inputs.name)) {
+    errorMsgs.name = `The name can't contain special characters`;
   } else {
-    errorMsgs.title = '';
+    errorMsgs.name = '';
   }
 
   if (!inputs.summary) {
@@ -51,7 +51,7 @@ export const recipeValidator = inputs => {
   }
 
   if (
-    errorMsgs.title ||
+    errorMsgs.name ||
     errorMsgs.summary ||
     errorMsgs.diets ||
     errorMsgs.healthScore ||

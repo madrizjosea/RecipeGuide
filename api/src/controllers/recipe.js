@@ -5,20 +5,20 @@ const {
   apiRecipeFormater,
   dbRecipeFormater,
 } = require('../helpers/recipeFormaters.js');
-const { getAll, getByTitle, getById } = require('../helpers/requestHelpers.js');
+const { getAll, getByName, getById } = require('../helpers/requestHelpers.js');
 
 // GET request to fetch all recipes
 const getRecipes = async (req, res, next) => {
-  const { title } = req.query;
+  const { name } = req.query;
   // Title query handler
-  if (title) {
+  if (name) {
     try {
-      const apiRecipes = await getByTitle(title);
+      const apiRecipes = await getByName(name);
       const apiFormated = apiRecipes.map(apiRecipeFormater);
       const dbRecipes = await Recipe.findAll({
         where: {
-          title: {
-            [Op.iLike]: '%' + title + '%',
+          name: {
+            [Op.iLike]: '%' + name + '%',
           },
         },
         include: [
@@ -32,7 +32,7 @@ const getRecipes = async (req, res, next) => {
       const dbFormated = dbRecipes.map(dbRecipeFormater);
       const allRecipes = [...dbFormated, ...apiFormated];
       allRecipes.length === 0
-        ? res.status(404).send('This recipe does not exist')
+        ? res.status(404).send('There are no recipes related to that name')
         : res.status(200).json(allRecipes);
     } catch (error) {
       next(error.response.data || error.message);
@@ -54,7 +54,6 @@ const getRecipes = async (req, res, next) => {
       const allRecipes = [...dbFormated, ...apiFormated];
       res.status(200).json(allRecipes);
     } catch (error) {
-      console.log(error.response.data)
       next(error.response.data || error.message);
     }
   }
@@ -85,7 +84,7 @@ const getRecipeById = async (req, res, next) => {
       );
       const recipe = {
         id: apiRecipe.id,
-        title: apiRecipe.title,
+        name: apiRecipe.title,
         image: apiRecipe.image,
         dishTypes: apiRecipe.dishTypes,
         diets: apiRecipe.diets,
@@ -102,10 +101,10 @@ const getRecipeById = async (req, res, next) => {
 
 // POST request to create a new Recipe
 const createRecipe = async (req, res, next) => {
-  const { title, summary, healthScore, diets, steps, image } = req.body;
+  const { name, summary, healthScore, diets, steps, image } = req.body;
   try {
     const newRecipe = await Recipe.create({
-      title,
+      name,
       summary,
       healthScore,
       steps,
