@@ -18,6 +18,7 @@ import Error from '../../components/Error/Error.jsx';
 import s from './Home.module.css';
 
 function Home() {
+
   const dispatch = useDispatch();
   const state = useSelector(state => state);
 
@@ -50,7 +51,7 @@ function Home() {
     <div className={s.container}>
       {state.loading && state.loading === true ? (
         <Loader />
-      ) : state.requestError ? (
+      ) : state.requestErrorMsg ? (
         <Error
           customMsg={`Double check the name you entered. Click the button bellow and try searching for a different recipe or browse our catalog`}
         />
@@ -82,7 +83,7 @@ function Home() {
               />
               <div>
                 <button onClick={handleDietsReset}>Reset Filters</button>
-                <button onClick={handleRecipesReset}>Reset Recipes</button>
+                <button onClick={handleRecipesReset}>Reset Catalog</button>
               </div>
             </div>
             <Recipes recipes={currentRecipes} />

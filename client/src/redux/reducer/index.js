@@ -12,7 +12,8 @@ import {
   GET_DIETS_SUCCESS,
   CLEAR_DETAILS,
   RESET_FILTERS,
-  CLEAR_ERROR,
+  CLEAR_ERROR_MSG,
+  CLEAR_SUCCESS_MSG,
   SORT,
   FILTER_BY_DIET,
   SET_PAGE_NUMBER,
@@ -24,7 +25,8 @@ const initialState = {
   details: {},
   diets: [],
   loading: false,
-  requestError: '',
+  requestSuccessMsg: '',
+  requestErrorMsg: '',
   filterErrorMsg: '',
   currentPage: 1,
 };
@@ -36,7 +38,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         currentPage: 1,
-        requestError: action.payload,
+        requestErrorMsg: action.payload,
       };
     case GET_RECIPES:
       return {
@@ -48,7 +50,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         currentPage: 1,
-        requestError: '',
+        requestErrorMsg: '',
         recipes: action.payload,
         filtered: action.payload,
       };
@@ -61,7 +63,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        requestError: '',
+        requestErrorMsg: '',
         details: action.payload,
       };
     case GET_BY_NAME:
@@ -73,7 +75,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        requestError: '',
+        requestErrorMsg: '',
         filtered: action.payload,
         currentPage: 1,
       };
@@ -86,6 +88,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        requestSuccessMsg: action.payload,
       };
     case GET_DIETS:
       return {
@@ -96,7 +99,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        requestError: '',
+        requestErrorMsg: '',
         diets: action.payload,
       };
     case CLEAR_DETAILS:
@@ -104,11 +107,16 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         details: {},
       };
-    case CLEAR_ERROR:
+    case CLEAR_ERROR_MSG:
       return {
         ...state,
-        requestError: '',
+        requestErrorMsg: '',
       };
+    case CLEAR_SUCCESS_MSG:
+      return {
+        ...state,
+        requestSuccessMsg: '',
+      }
     case RESET_FILTERS:
       return {
         ...state,

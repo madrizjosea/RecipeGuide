@@ -1,19 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { postRecipe, getDiets, getRecipes } from '../../redux/actions';
+import {
+  postRecipe,
+  getDiets,
+  getRecipes,
+  clearSuccessMsg,
+  clearErrorMsg,
+} from '../../redux/actions';
 import { recipeValidator } from '../../helpers/recipeValidator.js';
 import Filter from '../../components/Filter/Filter.jsx';
 import Warning from '../../components/Warning/Warning.jsx';
 import s from './Form.module.css';
 
 const Form = () => {
-  const dispatch = useDispatch();
-  const errorStatus = useSelector(state => state.requestError);
-  const diets = useSelector(state => state.diets);
   
+  const dispatch = useDispatch();
+  const diets = useSelector(state => state.diets);
+
+  const errorMsg = useSelector(state => state.requestErrorMsg);
+  const successMsg = useSelector(state => state.requestSuccessMsg);
+
   useEffect(() => {
-    dispatch(getDiets());
-  }, [dispatch]);
+    if (!diets.length) dispatch(getDiets());
+    return () => {
+      if (successMsg) dispatch(clearSuccessMsg());
+      if (errorMsg) dispatch(clearErrorMsg());
+    };
+  }, [dispatch, diets.length, successMsg, errorMsg]);
 
   // Initial states
   const [stepInput, setStepInput] = useState('');
@@ -67,7 +80,7 @@ const Form = () => {
       input.image
     ) {
       dispatch(postRecipe(input));
-      if (!errorStatus) {
+      if (!errorMsg) {
         dispatch(getRecipes());
         setInput({
           name: '',
@@ -76,21 +89,6 @@ const Form = () => {
           steps: [],
           diets: [],
           image: '',
-        });
-        setInputError(prev => {
-          return {
-            ...prev,
-            submit: false,
-            submitMsg: `Recipe created successfuly`,
-          };
-        });
-      } else {
-        setInputError(prev => {
-          return {
-            ...prev,
-            submit: true,
-            submitMsg: `Creation failed (Server Error)`,
-          };
         });
       }
     } else {
@@ -159,7 +157,7 @@ const Form = () => {
       };
     });
   };
-
+  console.log(successMsg);
   return (
     <div className={s.container}>
       <form className={s.form} onSubmit={e => handleSubmit(e)}>
@@ -260,19 +258,18 @@ const Form = () => {
           )}
         </div>
         <input type="submit" value="Create Recipe" />
-        {inputError.submitMsg && (
+        {inputError.submitMsg ? (
           <Warning
             header={true}
             error={inputError.submit}
             message={inputError.submitMsg}
           />
+        ) : errorMsg ? (
+          <Warning header={true} error={true} message={errorMsg} />
+        ) : (
+          <Warning header={true} error={false} message={successMsg} />
         )}
       </form>
-      {/* {input.image && !inputError.image && (
-        <div className={s.recipeImgContainer}>
-          <img src={input.image} alt="your-recipe" />
-        </div>
-      )} */}
     </div>
   );
 };

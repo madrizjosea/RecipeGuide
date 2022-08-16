@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { clearErrorMsg } from '../../redux/actions';
 
 function Error({ customMsg }) {
-  const requestError = useSelector(state => state.requestError);
+  const requestError = useSelector(state => state.requestErrorMsg);
   const filterError = useSelector(state => state.filterErrorMsg);
   const dispatch = useDispatch();
 

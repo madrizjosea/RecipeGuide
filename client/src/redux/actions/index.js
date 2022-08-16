@@ -14,7 +14,8 @@ import {
   GET_DIETS_SUCCESS,
   CLEAR_DETAILS,
   RESET_FILTERS,
-  CLEAR_ERROR,
+  CLEAR_SUCCESS_MSG,
+  CLEAR_ERROR_MSG,
   SORT,
   FILTER_BY_DIET,
   SET_PAGE_NUMBER,
@@ -121,9 +122,10 @@ export const postRecipeRequest = () => {
   };
 };
 
-export const postRecipeSuccess = () => {
+export const postRecipeSuccess = message => {
   return {
     type: POST_RECIPE_SUCCESS,
+    payload: message,
   };
 };
 
@@ -132,7 +134,7 @@ export const postRecipe = recipe => {
     dispatch(postRecipeRequest());
     axios
       .post('/recipes', recipe)
-      .then(response => dispatch(postRecipeSuccess()))
+      .then(response => dispatch(postRecipeSuccess(response.data)))
       .catch(error => {
         dispatch(requestFailure(error.response.data || error.message));
       });
@@ -180,9 +182,15 @@ export const clearDetails = () => {
   };
 };
 
+export const clearSuccessMsg = () => {
+  return {
+    type: CLEAR_SUCCESS_MSG,
+  };
+};
+
 export const clearErrorMsg = () => {
   return {
-    type: CLEAR_ERROR,
+    type: CLEAR_ERROR_MSG,
   };
 };
 
