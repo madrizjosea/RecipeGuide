@@ -24,7 +24,7 @@ const getById = async id => {
 
 const getDiets = async () => {
   const { data } = await axios.get(
-    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=20`
+    `complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=50`
   );
   return data.results;
 };

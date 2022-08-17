@@ -33,9 +33,10 @@ export const recipeValidator = inputs => {
     errorMsgs.diets = '';
   }
   
-  if (!inputs.healthScore) {
-    errorMsgs.healthScore = `Give your recipe a health score between 0 and 100`;
-  } else if (
+  // if (!inputs.healthScore) {
+  //   errorMsgs.healthScore = `Give your recipe a health score between 0 and 100`;
+  // } 
+  if (
     parseInt(inputs.healthScore) < 0 ||
     parseInt(inputs.healthScore) > 100
   ) {

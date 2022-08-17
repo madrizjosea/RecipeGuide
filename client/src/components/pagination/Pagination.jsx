@@ -1,8 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-export default function Pagination({ currentPage, itemsPerPage, totalItems, dispatchHandler }) {
-
+export default function Pagination({
+  currentPage,
+  itemsPerPage,
+  totalItems,
+  dispatchHandler,
+}) {
   const dispatch = useDispatch();
   const pageNumbers = [];
 
@@ -33,7 +37,9 @@ export default function Pagination({ currentPage, itemsPerPage, totalItems, disp
   return (
     <nav>
       <ul>
-        <button onClick={e => handlePrevious(e)}>{'<'}</button>
+        {currentPage !== 1 ? (
+          <button onClick={e => handlePrevious(e)}>{'<'}</button>
+        ) : null}
         {pageNumbers.map(number => (
           <button key={number} onClick={e => handlePagination(e, number)}>
             {number}

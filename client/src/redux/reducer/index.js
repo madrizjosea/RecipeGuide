@@ -76,6 +76,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         requestErrorMsg: '',
+        recipes: action.payload,
         filtered: action.payload,
         currentPage: 1,
       };

@@ -40,7 +40,6 @@ const Form = () => {
   const [input, setInput] = useState({
     name: '',
     summary: '',
-    healthScore: 0,
     steps: [],
     diets: [],
     image: '',
@@ -71,7 +70,6 @@ const Form = () => {
       !inputError.summary &&
       input.summary &&
       !inputError.healthScore &&
-      input.healthScore &&
       !inputError.diets &&
       input.diets.length > 0 &&
       !inputError.image &&
