@@ -35,7 +35,7 @@ const getRecipes = async (req, res, next) => {
         ? res.status(404).send('There are no recipes related to that name')
         : res.status(200).json(allRecipes);
     } catch (error) {
-      next(error.response.data || error.message);
+      next(error);
     }
   } else {
     try {
@@ -54,7 +54,7 @@ const getRecipes = async (req, res, next) => {
       const allRecipes = [...dbFormated, ...apiFormated];
       res.status(200).json(allRecipes);
     } catch (error) {
-      next(error.response.data || error.message);
+      next(error);
     }
   }
 };
@@ -79,10 +79,10 @@ const getRecipeById = async (req, res, next) => {
     } else {
       const apiRecipe = await getById(id);
       // Steps formating
+
       const steps = await apiRecipe.analyzedInstructions[0]?.steps.map(
         s => `${s.number}. ${s.step}`
       );
-      
       const recipe = {
         id: apiRecipe.id,
         name: apiRecipe.title,
@@ -96,7 +96,7 @@ const getRecipeById = async (req, res, next) => {
       res.status(200).json(recipe);
     }
   } catch (error) {
-    next(error.response.data || error.message);
+    next(error);
   }
 };
 
@@ -118,7 +118,7 @@ const createRecipe = async (req, res, next) => {
     });
     res.status(201).send('Your recipe was created successfuly');
   } catch (error) {
-    next(error.response.data || error.message);
+    next(error);
   }
 };
 

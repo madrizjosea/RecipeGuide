@@ -189,6 +189,7 @@ const Form = () => {
           <textarea
             type="text"
             name="summary"
+            placeholder="Give a summary of your recipe"
             value={input.summary}
             onChange={e => handleChange(e)}
             className={s.formControl}

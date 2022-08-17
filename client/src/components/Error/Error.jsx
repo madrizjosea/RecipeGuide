@@ -19,7 +19,7 @@ function Error({ customMsg }) {
     currentError.isDefault = false;
   } else if (requestError && requestError.split('0').length > 1) {
     currentError.message = 'Server response error';
-    currentError.isDefault = false;
+    currentError.isDefault = true;
   } else {
     currentError.message = requestError;
     currentError.isDefault = true;

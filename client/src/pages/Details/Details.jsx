@@ -43,11 +43,13 @@ function Details() {
               details.steps.map((step, i) => <p key={i}>{step}</p>)}
           </div>
         </div>
-      ) : error ? (
-        <Error />
-      ) : (
+      ) : !details.name && !error ? (
         <Loader />
-      )}
+      ) : error ? (
+        <Error
+          customMsg={`You were linked to an invalid recipe. Click bellow and try again with another one form the catalog`}
+        />
+      ) : null}
     </div>
   );
 }
