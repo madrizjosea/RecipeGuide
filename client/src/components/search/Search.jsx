@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getByName } from '../../redux/actions';
 
-
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +18,7 @@ class Search extends Component {
 
   handleSearch(e) {
     e.preventDefault();
-    let name = this.state.value.toLowerCase();
+    const name = this.state.value.toLowerCase();
     this.props.getByName(name);
     this.setState({
       value: '',

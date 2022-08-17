@@ -7,12 +7,13 @@ function Sort({ label, options, dispatchHandler }) {
   const handleSort = e => {
     const { value } = e.target;
     dispatch(dispatchHandler(value));
+    // e.target.value = 'Sort Recipes';
   };
 
   return (
     <div>
       <select name={label} onChange={e => handleSort(e)}>
-        <option>{`${label} `}</option>
+        <option>{`${label}`}</option>
         {options?.map((option, idx) => (
           <optgroup key={idx} label={option.name}>
             {option.values?.map((value, idx) => (

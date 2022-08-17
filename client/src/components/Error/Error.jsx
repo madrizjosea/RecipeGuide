@@ -17,7 +17,10 @@ function Error({ customMsg }) {
   if (requestError && requestError === 'Network Error') {
     currentError.message = 'The server is down';
     currentError.isDefault = false;
-  } else if (requestError && requestError.split('0').length > 1) {
+  } else if (
+    (requestError && requestError.split('0').length > 1) ||
+    requestError.includes('uuid')
+  ) {
     currentError.message = 'Server response error';
     currentError.isDefault = true;
   } else {
@@ -41,14 +44,18 @@ function Error({ customMsg }) {
         <div>
           <p>{customMsg}</p>
           <Link to="/home">
-            <button className={s.btn} onClick={handleClick}>Home</button>
+            <button className={s.btn} onClick={handleClick}>
+              Home
+            </button>
           </Link>
         </div>
       ) : (
         <div>
           <p>We're working on a solution. Try again later.</p>
           <Link to="/">
-            <button className={s.btn} onClick={handleClick}>Landing</button>
+            <button className={s.btn} onClick={handleClick}>
+              Landing
+            </button>
           </Link>
         </div>
       )}

@@ -18,7 +18,6 @@ import Error from '../../components/Error/Error.jsx';
 import s from './Home.module.css';
 
 function Home() {
-
   const dispatch = useDispatch();
   const state = useSelector(state => state);
 
@@ -69,7 +68,7 @@ function Home() {
             <div className={s.menus}>
               <Search />
               <Sort
-                label="Sort options"
+                label="Sort Recipes"
                 options={[
                   { name: 'Alphabetically', values: ['A-Z', 'Z-A'] },
                   { name: 'Health Score', values: ['0-100', '100-0'] },
@@ -77,7 +76,7 @@ function Home() {
                 dispatchHandler={sortBy}
               />
               <Filter
-                label="Filter by diet"
+                label="Filter Recipes"
                 options={state.diets && state.diets}
                 dispatchHandler={filterByDiet}
               />

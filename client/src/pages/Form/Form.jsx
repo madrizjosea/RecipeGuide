@@ -8,7 +8,6 @@ import {
   clearErrorMsg,
 } from '../../redux/actions';
 import { recipeValidator } from '../../helpers/recipeValidator.js';
-import Filter from '../../components/Filter/Filter.jsx';
 import Warning from '../../components/Warning/Warning.jsx';
 import s from './Form.module.css';
 
@@ -131,20 +130,29 @@ const Form = () => {
   };
 
   // Diets handler
-  const handleDietChange = value => {
-    !input.diets.includes(value)
-      ? setInput(prev => {
-          return {
-            ...prev,
-            diets: [...prev.diets, value],
-          };
-        })
-      : setInput(prev => {
-          return {
-            ...prev,
-            diets: prev.diets.filter(diet => diet !== value),
-          };
-        });
+  const handleDietChange = e => {
+    const { value } = e.target;
+    if (!input.diets.includes(value)) {
+      setInput(prev => {
+        return {
+          ...prev,
+          diets: [...prev.diets, value],
+        };
+      });
+      setInputError(prev => {
+        return {
+          ...prev,
+          diets: '',
+        };
+      });
+    } else {
+      setInput(prev => {
+        return {
+          ...prev,
+        };
+      });
+    }
+    e.target.value = 'Choose diets for your recipe';
   };
 
   const deleteDiet = (e, id) => {
@@ -156,7 +164,7 @@ const Form = () => {
       };
     });
   };
-
+  
   return (
     <div className={s.container}>
       <form className={s.form} onSubmit={e => handleSubmit(e)}>
@@ -245,11 +253,18 @@ const Form = () => {
           {inputError.diets && (
             <Warning error={true} message={inputError.diets} />
           )}
-          <Filter
-            label="Select diets for your recipe"
-            options={diets && diets}
-            eventHandler={handleDietChange}
-          />
+          <div>
+            <select onChange={e => handleDietChange(e)}>
+              <option className={s.inputRenderControl}>
+                Choose diets for your recipe
+              </option>
+              {diets?.map((diet, idx) => (
+                <option className={s.controlBtn} key={idx} value={diet}>
+                  {diet}
+                </option>
+              ))}
+            </select>
+          </div>
           {input.diets &&
             input.diets.map((diet, idx) => (
               <div className={s.inputRenderControl} key={idx}>

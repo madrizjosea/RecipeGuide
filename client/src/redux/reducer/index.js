@@ -111,6 +111,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         requestErrorMsg: '',
+        filterErrorMsg: '',
       };
     case CLEAR_SUCCESS_MSG:
       return {
