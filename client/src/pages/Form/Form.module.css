@@ -14,6 +14,7 @@
 }
 
 .form {
+  background-color: #e9ecef;
   border-radius: 15px;
   border: 1px solid #ced4da;
   width: 375px;
@@ -21,36 +22,62 @@
   padding: 20px;
 }
 
+.stepContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.healthScoreContainer {
+  width: 15%;
+}
+
+.formLabel {
+  color: #212529;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 .formInput {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
 }
 
 .formControl {
-  width: 100%;
+  width: 95%;
   padding: 0.3rem 0.3rem;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
-  background-color: #fff;
+  background-color: #f8f9fa;
   background-clip: padding-box;
   border: 1px solid #ced4da;
   appearance: none;
   border-radius: 0.3rem;
 }
 
-.recipeImgContainer {
+.inputRenderControl {
+  font-style: italic;
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: space-between;
 }
 
-.recipeImgContainer img {
-  border: 0.3rem solid #ced4da;
-  border-radius: 15px;
-  width: 440px;
-  height: 400px;
+.btn {
+  background-color: #212529;
+  margin-top: 10px;
+  color: #f8f9fa;
+  border-radius: 0.3rem;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 textarea {

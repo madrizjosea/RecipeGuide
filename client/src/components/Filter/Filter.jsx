@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import s from './Filter.module.css';
 
 function Filter({ label, options, dispatchHandler, eventHandler }) {
   const dispatch = useDispatch();
@@ -13,9 +14,9 @@ function Filter({ label, options, dispatchHandler, eventHandler }) {
   return (
     <div>
       <select onChange={e => handleFilter(e)}>
-        <option>{`${label} `}</option>
+        <option className={s.btn}>{`${label} `}</option>
         {options?.map((value, idx) => (
-          <option key={idx} value={value}>
+          <option className={s.btn} key={idx} value={value}>
             {value}
           </option>
         ))}

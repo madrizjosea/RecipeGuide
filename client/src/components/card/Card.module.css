@@ -1,7 +1,8 @@
 .card {
+  background-color: #DEE2E6;
   display: block;
   border-radius: 15px;
-  border: 0.2rem solid #ced4da;
+  border: 0.2rem solid #adb5bd;
   width: 297px;
   margin: 15px;
 }
@@ -13,6 +14,7 @@
 }
 
 .content {
+  color: #212529;
   display: block;
   padding: 10px;
   text-align: center;

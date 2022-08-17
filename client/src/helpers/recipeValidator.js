@@ -7,8 +7,8 @@ export const recipeValidator = inputs => {
     name: '',
     summary: '',
     healthScore: '',
-    diets: '',
     image: '',
+    diets: '',
     submit: false,
     submitMsg: '',
   };
@@ -27,12 +27,12 @@ export const recipeValidator = inputs => {
     errorMsgs.summary = '';
   }
 
-  if (inputs.diets.length < 1) {
+  if (!inputs.diets.length) {
     errorMsgs.diets = `Your recipe must belong to at least one diet type`;
   } else {
     errorMsgs.diets = '';
   }
-
+  
   if (!inputs.healthScore) {
     errorMsgs.healthScore = `Give your recipe a health score between 0 and 100`;
   } else if (

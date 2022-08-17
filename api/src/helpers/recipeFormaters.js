@@ -11,6 +11,9 @@ const apiRecipeFormater = recipe => {
 const dbRecipeFormater = recipe => {
   let parsedDiets = [];
   recipe.diets.forEach(diet => parsedDiets.push(diet.name));
+  let parsedSteps = [];
+  recipe.steps.forEach((step, idx) => parsedSteps.push(`${idx + 1}. ${step}`));
+
   return {
     id: recipe.id,
     name: recipe.name,
@@ -18,7 +21,7 @@ const dbRecipeFormater = recipe => {
     dishTypes: recipe.dishTypes && recipe.dishTypes,
     diets: parsedDiets,
     image: recipe.image,
-    steps: recipe.steps,
+    steps: parsedSteps,
     healthScore: recipe.healthScore,
   };
 };

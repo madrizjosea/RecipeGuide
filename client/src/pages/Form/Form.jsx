@@ -13,7 +13,6 @@ import Warning from '../../components/Warning/Warning.jsx';
 import s from './Form.module.css';
 
 const Form = () => {
-  
   const dispatch = useDispatch();
   const diets = useSelector(state => state.diets);
 
@@ -157,17 +156,24 @@ const Form = () => {
       };
     });
   };
-  console.log(successMsg);
+
   return (
     <div className={s.container}>
       <form className={s.form} onSubmit={e => handleSubmit(e)}>
         <div className={s.header}>
-          <h2>Create a Recipe</h2>
+          <h2>Create your own recipe</h2>
         </div>
+        {inputError.submitMsg ? (
+          <Warning error={inputError.submit} message={inputError.submitMsg} />
+        ) : errorMsg ? (
+          <Warning header={true} error={true} message={errorMsg} />
+        ) : (
+          <Warning header={true} error={false} message={successMsg} />
+        )}
         <div className={s.formInput}>
           <label className={s.formLabel}>Name</label>
           <input
-            placeholder="Recipe title..."
+            placeholder="Recipe name..."
             type="text"
             name="name"
             value={input.name}
@@ -193,38 +199,45 @@ const Form = () => {
         </div>
         <div className={s.formInput}>
           <label className={s.formLabel}>Health Score</label>
-          <input
-            type="number"
-            min="0"
-            max="100"
-            name="healthScore"
-            value={input.healthScore}
-            onChange={e => handleChange(e)}
-            className={s.formControl}
-          />
+          <div className={s.healthScoreContainer}>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              name="healthScore"
+              value={input.healthScore}
+              onChange={e => handleChange(e)}
+              className={s.formControl}
+            />
+          </div>
           {inputError.healthScore && (
             <Warning error={true} message={inputError.healthScore} />
           )}
         </div>
         <div className={s.formInput}>
           <label className={s.formLabel}>Steps</label>
-          <div>
+          <div className={s.stepContainer}>
             <input
               type="text"
-              placeholder="Add a detailed step instruction"
+              placeholder="Add an instruction"
               name={'stepInput'}
               value={stepInput}
               onChange={e => handleStepChange(e)}
               className={s.formControl}
             />
             <button onClick={e => handleStepSubmit(e)}>+</button>
-            {input.steps.map((step, idx) => (
-              <div key={idx}>
-                {step}
-                <button onClick={e => deleteStep(e, idx)}>x</button>
-              </div>
-            ))}
           </div>
+          {input.steps.map((step, idx) => (
+            <div className={s.inputRenderControl} key={idx}>
+              {step}
+              <button
+                className={s.controlBtn}
+                onClick={e => deleteStep(e, idx)}
+              >
+                x
+              </button>
+            </div>
+          ))}
         </div>
         <div className={s.formInput}>
           <label className={s.formLabel}>Diets</label>
@@ -232,15 +245,20 @@ const Form = () => {
             <Warning error={true} message={inputError.diets} />
           )}
           <Filter
-            label="Choose diets"
+            label="Select diets for your recipe"
             options={diets && diets}
             eventHandler={handleDietChange}
           />
           {input.diets &&
             input.diets.map((diet, idx) => (
-              <div key={idx}>
-                {diet}
-                <button onClick={e => deleteDiet(e, idx)}>x</button>
+              <div className={s.inputRenderControl} key={idx}>
+                {diet.charAt(0).toUpperCase() + diet.slice(1)}
+                <button
+                  className={s.controlBtn}
+                  onClick={e => deleteDiet(e, idx)}
+                >
+                  x
+                </button>
               </div>
             ))}
         </div>
@@ -257,13 +275,11 @@ const Form = () => {
             <Warning error={true} message={inputError.image} />
           )}
         </div>
-        <input type="submit" value="Create Recipe" />
+        <button className={s.btn} type="submit">
+          Create
+        </button>
         {inputError.submitMsg ? (
-          <Warning
-            header={true}
-            error={inputError.submit}
-            message={inputError.submitMsg}
-          />
+          <Warning error={inputError.submit} message={inputError.submitMsg} />
         ) : errorMsg ? (
           <Warning header={true} error={true} message={errorMsg} />
         ) : (

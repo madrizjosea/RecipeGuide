@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { clearErrorMsg } from '../../redux/actions';
+import s from './Error.module.css';
 
 function Error({ customMsg }) {
   const requestError = useSelector(state => state.requestErrorMsg);
@@ -34,21 +35,20 @@ function Error({ customMsg }) {
   }
 
   return (
-    <div>
+    <div className={s.container}>
       <h2>{currentError.message}</h2>
-
       {currentError.isDefault === true ? (
         <div>
           <p>{customMsg}</p>
           <Link to="/home">
-            <button onClick={handleClick}>Home</button>
+            <button className={s.btn} onClick={handleClick}>Home</button>
           </Link>
         </div>
       ) : (
         <div>
-          <p>We're working in a solution. Try again later.</p>
+          <p>We're working on a solution. Try again later.</p>
           <Link to="/">
-            <button onClick={handleClick}>Landing</button>
+            <button className={s.btn} onClick={handleClick}>Landing</button>
           </Link>
         </div>
       )}

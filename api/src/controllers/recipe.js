@@ -82,6 +82,7 @@ const getRecipeById = async (req, res, next) => {
       const steps = await apiRecipe.analyzedInstructions[0]?.steps.map(
         s => `${s.number}. ${s.step}`
       );
+      
       const recipe = {
         id: apiRecipe.id,
         name: apiRecipe.title,
