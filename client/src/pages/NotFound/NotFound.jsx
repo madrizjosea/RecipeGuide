@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import s from './NotFound.module.css';
 
 function NotFound() {
   return (
-    <div>
+    <div className={s.container}>
       <h2>Error 404: Page Not Found</h2>
       <Link to={'/home'}>
-        <button>Back to Home Page</button>
+        <button className={s.btn}>Back to Home Page</button>
       </Link>
     </div>
   );

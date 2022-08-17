@@ -1,3 +1,27 @@
-p {
-  text-rendering: optimizeLegibility;
+.container {
+  margin: auto;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  width: 75%;
+  padding: 20px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #dee2e6;
+  border-radius: 15px;
+  border: 3px solid #ced4da;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imageContainer img {
+  border-radius: 15px;
+  border: 2px solid #212529;
+  width: 310px;
+  height: 230;
 }

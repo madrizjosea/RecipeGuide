@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100hw;
+  height: 100vh;
+  background-image: url('../../assets/background.jpg');
+  background-size: cover;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  font-size: 50px;
+  color: #e9ecef;
+  font-style: oblique;
+  text-shadow: -1px 1px 0 #212529, 1px 1px 0 #212529, 1px -1px 0 #212529,
+    -1px -1px 0 #212529;
+}
+
+.btn {
+  background-color: #e9ecef;
+  margin-top: 10px;
+  color: #212529;
+  border-radius: 0.3rem;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}

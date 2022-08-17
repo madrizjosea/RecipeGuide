@@ -2,13 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getDetails, clearDetails } from '../../redux/actions';
+import Error from '../../components/Error/Error.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
-// import s from './Details.module.css';
+import s from './Details.module.css';
 
 function Details() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const details = useSelector(state => state.details);
+  const error = useSelector(state => state.requestErrorMsg);
 
   useEffect(() => {
     dispatch(getDetails(id));
@@ -20,29 +22,29 @@ function Details() {
   return (
     <div>
       {details.name ? (
-        <div>
-          <h1>Recipe Details</h1>
-          <p>{details?.name}</p>
-          <img src={details?.image} alt="recipe" />
-          <h2>Dish Types:</h2>
-          {details.dishTypes &&
-            details.dishTypes.map((type, i) => <p key={i}>{type}</p>)}
-          <p>Health Score: {details?.healthScore}</p>
-          <h2>Sumamry:</h2>
-          <p>{details?.summary}</p>
-          <h2>Diets:</h2>
-          {details.diets ? (
-            details.diets.map((diet, i) => <p key={i}>{diet}</p>)
-          ) : (
-            <p>There are no diets related to this recipe</p>
-          )}
-          <h2>Steps:</h2>
-          {details.steps ? (
-            details.steps.map((step, i) => <p key={i}>{step}</p>)
-          ) : (
-            <p>There are no steps for this recipe</p>
-          )}
+        <div className={s.container}>
+          <div className={s.imageContainer}>
+            <h2>{details.name}</h2>
+            <img src={details.image} alt="recipe" />
+            {details.healthScore && <h4>Health Score</h4>}
+            {details.healthScore && <p>{details.healthScore}</p>}
+            {details.dishTypes && <h4>Dish Types:</h4>}
+            {details.dishTypes &&
+              details.dishTypes.map((type, i) => <p key={i}>{type}</p>)}
+            {details.summary && <h4>Summary</h4>}
+            {details.summary && <p>{details.summary}</p>}
+          </div>
+          <div className={s.content}>
+            {details.diets && <h4>Diets</h4>}
+            {details.diets &&
+              details.diets.map((diet, i) => <p key={i}>{diet}</p>)}
+            {details.steps && <h4>Steps</h4>}
+            {details.steps &&
+              details.steps.map((step, i) => <p key={i}>{step}</p>)}
+          </div>
         </div>
+      ) : error ? (
+        <Error />
       ) : (
         <Loader />
       )}
