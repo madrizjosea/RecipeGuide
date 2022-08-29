@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import s from './Pagination.module.css';
 
 export default function Pagination({
   currentPage,
@@ -35,17 +36,27 @@ export default function Pagination({
   };
 
   return (
-    <nav>
-      <ul>
+    <nav className={s.container}>
+      <ul className={s.btnContainer}>
         {currentPage !== 1 ? (
-          <button onClick={e => handlePrevious(e)}>{'<'}</button>
+          <button className={s.btn} onClick={e => handlePrevious(e)}>
+            {'<'}
+          </button>
         ) : null}
         {pageNumbers.map(number => (
-          <button key={number} onClick={e => handlePagination(e, number)}>
+          <button
+            className={s.btn}
+            key={number}
+            onClick={e => handlePagination(e, number)}
+          >
             {number}
           </button>
         ))}
-        <button onClick={e => handleNext(e)}>{'>'}</button>
+        {currentPage < pageNumbers.length ? (
+          <button className={s.btn} onClick={e => handleNext(e)}>
+            {'>'}
+          </button>
+        ) : null}
       </ul>
     </nav>
   );
