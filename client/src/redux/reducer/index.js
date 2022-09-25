@@ -6,29 +6,27 @@ import {
   GET_DETAILS_SUCCESS,
   GET_BY_NAME,
   GET_BY_NAME_SUCCESS,
+  CLEAR_RECIPES_BY_NAME,
   POST_RECIPE,
   POST_RECIPE_SUCCESS,
   GET_DIETS,
   GET_DIETS_SUCCESS,
   CLEAR_DETAILS,
-  RESET_FILTERS,
-  CLEAR_ERROR_MSG,
   CLEAR_SUCCESS_MSG,
-  SORT,
-  FILTER_BY_DIET,
-  SET_PAGE_NUMBER,
+  CLEAR_ERROR_MSG,
+  SET_FILTER_ERROR_MSG,
+  CLEAR_FILTER_ERROR_MSG,
 } from '../actions/types.js';
 
 const initialState = {
+  loading: false,
   recipes: [],
-  filtered: [],
+  recipesByName: [],
   details: {},
   diets: [],
-  loading: false,
-  requestSuccessMsg: '',
-  requestErrorMsg: '',
+  successMsg: '',
+  errorMsg: '',
   filterErrorMsg: '',
-  currentPage: 1,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -37,8 +35,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        currentPage: 1,
-        requestErrorMsg: action.payload,
+        errorMsg: action.payload,
       };
     case GET_RECIPES:
       return {
@@ -49,10 +46,8 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        currentPage: 1,
-        requestErrorMsg: '',
+        errorMsg: '',
         recipes: action.payload,
-        filtered: action.payload,
       };
     case GET_DETAILS:
       return {
@@ -63,7 +58,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        requestErrorMsg: '',
+        errorMsg: '',
         details: action.payload,
       };
     case GET_BY_NAME:
@@ -75,10 +70,13 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        requestErrorMsg: '',
-        recipes: action.payload,
-        filtered: action.payload,
-        currentPage: 1,
+        errorMsg: '',
+        recipesByName: action.payload,
+      };
+    case CLEAR_RECIPES_BY_NAME:
+      return {
+        ...state,
+        recipesByName: [],
       };
     case POST_RECIPE:
       return {
@@ -89,7 +87,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        requestSuccessMsg: action.payload,
+        successMsg: action.payload,
       };
     case GET_DIETS:
       return {
@@ -100,7 +98,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        requestErrorMsg: '',
+        errorMsg: '',
         diets: action.payload,
       };
     case CLEAR_DETAILS:
@@ -111,104 +109,24 @@ const rootReducer = (state = initialState, action) => {
     case CLEAR_ERROR_MSG:
       return {
         ...state,
-        requestErrorMsg: '',
+        errorMsg: '',
         filterErrorMsg: '',
       };
     case CLEAR_SUCCESS_MSG:
       return {
         ...state,
-        requestSuccessMsg: '',
-      }
-    case RESET_FILTERS:
+        successMsg: '',
+      };
+    case SET_FILTER_ERROR_MSG:
       return {
         ...state,
-        filtered: [...state.recipes],
-        currentPage: 1,
+        filterErrorMsg: action.payload,
       };
-    case SET_PAGE_NUMBER:
+    case CLEAR_FILTER_ERROR_MSG:
       return {
         ...state,
-        currentPage: action.payload,
+        filterErrorMsg: '',
       };
-    case SORT:
-      switch (action.payload) {
-        case 'A-Z':
-          let recipesToSortAlphaAsc = [...state.filtered];
-          let sortedAlphaAsc = recipesToSortAlphaAsc.sort((a, b) => {
-            if (a.name.toLowerCase() > b.name.toLowerCase()) {
-              return 1;
-            }
-            if (b.name.toLowerCase() > a.name.toLowerCase()) {
-              return -1;
-            }
-            return 0;
-          });
-          return {
-            ...state,
-            filtered: sortedAlphaAsc,
-          };
-        case 'Z-A':
-          let recipesToSortAlphaDesc = [...state.filtered];
-          let sortedAlphaDesc = recipesToSortAlphaDesc.sort((a, b) => {
-            if (a.name.toLowerCase() < b.name.toLowerCase()) {
-              return 1;
-            }
-            if (b.name.toLowerCase() < a.name.toLowerCase()) {
-              return -1;
-            }
-            return 0;
-          });
-          return {
-            ...state,
-            filtered: sortedAlphaDesc,
-          };
-        case '0-100':
-          let recipesToSortScoreAsc = [...state.filtered];
-          let sortedScoreAsc = recipesToSortScoreAsc.sort((a, b) => {
-            return a.healthScore - b.healthScore;
-          });
-          return {
-            ...state,
-            filtered: sortedScoreAsc,
-          };
-        case '100-0':
-          let recipesToSortScoreDesc = [...state.filtered];
-          let sortedScoreDesc = recipesToSortScoreDesc.sort((a, b) => {
-            return b.healthScore - a.healthScore;
-          });
-          return {
-            ...state,
-            filtered: sortedScoreDesc,
-          };
-        default:
-          return {
-            ...state,
-          };
-      }
-    case FILTER_BY_DIET:
-      let stateRecipes = [...state.recipes];
-      let filteredRecipes = [];
-      stateRecipes.forEach(recipe => {
-        if (
-          recipe.hasOwnProperty('diets') &&
-          recipe.diets.find(diet => diet === action.payload)
-        ) {
-          filteredRecipes.push(recipe);
-        }
-      });
-      if (filteredRecipes.length > 0) {
-        return {
-          ...state,
-          currentPage: 1,
-          filtered: filteredRecipes,
-        };
-      } else {
-        return {
-          ...state,
-          currentPage: 1,
-          filterErrorMsg: 'No recipes found for this diet',
-        };
-      }
     default:
       return {
         ...state,

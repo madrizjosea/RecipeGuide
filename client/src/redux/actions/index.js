@@ -1,5 +1,4 @@
 import axios from '../../axios';
-
 import {
   REQUEST_FAILURE,
   GET_RECIPES,
@@ -8,28 +7,31 @@ import {
   GET_DETAILS_SUCCESS,
   GET_BY_NAME,
   GET_BY_NAME_SUCCESS,
+  CLEAR_RECIPES_BY_NAME,
   POST_RECIPE,
   POST_RECIPE_SUCCESS,
   GET_DIETS,
   GET_DIETS_SUCCESS,
   CLEAR_DETAILS,
-  RESET_FILTERS,
   CLEAR_SUCCESS_MSG,
   CLEAR_ERROR_MSG,
-  SORT,
-  FILTER_BY_DIET,
-  SET_PAGE_NUMBER,
+  SET_FILTER_ERROR_MSG,
+  CLEAR_FILTER_ERROR_MSG,
 } from '../actions/types.js';
 
-// If requests fail
-export const requestFailure = errorMsg => {
-  return {
-    type: REQUEST_FAILURE,
-    payload: errorMsg,
+// Get all recipes
+export const getRecipes = () => {
+  return async dispatch => {
+    try {
+      dispatch(getRecipesRequest());
+      const response = await axios.get('/recipes');
+      dispatch(getRecipesSuccess(response.data));
+    } catch (error) {
+      dispatch(requestFailure(error.response.data));
+    }
   };
 };
 
-// Get all recipes
 export const getRecipesRequest = () => {
   return {
     type: GET_RECIPES,
@@ -43,23 +45,26 @@ export const getRecipesSuccess = recipes => {
   };
 };
 
-export const getRecipes = () => {
-  return dispatch => {
-    dispatch(getRecipesRequest());
-    axios
-      .get('/recipes')
-      .then(response => {
-        const { data } = response;
-        dispatch(getRecipesSuccess(data));
-      })
-      .catch(error => {
-        const { message } = error;
-        dispatch(requestFailure(message));
-      });
+export const requestFailure = errorMsg => {
+  return {
+    type: REQUEST_FAILURE,
+    payload: errorMsg,
   };
 };
 
 // Get recipe details
+export const getDetails = id => {
+  return async dispatch => {
+    try {
+      dispatch(getDetailsRequest());
+      const response = await axios.get(`/recipes/${id}`);
+      dispatch(getDetailsSuccess(response.data));
+    } catch (error) {
+      dispatch(requestFailure(error.response.data));
+    }
+  };
+};
+
 export const getDetailsRequest = () => {
   return {
     type: GET_DETAILS,
@@ -73,21 +78,19 @@ export const getDetailsSuccess = recipe => {
   };
 };
 
-export const getDetails = id => {
-  return dispatch => {
-    dispatch(getDetailsRequest());
-    axios
-      .get(`/recipes/${id}`)
-      .then(response => {
-        dispatch(getDetailsSuccess(response.data));
-      })
-      .catch(error => {
-        dispatch(requestFailure(error.response.data || error.message));
-      });
+// Get recipe by name
+export const getByName = name => {
+  return async dispatch => {
+    try {
+      dispatch(getByNameRequest());
+      const response = await axios.get(`/recipes?name=${name}`);
+      dispatch(getByNameSuccess(response.data));
+    } catch (error) {
+      dispatch(requestFailure(error.response.data));
+    }
   };
 };
 
-// Get recipe by name
 export const getByNameRequest = () => {
   return {
     type: GET_BY_NAME,
@@ -101,21 +104,25 @@ export const getByNameSuccess = recipes => {
   };
 };
 
-export const getByName = name => {
-  return dispatch => {
-    dispatch(getByNameRequest());
-    axios
-      .get(`/recipes?name=${name}`)
-      .then(response => {
-        dispatch(getByNameSuccess(response.data));
-      })
-      .catch(error => {
-        dispatch(requestFailure(error.response.data || error.message));
-      });
+export const clearRecipesByName = () => {
+  return {
+    type: CLEAR_RECIPES_BY_NAME,
   };
 };
 
 // Submit a recipe
+export const postRecipe = recipe => {
+  return async dispatch => {
+    try {
+      dispatch(postRecipeRequest());
+      const response = await axios.post('/recipes', recipe);
+      dispatch(postRecipeSuccess(response.data));
+    } catch (error) {
+      dispatch(requestFailure(error.response.data));
+    }
+  };
+};
+
 export const postRecipeRequest = () => {
   return {
     type: POST_RECIPE,
@@ -129,19 +136,19 @@ export const postRecipeSuccess = message => {
   };
 };
 
-export const postRecipe = recipe => {
-  return dispatch => {
-    dispatch(postRecipeRequest());
-    axios
-      .post('/recipes', recipe)
-      .then(response => dispatch(postRecipeSuccess(response.data)))
-      .catch(error => {
-        dispatch(requestFailure(error.response.data || error.message));
-      });
+// Get diets
+export const getDiets = () => {
+  return async dispatch => {
+    try {
+      dispatch(getDietsRequest());
+      const response = await axios.get('/diets');
+      dispatch(getDietsSuccess(response.data));
+    } catch (error) {
+      dispatch(requestFailure(error.response.data));
+    }
   };
 };
 
-// Get diets
 export const getDietsRequest = () => {
   return {
     type: GET_DIETS,
@@ -155,27 +162,7 @@ export const getDietsSuccess = diets => {
   };
 };
 
-export const getDiets = () => {
-  return dispatch => {
-    dispatch(getDietsRequest());
-    axios
-      .get('/diets')
-      .then(response => {
-        dispatch(getDietsSuccess(response.data));
-      })
-      .catch(error => {
-        dispatch(requestFailure(error.response.data || error.message));
-      });
-  };
-};
-
 // Clearing, reseting, sorting, filtering and pagination
-export const resetDietFilters = () => {
-  return {
-    type: RESET_FILTERS,
-  };
-};
-
 export const clearDetails = () => {
   return {
     type: CLEAR_DETAILS,
@@ -194,23 +181,15 @@ export const clearErrorMsg = () => {
   };
 };
 
-export const sortBy = value => {
+export const setFilterErrorMsg = errorMsg => {
   return {
-    type: SORT,
-    payload: value,
+    type: SET_FILTER_ERROR_MSG,
+    payload: errorMsg,
   };
 };
 
-export const filterByDiet = value => {
+export const clearFilterErrorMsg = () => {
   return {
-    type: FILTER_BY_DIET,
-    payload: value,
-  };
-};
-
-export const setPageNumber = number => {
-  return {
-    type: SET_PAGE_NUMBER,
-    payload: number,
+    type: CLEAR_FILTER_ERROR_MSG,
   };
 };
