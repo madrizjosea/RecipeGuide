@@ -6,7 +6,7 @@ function Landing() {
   return (
     <div className={s.container}>
       <h1 className={s.header}>Friendly Food Guide</h1>
-      <Link to={'/home'}>
+      <Link to='/home'>
         <button className={s.btn}>Get Started</button>
       </Link>
     </div>

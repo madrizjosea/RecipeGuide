@@ -1,26 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { setFilterErrorMsg } from '../../redux/actions';
+import { recipeDietFilter } from './recipeDietFilter.js';
 import s from './Filter.module.css';
 
-function Filter({ label, options, dispatchHandler }) {
+function Filter({ options, recipes, recipeSetter, recipesReset }) {
   const dispatch = useDispatch();
+
+  const [filterOpt, setFilterOtp] = useState('unfiltered');
 
   const handleFilter = e => {
     const { value } = e.target;
-    if (value !== label) dispatch(dispatchHandler(value));
+    const filterResult = recipeDietFilter(recipes, value);
+    if (filterResult.length > 0) {
+      recipeSetter(filterResult);
+      setFilterOtp(value)
+    } else {
+      dispatch(setFilterErrorMsg('No recipes found for that diet'));
+      setFilterOtp('unfiltered')
+      recipesReset();
+    }
   };
 
   return (
     <div>
       <select onChange={e => handleFilter(e)}>
-        <option className={s.btn}>{`${label}`}</option>
-        <optgroup label="Diets">
-          {options?.map((value, idx) => (
-            <option className={s.btn} key={idx} value={value}>
-              {value}
-            </option>
-          ))}
-        </optgroup>
+        {filterOpt !== 'unfiltered' ? (
+          <option>Clear Filter</option>
+        ) : (
+          <option>Filter by diet</option>
+        )}
+        {options?.map((value, idx) => (
+          <option className={s.btn} key={idx} value={value}>
+            {value}
+          </option>
+        ))}
       </select>
     </div>
   );

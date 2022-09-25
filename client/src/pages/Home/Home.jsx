@@ -1,102 +1,86 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getRecipes,
-  getDiets,
-  sortBy,
-  resetDietFilters,
-  filterByDiet,
-  setPageNumber,
-} from '../../redux/actions';
+import { getRecipes, getDiets, clearRecipesByName } from '../../redux/actions';
 import Search from '../../components/Search/Search.jsx';
 import Filter from '../../components/Filter/Filter';
-import Sort from '../../components/Sort/Sort.jsx';
+import Sorter from '../../components/Sorter/Sorter.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
 import Recipes from '../../components/Recipes/Recipes.jsx';
 import Pagination from '../../components/Pagination/Pagination.jsx';
-import Error from '../../components/Error/Error.jsx';
+// import Error from '../../components/Error/Error.jsx';
 import s from './Home.module.css';
 
-function Home() {
+const Home = () => {
   const dispatch = useDispatch();
   const state = useSelector(state => state);
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Pagination variables
-  const recipesPerPage = 9,
-    indexOfLastRecipe = state.currentPage * recipesPerPage,
-    indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage,
-    currentRecipes = state.filtered.slice(
-      indexOfFirstRecipe,
-      indexOfLastRecipe
-    );
+  const recipesPerPage = 9;
+  const indexOfLastRecipe = currentPage * recipesPerPage;
+  const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+  const currentRecipes = filteredRecipes.slice(
+    indexOfFirstRecipe,
+    indexOfLastRecipe
+  );
 
   useEffect(() => {
-    if (!state.filtered.length) {
+    if (!state.recipesByName.length) setFilteredRecipes(state.recipes);
+    else setFilteredRecipes(state.recipesByName);
+  }, [state.recipes, state.recipesByName]);
+
+  useEffect(() => {
+    if (!state.recipes.length) {
       dispatch(getDiets());
       dispatch(getRecipes());
     }
-  }, [dispatch, state.filtered.length, state.recipes.length]);
-
-  // Filters handling
-  const handleDietsReset = () => {
-    dispatch(resetDietFilters());
-  };
+  }, [dispatch, state.recipes]);
 
   const handleRecipesReset = () => {
-    dispatch(getRecipes());
+    setFilteredRecipes(state.recipes);
+    dispatch(clearRecipesByName());
+  };
+
+  const handleFiltersReset = () => {
+    if (!state.recipesByName.length) setFilteredRecipes(state.recipes);
+    else setFilteredRecipes(state.recipesByName);
   };
 
   return (
     <div className={s.container}>
-      {state.loading && state.loading === true ? (
+      {state.loading ? (
         <Loader />
-      ) : state.requestErrorMsg ? (
-        <Error
-          customMsg={`Double check the name you entered. Click the button bellow and try searching for a different recipe or browse our catalog`}
-        />
-      ) : state.filterErrorMsg ? (
-        <Error customMsg={state.filterErrorMsg} />
-      ) : (
-        state.filtered.length > 0 && (
-          <div>
-            <Pagination
-              currentPage={state.currentPage}
-              itemsPerPage={recipesPerPage}
-              totalItems={state.filtered.length}
-              dispatchHandler={setPageNumber}
+      ) : state.recipes.length && state.diets ? (
+        <section>
+          <div className={s.menus}>
+            <Search />
+            <Sorter
+              recipes={[...filteredRecipes]}
+              recipeSetter={setFilteredRecipes}
+              recipesReset={handleFiltersReset}
             />
-            <div className={s.menus}>
-              <Search />
-              <Sort
-                label="Sort Recipes"
-                options={[
-                  { name: 'Alphabetically', values: ['A-Z', 'Z-A'] },
-                  { name: 'Health Score', values: ['0-100', '100-0'] },
-                ]}
-                dispatchHandler={sortBy}
-              />
-              <Filter
-                label="Filter Recipes"
-                options={state.diets && state.diets}
-                dispatchHandler={filterByDiet}
-              />
-              <div>
-                <button onClick={handleDietsReset}>Reset Filters</button>
-                <button onClick={handleRecipesReset}>Reset Catalog</button>
-              </div>
+            <Filter
+              options={state.diets}
+              recipes={state.recipes}
+              recipeSetter={setFilteredRecipes}
+              recipesReset={handleFiltersReset}
+            />
+            <div>
+              <button onClick={handleRecipesReset}>Restore Catalog</button>
             </div>
-            <Recipes recipes={currentRecipes} />
-            <Pagination
-              currentPage={state.currentPage}
-              itemsPerPage={recipesPerPage}
-              totalItems={state.filtered.length}
-              dispatchHandler={setPageNumber}
-            />
           </div>
-        )
-      )}
+          <Recipes recipes={currentRecipes} />
+          <Pagination
+            currentPage={currentPage}
+            itemsPerPage={recipesPerPage}
+            totalItems={filteredRecipes.length}
+            pageSetter={setCurrentPage}
+          />
+        </section>
+      ) : null}
     </div>
   );
-}
+};
 
 export default Home;

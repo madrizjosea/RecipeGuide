@@ -7,7 +7,7 @@ import {
   clearSuccessMsg,
   clearErrorMsg,
 } from '../../redux/actions';
-import { recipeValidator } from '../../helpers/recipeValidator.js';
+import { recipeValidator } from './recipeValidator.js';
 import Warning from '../../components/Warning/Warning.jsx';
 import s from './Form.module.css';
 

@@ -1,14 +1,7 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import s from './Pagination.module.css';
 
-export default function Pagination({
-  currentPage,
-  itemsPerPage,
-  totalItems,
-  dispatchHandler,
-}) {
-  const dispatch = useDispatch();
+function Pagination({ currentPage, itemsPerPage, totalItems, pageSetter }) {
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
@@ -16,30 +9,27 @@ export default function Pagination({
   }
 
   // Paginations handlers
-  const handlePrevious = e => {
-    e.preventDefault();
+  const handlePrevious = () => {
     if (currentPage - 1 > 0) {
-      dispatch(dispatchHandler(currentPage - 1));
+      pageSetter(currentPage - 1);
     }
   };
 
-  const handlePagination = (e, number) => {
-    e.preventDefault();
-    dispatch(dispatchHandler(number));
+  const handlePagination = number => {
+    pageSetter(number);
   };
 
-  const handleNext = e => {
-    e.preventDefault();
+  const handleNext = () => {
     if (currentPage + 1 <= pageNumbers.length) {
-      dispatch(dispatchHandler(currentPage + 1));
+      pageSetter(currentPage + 1);
     }
   };
 
   return (
     <nav className={s.container}>
       <ul className={s.btnContainer}>
-        {currentPage !== 1 ? (
-          <button className={s.btn} onClick={e => handlePrevious(e)}>
+        {currentPage > 1 ? (
+          <button className={s.btn} onClick={handlePrevious}>
             {'<'}
           </button>
         ) : null}
@@ -47,13 +37,13 @@ export default function Pagination({
           <button
             className={s.btn}
             key={number}
-            onClick={e => handlePagination(e, number)}
+            onClick={e => handlePagination(number)}
           >
             {number}
           </button>
         ))}
         {currentPage < pageNumbers.length ? (
-          <button className={s.btn} onClick={e => handleNext(e)}>
+          <button className={s.btn} onClick={handleNext}>
             {'>'}
           </button>
         ) : null}
@@ -61,3 +51,5 @@ export default function Pagination({
     </nav>
   );
 }
+
+export default Pagination;
