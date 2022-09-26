@@ -25,7 +25,7 @@ const initialState = {
   details: {},
   diets: [],
   successMsg: '',
-  errorMsg: '',
+  requestError: {},
   filterErrorMsg: '',
 };
 
@@ -35,7 +35,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        errorMsg: action.payload,
+        requestError: action.payload,
       };
     case GET_RECIPES:
       return {
@@ -46,7 +46,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        errorMsg: '',
+        requestError: {},
         recipes: action.payload,
       };
     case GET_DETAILS:
@@ -58,7 +58,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        errorMsg: '',
+        requestError: {},
         details: action.payload,
       };
     case GET_BY_NAME:
@@ -70,7 +70,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        errorMsg: '',
+        requestError: {},
         recipesByName: action.payload,
       };
     case CLEAR_RECIPES_BY_NAME:
@@ -98,7 +98,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        errorMsg: '',
+        requestError: {},
         diets: action.payload,
       };
     case CLEAR_DETAILS:
@@ -109,7 +109,7 @@ const rootReducer = (state = initialState, action) => {
     case CLEAR_ERROR_MSG:
       return {
         ...state,
-        errorMsg: '',
+        requestError: {},
         filterErrorMsg: '',
       };
     case CLEAR_SUCCESS_MSG:

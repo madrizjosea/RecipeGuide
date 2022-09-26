@@ -32,7 +32,9 @@ const getRecipes = async (req, res, next) => {
       const dbFormated = dbRecipes.map(dbRecipeFormater);
       const allRecipes = [...dbFormated, ...apiFormated];
       allRecipes.length === 0
-        ? res.status(404).send('There are no recipes related to that name')
+        ? res
+            .status(404)
+            .json({ message: 'There are no recipes related to that name' })
         : res.status(200).json(allRecipes);
     } catch (error) {
       next(error);

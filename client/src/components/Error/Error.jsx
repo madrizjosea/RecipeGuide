@@ -1,65 +1,57 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { clearErrorMsg } from '../../redux/actions';
-import s from './Error.module.css';
+import { clearErrorMsg, clearFilterErrorMsg } from '../../redux/actions';
+import styles from './Error.module.css';
 
-function Error({ customMsg }) {
-  const requestError = useSelector(state => state.requestErrorMsg);
-  const filterError = useSelector(state => state.filterErrorMsg);
+function Error() {
   const dispatch = useDispatch();
-
-  let currentError = {
-    message: customMsg,
-    isDefault: true,
-  };
-
-  if (requestError && requestError === 'Network Error') {
-    currentError.message = 'The server is down';
-    currentError.isDefault = false;
-  } else if (
-    (requestError && requestError.split('0').length > 1) ||
-    requestError.includes('uuid')
-  ) {
-    currentError.message = 'Server response error';
-    currentError.isDefault = true;
-  } else {
-    currentError.message = requestError;
-    currentError.isDefault = true;
-  }
-
-  if (filterError) {
-    currentError.message = filterError;
-    currentError.isDefault = true;
-  }
+  const { requestError, filterErrorMsg } = useSelector(state => state);
 
   function handleClick() {
     dispatch(clearErrorMsg());
+    dispatch(clearFilterErrorMsg());
   }
 
   return (
-    <div className={s.container}>
-      <h2>{currentError.message}</h2>
-      {currentError.isDefault === true ? (
+    <section className={styles.container}>
+      {filterErrorMsg ? (
         <div>
-          <p>{customMsg}</p>
-          <Link to="/home">
-            <button className={s.btn} onClick={handleClick}>
-              Home
-            </button>
-          </Link>
+          <div className={styles.closeBtn}>
+            <button onClick={handleClick}>X</button>
+          </div>
+          <h1 className={styles.title}>Something went wrong!</h1>
+          <div className={styles.body}>
+            <p>{filterErrorMsg}</p>
+          </div>
         </div>
-      ) : (
+      ) : requestError.message &&
+        (requestError.message === 'Network Error' ||
+          requestError.message === 'Request failed with status code 500') ? (
         <div>
-          <p>We're working on a solution. Try again later.</p>
-          <Link to="/">
-            <button className={s.btn} onClick={handleClick}>
-              Landing
-            </button>
-          </Link>
+          <h1 className={styles.title}>Something went wrong!</h1>
+          <div className={styles.body}>
+            <p>
+              Couldn't get a response from the server. Please try againt later
+            </p>
+          </div>
+          <div className={styles.landingLink}>
+            <Link onClick={handleClick} to="/">
+              Back to landing
+            </Link>
+          </div>
         </div>
-      )}
-    </div>
+      ) : requestError.response.data ? (
+        <div>
+          <div className={styles.closeBtn}>
+            <button onClick={handleClick}>X</button>
+          </div>
+          <div className={styles.body}>
+            <p>{requestError.response.data.message}</p>
+          </div>
+        </div>
+      ) : null}
+    </section>
   );
 }
 

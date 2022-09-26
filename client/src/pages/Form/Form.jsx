@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   postRecipe,
   getDiets,
@@ -162,9 +163,14 @@ const Form = () => {
       };
     });
   };
-  
+
   return (
-    <div className={s.container}>
+    <section className={s.container}>
+      <div>
+        <Link to='/home'>
+          Back to Home Page
+        </Link>
+      </div>
       <form className={s.form} onSubmit={e => handleSubmit(e)}>
         <div className={s.header}>
           <h2>Create your own recipe</h2>
@@ -300,7 +306,7 @@ const Form = () => {
           <Warning header={true} error={false} message={successMsg} />
         )}
       </form>
-    </div>
+    </section>
   );
 };
 

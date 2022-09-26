@@ -4,7 +4,7 @@ import { setFilterErrorMsg } from '../../redux/actions';
 import { recipeDietFilter } from './recipeDietFilter.js';
 import s from './Filter.module.css';
 
-function Filter({ options, recipes, recipeSetter, recipesReset }) {
+function Filter({ options, recipes, recipeSetter, recipesReset, pageSetter }) {
   const dispatch = useDispatch();
 
   const [filterOpt, setFilterOtp] = useState('unfiltered');
@@ -14,12 +14,14 @@ function Filter({ options, recipes, recipeSetter, recipesReset }) {
     const filterResult = recipeDietFilter(recipes, value);
     if (filterResult.length > 0) {
       recipeSetter(filterResult);
-      setFilterOtp(value)
+      setFilterOtp(value);
+    } else if (value === 'Clear Filter') {
+      recipesReset();
     } else {
       dispatch(setFilterErrorMsg('No recipes found for that diet'));
-      setFilterOtp('unfiltered')
-      recipesReset();
+      setFilterOtp('unfiltered');
     }
+    pageSetter(1);
   };
 
   return (

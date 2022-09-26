@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { recipeSorter } from './recipeSorter.js';
 
-function Sorter({ recipes, recipeSetter, recipesReset }) {
+function Sorter({ recipes, recipeSetter, recipesReset, pageSetter }) {
   const [sortOpt, setSortOpt] = useState('unsorted');
 
   const handleSort = e => {
@@ -13,6 +13,7 @@ function Sorter({ recipes, recipeSetter, recipesReset }) {
       recipesReset();
       setSortOpt('unsorted');
     }
+    pageSetter(1);
   };
 
   return (

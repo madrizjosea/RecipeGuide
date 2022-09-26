@@ -27,7 +27,9 @@ export const getRecipes = () => {
       const response = await axios.get('/recipes');
       dispatch(getRecipesSuccess(response.data));
     } catch (error) {
-      dispatch(requestFailure(error.response.data));
+      console.log('The Error', error)
+      console.log('Data Type', typeof error)
+      dispatch(requestFailure(error));
     }
   };
 };
@@ -60,7 +62,8 @@ export const getDetails = id => {
       const response = await axios.get(`/recipes/${id}`);
       dispatch(getDetailsSuccess(response.data));
     } catch (error) {
-      dispatch(requestFailure(error.response.data));
+      console.log(error)
+      dispatch(requestFailure(error));
     }
   };
 };
@@ -86,7 +89,8 @@ export const getByName = name => {
       const response = await axios.get(`/recipes?name=${name}`);
       dispatch(getByNameSuccess(response.data));
     } catch (error) {
-      dispatch(requestFailure(error.response.data));
+      console.log(error)
+      dispatch(requestFailure(error));
     }
   };
 };
@@ -118,7 +122,8 @@ export const postRecipe = recipe => {
       const response = await axios.post('/recipes', recipe);
       dispatch(postRecipeSuccess(response.data));
     } catch (error) {
-      dispatch(requestFailure(error.response.data));
+      console.log(error)
+      dispatch(requestFailure(error));
     }
   };
 };
@@ -144,7 +149,8 @@ export const getDiets = () => {
       const response = await axios.get('/diets');
       dispatch(getDietsSuccess(response.data));
     } catch (error) {
-      dispatch(requestFailure(error.response.data));
+      console.log(error)
+      dispatch(requestFailure(error));
     }
   };
 };

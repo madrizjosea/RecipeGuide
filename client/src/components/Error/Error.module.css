@@ -1,29 +1,54 @@
 .container {
+  width: 375px;
+  height: 200px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: #f8f9fa;
-  border-radius: 15px;
-  border: 1px solid #ced4da;
-  width: 500px;
-  height: 250px;
-  padding: 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -100px;
-  margin-left: -250px;
+  padding: 25px;
 }
 
-.btn {
-  background-color: #212529;
+.container .title {
+  color: red;
+  font-size: 27px;
+  display: inline-block;
+  text-align: center;
   margin-top: 10px;
-  color: #f8f9fa;
-  border-radius: 0.3rem;
-  font-weight: bold;
-  padding: 10px 30px;
+}
+
+.closeBtn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.closeBtn button {
+  background-color: transparent;
   border: none;
-  outline: none;
+  font-size: 25px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+}
+
+.container .body {
+  flex: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landingLink {
+  margin-top: 10px;
+}
+
+.landingLink a {
+  padding: 6px 24px;
+  height: 50px;
+  margin: 10px;
+  border: none;
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  text-decoration: none;
 }

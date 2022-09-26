@@ -20,24 +20,36 @@ function Details() {
   }, [dispatch, id]);
 
   return (
-    <div>
-      {details.name ? (
+    <section>
+      {details && details.name ? (
         <div className={s.container}>
           <div className={s.imageContainer}>
             <h2>{details.name}</h2>
             <img src={details.image} alt="recipe" />
-            {details.healthScore && <h4>Health Score</h4>}
-            {details.healthScore && <p>{details.healthScore}</p>}
-            {details.dishTypes && <h4>Dish Types:</h4>}
-            {details.dishTypes &&
-              details.dishTypes.map((type, i) => <p key={i}>{type}</p>)}
-            {details.summary && <h4>Summary</h4>}
-            {details.summary && <p>{details.summary}</p>}
+            <h4>Health Score</h4>
+            <p>{details.healthScore}</p>
+            <h4>Dish Types:</h4>
+            {details.dishTypes ? (
+              details.dishTypes.map((type, i) => <p key={i}>{type}</p>)
+            ) : (
+              <p>No particular dish types related to this recipe</p>
+            )}
+            {details.summary ? (
+              <div>
+                <h4>Summary</h4>
+                <p>{details.summary}</p>
+              </div>
+            ) : null}
           </div>
           <div className={s.content}>
-            {details.diets && <h4>Diets</h4>}
-            {details.diets &&
-              details.diets.map((diet, i) => <p key={i}>{diet}</p>)}
+            {details.diets ? (
+              <div>
+                <h4>Diets</h4>
+                {details.diets.map((diet, i) => (
+                  <p key={i}>{diet}</p>
+                ))}
+              </div>
+            ) : null}
             {details.steps && <h4>Steps</h4>}
             {details.steps &&
               details.steps.map((step, i) => <p key={i}>{step}</p>)}
@@ -50,7 +62,7 @@ function Details() {
           customMsg={`You were linked to an invalid recipe. Click bellow and try again with another one form the catalog`}
         />
       ) : null}
-    </div>
+    </section>
   );
 }
 

@@ -1,11 +1,46 @@
-.container {
-  margin-top: 20px;
+.navContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  background-color: #212529;
+}
+
+.links {
+  font-weight: bold;
+  color: #e9ecef;
+  margin-left: 5%;
+  margin-right: 5%;
+  text-decoration: none;
+}
+
+.btn {
+  color: #212529;
+  border-radius: 0.3rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .menus {
+  gap: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.errorBackground {
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
