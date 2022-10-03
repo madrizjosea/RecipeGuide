@@ -48,48 +48,59 @@ const Home = () => {
     if (!state.recipesByName.length) setFilteredRecipes(state.recipes);
     else setFilteredRecipes(state.recipesByName);
   };
-  console.log('Rendering');
+
   return (
     <>
-      {state.recipes && state.diets ? (
-        <>
-          {state.loading ? (
-            <Loader />
-          ) : state.requestError.message || state.filterError ? (
-            <div className={s.errorBackground}>
-              <Error />
-            </div>
-          ) : null}
-          <header>
-            <div className={s.navContainer}>
-              <Link className={s.links} to="/home">
-                Home
-              </Link>
-              <div className={s.menus}>
-                <Search />
-                <Sorter
-                  recipes={[...filteredRecipes]}
-                  recipeSetter={setFilteredRecipes}
-                  recipesReset={handleFiltersReset}
-                  pageSetter={setCurrentPage}
-                />
-                <Filter
-                  options={state.diets}
-                  recipes={state.recipes}
-                  recipeSetter={setFilteredRecipes}
-                  recipesReset={handleFiltersReset}
-                  pageSetter={setCurrentPage}
-                />
-                <div>
-                  <button onClick={handleRecipesReset}>Restore Catalog</button>
+      <section className={s.container}>
+        <header>
+          <div className={s.navContainer}>
+            {state.recipes.length && state.diets ? (
+              <>
+                <Link className={s.links} to="/home">
+                  Home
+                </Link>
+                <div className={s.menus}>
+                  <Search />
+                  <Sorter
+                    recipes={[...filteredRecipes]}
+                    recipeSetter={setFilteredRecipes}
+                    recipesReset={handleFiltersReset}
+                    pageSetter={setCurrentPage}
+                  />
+                  <Filter
+                    options={state.diets}
+                    recipes={state.recipes}
+                    recipeSetter={setFilteredRecipes}
+                    recipesReset={handleFiltersReset}
+                    pageSetter={setCurrentPage}
+                  />
+                  <div>
+                    <button onClick={handleRecipesReset}>
+                      Restore Catalog
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <Link className={s.links} to="/home/create">
-                Create a Recipe
-              </Link>
-            </div>
-          </header>
-          <section className={s.container}>
+                <Link className={s.links} to="/home/create">
+                  Create a Recipe
+                </Link>
+              </>
+            ) : null}
+          </div>
+        </header>
+        {state.loading ? (
+          <Loader />
+        ) : state.requestError.message || state.filterErrorMsg ? (
+          <div className={s.errorBackground}>
+            <Error />
+          </div>
+        ) : (
+          <div>
+            <Pagination
+              currentPage={currentPage}
+              itemsPerPage={recipesPerPage}
+              totalItems={filteredRecipes.length}
+              pageSetter={setCurrentPage}
+            />
             <Recipes recipes={currentRecipes} />
             <Pagination
               currentPage={currentPage}
@@ -97,9 +108,9 @@ const Home = () => {
               totalItems={filteredRecipes.length}
               pageSetter={setCurrentPage}
             />
-          </section>
-        </>
-      ) : null}
+          </div>
+        )}
+      </section>
     </>
   );
 };

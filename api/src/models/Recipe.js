@@ -22,6 +22,7 @@ module.exports = sequelize => {
       },
       healthScore: {
         type: DataTypes.INTEGER,
+        defaultValue: 50,
       },
       steps: {
         type: DataTypes.ARRAY(DataTypes.STRING)

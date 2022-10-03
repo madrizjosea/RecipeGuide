@@ -52,3 +52,21 @@
   cursor: pointer;
   text-decoration: none;
 }
+
+.btn {
+  background-color: #212529;
+  margin-top: 10px;
+  color: #f8f9fa;
+  border-radius: 0.3rem;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn a {
+  text-decoration: none;
+  color: #f8f9fa;
+}

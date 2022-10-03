@@ -15,9 +15,8 @@ import s from './Form.module.css';
 const Form = () => {
   const dispatch = useDispatch();
   const diets = useSelector(state => state.diets);
-
   const errorMsg = useSelector(state => state.requestErrorMsg);
-  const successMsg = useSelector(state => state.requestSuccessMsg);
+  const successMsg = useSelector(state => state.successMsg);
 
   useEffect(() => {
     if (!diets.length) dispatch(getDiets());
@@ -166,10 +165,8 @@ const Form = () => {
 
   return (
     <section className={s.container}>
-      <div>
-        <Link to='/home'>
-          Back to Home Page
-        </Link>
+      <div className={s.btn}>
+        <Link to="/home">Back to Home Page</Link>
       </div>
       <form className={s.form} onSubmit={e => handleSubmit(e)}>
         <div className={s.header}>
@@ -179,17 +176,22 @@ const Form = () => {
           <Warning error={inputError.submit} message={inputError.submitMsg} />
         ) : errorMsg ? (
           <Warning header={true} error={true} message={errorMsg} />
-        ) : (
+        ) : null}
+        {successMsg && (
           <Warning header={true} error={false} message={successMsg} />
         )}
         <div className={s.formInput}>
-          <label className={s.formLabel}>Name</label>
+          <label htmlFor="name" className={s.formLabel}>
+            Name
+          </label>
           <input
-            placeholder="Recipe name..."
+            id="name"
             type="text"
             name="name"
+            placeholder="Recipe name..."
+            autoComplete="off"
             value={input.name}
-            onChange={e => handleChange(e)}
+            onChange={handleChange}
             className={s.formControl}
           />
           {inputError.name && (
@@ -197,13 +199,16 @@ const Form = () => {
           )}
         </div>
         <div className={s.formInput}>
-          <label className={s.formLabel}>Summary</label>
+          <label htmlFor="summary" className={s.formLabel}>
+            Summary
+          </label>
           <textarea
+            id="summary"
             type="text"
             name="summary"
             placeholder="Give a summary of your recipe"
             value={input.summary}
-            onChange={e => handleChange(e)}
+            onChange={handleChange}
             className={s.formControl}
           ></textarea>
           {inputError.summary && (
@@ -211,15 +216,19 @@ const Form = () => {
           )}
         </div>
         <div className={s.formInput}>
-          <label className={s.formLabel}>Health Score</label>
+          <label htmlFor="healthScore" className={s.formLabel}>
+            Health Score
+          </label>
           <div className={s.healthScoreContainer}>
             <input
+              id="healthScore"
               type="number"
               min="0"
               max="100"
               name="healthScore"
+              autoComplete="off"
               value={input.healthScore}
-              onChange={e => handleChange(e)}
+              onChange={handleChange}
               className={s.formControl}
             />
           </div>
@@ -228,14 +237,18 @@ const Form = () => {
           )}
         </div>
         <div className={s.formInput}>
-          <label className={s.formLabel}>Steps</label>
+          <label htmlFor="steps" className={s.formLabel}>
+            Steps
+          </label>
           <div className={s.stepContainer}>
             <input
+              id="steps"
               type="text"
               placeholder="Add an instruction"
-              name={'stepInput'}
+              autoComplete="off"
+              name="stepInput"
               value={stepInput}
-              onChange={e => handleStepChange(e)}
+              onChange={handleStepChange}
               className={s.formControl}
             />
             <button onClick={e => handleStepSubmit(e)}>+</button>
@@ -258,7 +271,7 @@ const Form = () => {
             <Warning error={true} message={inputError.diets} />
           )}
           <div>
-            <select onChange={e => handleDietChange(e)}>
+            <select onChange={handleDietChange}>
               <option className={s.inputRenderControl}>
                 Choose diets for your recipe
               </option>
@@ -283,11 +296,15 @@ const Form = () => {
             ))}
         </div>
         <div className={s.formInput}>
-          <label className={s.formLabel}>Image</label>
+          <label htmlFor="url" className={s.formLabel}>
+            Image
+          </label>
           <input
+            id="url"
             type="url"
             name="image"
-            onChange={e => handleChange(e)}
+            autoComplete="off"
+            onChange={handleChange}
             value={input.image}
             className={s.formControl}
           />
@@ -302,9 +319,7 @@ const Form = () => {
           <Warning error={inputError.submit} message={inputError.submitMsg} />
         ) : errorMsg ? (
           <Warning header={true} error={true} message={errorMsg} />
-        ) : (
-          <Warning header={true} error={false} message={successMsg} />
-        )}
+        ) : null}
       </form>
     </section>
   );

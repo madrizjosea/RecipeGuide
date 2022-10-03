@@ -6,7 +6,8 @@ import styles from './Error.module.css';
 
 function Error() {
   const dispatch = useDispatch();
-  const { requestError, filterErrorMsg } = useSelector(state => state);
+  const requestError = useSelector(state => state.requestError);
+  const filterErrorMsg = useSelector(state => state.filterErrorMsg);
 
   function handleClick() {
     dispatch(clearErrorMsg());
@@ -35,17 +36,18 @@ function Error() {
               Couldn't get a response from the server. Please try againt later
             </p>
           </div>
-          <div className={styles.landingLink}>
+          <button className={styles.btn}>
             <Link onClick={handleClick} to="/">
               Back to landing
             </Link>
-          </div>
+          </button>
         </div>
       ) : requestError.response.data ? (
         <div>
           <div className={styles.closeBtn}>
             <button onClick={handleClick}>X</button>
           </div>
+          <h1 className={styles.title}>Something went wrong!</h1>
           <div className={styles.body}>
             <p>{requestError.response.data.message}</p>
           </div>
