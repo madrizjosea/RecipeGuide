@@ -1,4 +1,3 @@
-require('dotenv').config();
 const { Op } = require('sequelize');
 const { Recipe, Diet } = require('../db.js');
 const {

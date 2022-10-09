@@ -1,328 +1,145 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { getDiets, postRecipe, clearSuccessMsg } from '../../redux/actions';
 import {
-  postRecipe,
-  getDiets,
-  getRecipes,
-  clearSuccessMsg,
-  clearErrorMsg,
-} from '../../redux/actions';
-import { recipeValidator } from './recipeValidator.js';
-import Warning from '../../components/Warning/Warning.jsx';
-import s from './Form.module.css';
+  nameValidator,
+  summaryValidator,
+  healthScoreValidator,
+  imageValidator,
+} from '../../helpers/validators.js';
+import FormInputs from './FormInputs';
+import './css/Form.css';
 
 const Form = () => {
   const dispatch = useDispatch();
   const diets = useSelector(state => state.diets);
-  const errorMsg = useSelector(state => state.requestErrorMsg);
   const successMsg = useSelector(state => state.successMsg);
+  const creationErr = useSelector(state => state.requestError);
 
-  useEffect(() => {
-    if (!diets.length) dispatch(getDiets());
-    return () => {
-      if (successMsg) dispatch(clearSuccessMsg());
-      if (errorMsg) dispatch(clearErrorMsg());
-    };
-  }, [dispatch, diets.length, successMsg, errorMsg]);
-
-  // Initial states
-  const [stepInput, setStepInput] = useState('');
-  const [inputError, setInputError] = useState({
+  const [data, setData] = useState({
     name: '',
     summary: '',
     healthScore: '',
-    diets: '',
-    image: '',
-    submit: true,
-    submitMsg: '',
-  });
-  const [input, setInput] = useState({
-    name: '',
-    summary: '',
     steps: [],
     diets: [],
     image: '',
   });
 
-  // Form handlers
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setInput(prev => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-    setInputError(
-      recipeValidator({
-        ...input,
-        [name]: value,
-      })
-    );
-  };
+  const [errors, setErrors] = useState({
+    name: '',
+    summary: '',
+    healthScore: '',
+    steps: '',
+    diets: '',
+    image: '',
+  });
+
+  const [submitErr, setSubmitErr] = useState('');
+
+  const { healthScore, ...requiredInputs } = data;
+  const canSubmit = [...Object.values(requiredInputs)].every(Boolean);
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (
-      !inputError.name &&
-      input.name &&
-      !inputError.summary &&
-      input.summary &&
-      !inputError.healthScore &&
-      !inputError.diets &&
-      input.diets.length > 0 &&
-      !inputError.image &&
-      input.image
-    ) {
-      dispatch(postRecipe(input));
-      if (!errorMsg) {
-        dispatch(getRecipes());
-        setInput({
+    if (canSubmit) {
+      dispatch(postRecipe(data));
+      if (successMsg) {
+        setSubmitErr('');
+        setData({
           name: '',
           summary: '',
-          healthScore: 0,
+          healthScore: '',
           steps: [],
           diets: [],
           image: '',
         });
       }
     } else {
-      setInputError(prev => {
-        return {
-          ...prev,
-          submit: true,
-          submitMsg: `Fill out the form before submiting`,
-        };
-      });
+      setSubmitErr('Check all required fields');
     }
   };
 
-  // Step creation handlers
-  const handleStepChange = e => {
-    let { value } = e.target;
-    setStepInput(value);
-  };
-
-  const handleStepSubmit = e => {
-    e.preventDefault();
-    if (stepInput) {
-      setInput(prev => {
-        return {
-          ...prev,
-          steps: [...prev.steps, stepInput],
-        };
-      });
+  const handleChange = e => {
+    const { value, name } = e.target;
+    setData(prevState => ({ ...prevState, [name]: value }));
+    let errorMsg = '';
+    if (name === 'name') {
+      errorMsg = nameValidator(value);
     }
-    setStepInput('');
+    if (name === 'summary') {
+      errorMsg = summaryValidator(value);
+    }
+    if (name === 'healthScore') {
+      errorMsg = healthScoreValidator(value);
+    }
+    if (name === 'image') {
+      errorMsg = imageValidator(value);
+    }
+    setErrors(prevState => ({ ...prevState, [name]: errorMsg }));
   };
 
-  const deleteStep = (e, id) => {
-    e.preventDefault();
-    setInput(prev => {
-      return {
-        ...prev,
-        steps: prev.steps.filter((step, idx) => idx !== id),
-      };
-    });
+  const handleStepSubmit = value => {
+    setData(prevState => ({
+      ...prevState,
+      steps: [...prevState.steps, value],
+    }));
   };
 
-  // Diets handler
+  const deleteStep = index => {
+    setData(prevState => ({
+      ...prevState,
+      steps: prevState.steps.filter((step, idx) => idx !== index),
+    }));
+  };
+
   const handleDietChange = e => {
     const { value } = e.target;
-    if (!input.diets.includes(value)) {
-      setInput(prev => {
-        return {
-          ...prev,
-          diets: [...prev.diets, value],
-        };
-      });
-      setInputError(prev => {
-        return {
-          ...prev,
-          diets: '',
-        };
-      });
-    } else {
-      setInput(prev => {
-        return {
-          ...prev,
-        };
-      });
+    if (value && !data.diets.includes(value)) {
+      setData(prevState => ({
+        ...prevState,
+        diets: [...prevState.diets, value],
+      }));
     }
-    e.target.value = 'Choose diets for your recipe';
   };
 
-  const deleteDiet = (e, id) => {
-    e.preventDefault();
-    setInput(prev => {
-      return {
-        ...prev,
-        diets: prev.diets.filter((diet, idx) => idx !== id),
-      };
-    });
+  const deleteDiet = id => {
+    setData(prevState => ({
+      ...prevState,
+      diets: prevState.diets.filter((diet, idx) => idx !== id),
+    }));
   };
 
-  return (
-    <section className={s.container}>
-      <div className={s.btn}>
-        <Link to="/home">Back to Home Page</Link>
-      </div>
-      <form className={s.form} onSubmit={e => handleSubmit(e)}>
-        <div className={s.header}>
-          <h2>Create your own recipe</h2>
-        </div>
-        {inputError.submitMsg ? (
-          <Warning error={inputError.submit} message={inputError.submitMsg} />
-        ) : errorMsg ? (
-          <Warning header={true} error={true} message={errorMsg} />
-        ) : null}
-        {successMsg && (
-          <Warning header={true} error={false} message={successMsg} />
-        )}
-        <div className={s.formInput}>
-          <label htmlFor="name" className={s.formLabel}>
-            Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            placeholder="Recipe name..."
-            autoComplete="off"
-            value={input.name}
-            onChange={handleChange}
-            className={s.formControl}
-          />
-          {inputError.name && (
-            <Warning error={true} message={inputError.name} />
-          )}
-        </div>
-        <div className={s.formInput}>
-          <label htmlFor="summary" className={s.formLabel}>
-            Summary
-          </label>
-          <textarea
-            id="summary"
-            type="text"
-            name="summary"
-            placeholder="Give a summary of your recipe"
-            value={input.summary}
-            onChange={handleChange}
-            className={s.formControl}
-          ></textarea>
-          {inputError.summary && (
-            <Warning error={true} message={inputError.summary} />
-          )}
-        </div>
-        <div className={s.formInput}>
-          <label htmlFor="healthScore" className={s.formLabel}>
-            Health Score
-          </label>
-          <div className={s.healthScoreContainer}>
-            <input
-              id="healthScore"
-              type="number"
-              min="0"
-              max="100"
-              name="healthScore"
-              autoComplete="off"
-              value={input.healthScore}
-              onChange={handleChange}
-              className={s.formControl}
-            />
-          </div>
-          {inputError.healthScore && (
-            <Warning error={true} message={inputError.healthScore} />
-          )}
-        </div>
-        <div className={s.formInput}>
-          <label htmlFor="steps" className={s.formLabel}>
-            Steps
-          </label>
-          <div className={s.stepContainer}>
-            <input
-              id="steps"
-              type="text"
-              placeholder="Add an instruction"
-              autoComplete="off"
-              name="stepInput"
-              value={stepInput}
-              onChange={handleStepChange}
-              className={s.formControl}
-            />
-            <button onClick={e => handleStepSubmit(e)}>+</button>
-          </div>
-          {input.steps.map((step, idx) => (
-            <div className={s.inputRenderControl} key={idx}>
-              {step}
-              <button
-                className={s.controlBtn}
-                onClick={e => deleteStep(e, idx)}
-              >
-                x
-              </button>
-            </div>
-          ))}
-        </div>
-        <div className={s.formInput}>
-          <label className={s.formLabel}>Diets</label>
-          {inputError.diets && (
-            <Warning error={true} message={inputError.diets} />
-          )}
-          <div>
-            <select onChange={handleDietChange}>
-              <option className={s.inputRenderControl}>
-                Choose diets for your recipe
-              </option>
-              {diets?.map((diet, idx) => (
-                <option className={s.controlBtn} key={idx} value={diet}>
-                  {diet}
-                </option>
-              ))}
-            </select>
-          </div>
-          {input.diets &&
-            input.diets.map((diet, idx) => (
-              <div className={s.inputRenderControl} key={idx}>
-                {diet.charAt(0).toUpperCase() + diet.slice(1)}
-                <button
-                  className={s.controlBtn}
-                  onClick={e => deleteDiet(e, idx)}
-                >
-                  x
-                </button>
-              </div>
-            ))}
-        </div>
-        <div className={s.formInput}>
-          <label htmlFor="url" className={s.formLabel}>
-            Image
-          </label>
-          <input
-            id="url"
-            type="url"
-            name="image"
-            autoComplete="off"
-            onChange={handleChange}
-            value={input.image}
-            className={s.formControl}
-          />
-          {inputError.image && (
-            <Warning error={true} message={inputError.image} />
-          )}
-        </div>
-        <button className={s.btn} type="submit">
-          Create
-        </button>
-        {inputError.submitMsg ? (
-          <Warning error={inputError.submit} message={inputError.submitMsg} />
-        ) : errorMsg ? (
-          <Warning header={true} error={true} message={errorMsg} />
-        ) : null}
-      </form>
-    </section>
-  );
+  useEffect(() => {
+    if (!diets.length) dispatch(getDiets());
+    return () => {
+      setSubmitErr('');
+      dispatch(clearSuccessMsg());
+    };
+  }, [dispatch, diets.length]);
+
+  return diets.length ? (
+    <form className="form form-flex-col" onSubmit={e => handleSubmit(e)}>
+      <h2>Create your own recipe</h2>
+
+      {<p>{successMsg}</p> || <p>{submitErr}</p>}
+      {creationErr.message ? <p>Creation failed due to: {creationErr.message}</p> : null}
+
+      <FormInputs
+        data={data}
+        diets={diets}
+        handleChange={handleChange}
+        handleStepSubmit={handleStepSubmit}
+        deleteStep={deleteStep}
+        handleDietChange={handleDietChange}
+        deleteDiet={deleteDiet}
+        errors={errors}
+      />
+
+      <button type="submit" className="form-button" disabled={!canSubmit}>
+        Create
+      </button>
+    </form>
+  ) : null;
 };
 
 export default Form;

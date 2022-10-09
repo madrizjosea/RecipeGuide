@@ -28,11 +28,13 @@ function Pagination({ currentPage, itemsPerPage, totalItems, pageSetter }) {
   return (
     <nav className={s.container}>
       <ul className={s.btnContainer}>
-        {currentPage > 1 ? (
-          <button className={s.btn} onClick={handlePrevious}>
-            {'<'}
-          </button>
-        ) : null}
+        <button
+          className={s.btn}
+          onClick={handlePrevious}
+          disabled={currentPage - 1 > 0 ? false : true}
+        >
+          {'<'}
+        </button>
         {pageNumbers.map(number => (
           <button
             className={s.btn}
@@ -42,11 +44,13 @@ function Pagination({ currentPage, itemsPerPage, totalItems, pageSetter }) {
             {number}
           </button>
         ))}
-        {currentPage < pageNumbers.length ? (
-          <button className={s.btn} onClick={handleNext}>
-            {'>'}
-          </button>
-        ) : null}
+        <button
+          className={s.btn}
+          onClick={handleNext}
+          disabled={currentPage + 1 <= pageNumbers.length ? false : true}
+        >
+          {'>'}
+        </button>
       </ul>
     </nav>
   );

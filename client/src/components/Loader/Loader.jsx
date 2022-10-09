@@ -1,9 +1,39 @@
 import React, { Component } from 'react';
-import spinner from '../../assets/loading-icon.gif';
-import s from './Loader.module.css';
+import './Loader.css';
 
 export default class Loader extends Component {
   render() {
-    return <img className={s.spinner} src={spinner} alt="Loading..." />;
+    return (
+      <div className="loadingio-spinner-container">
+        <div className="loadingio-spinner-spin-4iciwskpv3o">
+          <div className="ldio-76ka5mzzeh9">
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 }

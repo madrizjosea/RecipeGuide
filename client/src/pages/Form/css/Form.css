@@ -1,0 +1,54 @@
+.form {
+  width: 100%;
+  max-width: 500px;
+  margin: 50px;
+  padding: 0.75rem;
+  border: 1px solid #000;
+  border-radius: 10px;
+  background-color: whitesmoke;
+}
+
+.form-flex-col {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.form-split-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+/* .form input:invalid {
+  
+  outline: 2px solid red;
+  background-color: rgb(255, 255, 139);
+} */
+
+.form input,
+select,
+textarea {
+  box-sizing: border-box;
+  padding: 0.5rem;
+  height: 45px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.form textarea {
+  height: 100px;
+}
+
+.form input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  margin-right: 0.5rem;
+}
+
+.form-button {
+  padding: 0.5rem;
+  border-radius: 10px;
+}
