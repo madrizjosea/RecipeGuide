@@ -12,25 +12,36 @@ const Steps = ({ data, handleStepSubmit, deleteStep }) => {
     <>
       <div>
         <label htmlFor="steps">
-          Preparation steps <strong style={{ color: 'red' }}>*</strong>
+          Intructions <strong style={{ color: '#dc3545' }}>*</strong>
         </label>
-        <input
-          id="steps"
-          name="step"
-          type="text"
-          placeholder="Detailed step instructions"
-          autoComplete="off"
-          value={step}
-          onChange={e => setStep(e.target.value)}
-        />
-        <button type="button" onClick={() => handleStep(step)}>
-          +
-        </button>
+        <div className="form-flex-row">
+          <input
+            id="steps"
+            name="step"
+            type="text"
+            placeholder="Write one step instruction at a time"
+            autoComplete="off"
+            value={step}
+            onChange={e => setStep(e.target.value)}
+          />
+          <button
+            className="form-input-button"
+            type="button"
+            onClick={() => handleStep(step)}
+          >
+            +
+          </button>
+        </div>
       </div>
+
       {data.steps.map((step, index) => (
-        <div key={index}>
+        <div className="form-stored-input" key={index}>
           <p>{step}</p>
-          <button type="button" onClick={() => deleteStep(index)}>
+          <button
+            className="form-delete-button"
+            type="button"
+            onClick={() => deleteStep(index)}
+          >
             x
           </button>
         </div>

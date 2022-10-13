@@ -2,7 +2,7 @@ export const nameValidator = name => {
   let errorMsg = '';
   const nameRegex = /^([a-zA-Z ]+)$/i;
   if (!name) {
-    errorMsg = 'Enter a name for your recipe';
+    errorMsg = 'Enter a valid name for your recipe';
   }
   if (name && !nameRegex.test(name)) {
     errorMsg = 'Special characters are not allowed';
@@ -13,7 +13,7 @@ export const nameValidator = name => {
 export const healthScoreValidator = healthScore => {
   let errorMsg = '';
   if (parseInt(healthScore) < 0 || parseInt(healthScore) > 100) {
-    errorMsg = 'Must be a number between 0 and 100';
+    errorMsg = 'It must be a number between 0 and 100';
   }
   if (!Number(healthScore)) {
     errorMsg = 'It must be a number';
@@ -32,10 +32,11 @@ export const summaryValidator = summary => {
 export const imageValidator = imageUrl => {
   let errorMsg = '';
   const imageRegex = /^https?:\/\/.*\/.*\.(png|gif|webp|jpeg|jpg)\??.*$/i;
+  if (!imageUrl) {
+    errorMsg = 'Enter a valid image url';
+  }
   if (imageUrl && !imageRegex.test(imageUrl)) {
     errorMsg = 'The image needs to come from a valid url';
-  } else {
-    errorMsg = 'Enter a valid image url'
   }
   return errorMsg;
 };

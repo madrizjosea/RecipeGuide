@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDiets, postRecipe, clearSuccessMsg } from '../../redux/actions';
 import {
@@ -109,6 +110,17 @@ const Form = () => {
     }));
   };
 
+  const resetForm = () => {
+    setData({
+      name: '',
+      summary: '',
+      healthScore: '',
+      steps: [],
+      diets: [],
+      image: '',
+    });
+  };
+
   useEffect(() => {
     if (!diets.length) dispatch(getDiets());
     return () => {
@@ -118,27 +130,42 @@ const Form = () => {
   }, [dispatch, diets.length]);
 
   return diets.length ? (
-    <form className="form form-flex-col" onSubmit={e => handleSubmit(e)}>
-      <h2>Create your own recipe</h2>
+    <section className="form-container">
+      <form className="form" onSubmit={e => handleSubmit(e)}>
 
-      {<p>{successMsg}</p> || <p>{submitErr}</p>}
-      {creationErr.message ? <p>Creation failed due to: {creationErr.message}</p> : null}
+        <header className="form-header">
+          <Link to="/home">Home</Link>
+          <h2>NEW RECIPE</h2>
+          <button
+            className="form-reset-button"
+            onClick={() => resetForm()}
+          >
+            Reset
+          </button>
+        </header>
 
-      <FormInputs
-        data={data}
-        diets={diets}
-        handleChange={handleChange}
-        handleStepSubmit={handleStepSubmit}
-        deleteStep={deleteStep}
-        handleDietChange={handleDietChange}
-        deleteDiet={deleteDiet}
-        errors={errors}
-      />
+        {<p>{successMsg}</p> || <p>{submitErr}</p>}
+        {creationErr.message ? (
+          <p>Creation failed due to: {creationErr.message}</p>
+        ) : null}
 
-      <button type="submit" className="form-button" disabled={!canSubmit}>
-        Create
-      </button>
-    </form>
+        <FormInputs
+          data={data}
+          diets={diets}
+          handleChange={handleChange}
+          handleStepSubmit={handleStepSubmit}
+          deleteStep={deleteStep}
+          handleDietChange={handleDietChange}
+          deleteDiet={deleteDiet}
+          errors={errors}
+        />
+
+        <button type="submit" className="form-button" disabled={!canSubmit}>
+          Create
+        </button>
+
+      </form>
+    </section>
   ) : null;
 };
 
