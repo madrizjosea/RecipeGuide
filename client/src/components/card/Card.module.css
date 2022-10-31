@@ -1,16 +1,27 @@
+.container {
+  text-decoration: none;
+}
+
 .card {
-  background-color: #DEE2E6;
-  display: block;
+  align-items: center;
+  background-color: #d9eac2;
   border-radius: 15px;
-  border: 0.2rem solid #adb5bd;
-  width: 297px;
-  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 475px;
+  margin: 2rem;
+  padding: 0;
+  width: 352px;
+}
+
+.card h3 {
+  font-size: 1.4rem;
 }
 
 .card img {
-  height: 217px;
-  width: 297px;
-  border-radius: 14px 14px 0px 0px;
+  border-radius: 15px 15px 0 0;
+  height: 280px;
+  width: 352px;
 }
 
 .content {
@@ -22,9 +33,10 @@
 
 .diets {
   display: flex;
-  justify-content: space-evenly;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 8px;
 }
 
 .diets li {
@@ -33,5 +45,5 @@
 
 .diet {
   margin: 1px;
-  padding: 0px 10px 0px 10px;
+  padding: 0 10px 0 10px;
 }

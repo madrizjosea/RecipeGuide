@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getByName } from '../../redux/actions';
+import s from './Search.module.css';
 
 class Search extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class Search extends Component {
 
   render() {
     return (
-      <form onSubmit={e => this.handleSearch(e)}>
+      <form className={s.container} onSubmit={e => this.handleSearch(e)}>
         <input
           type="text"
           placeholder="Recipe name..."
