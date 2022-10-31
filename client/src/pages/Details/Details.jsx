@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getDetails, clearDetails } from '../../redux/actions';
+import Search from '../../components/Search/Search';
 import Error from '../../components/Error/Error.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
 import s from './Details.module.css';
@@ -10,7 +12,7 @@ function Details() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const details = useSelector(state => state.details);
-  const error = useSelector(state => state.requestErrorMsg);
+  const error = useSelector(state => state.requestError);
 
   useEffect(() => {
     dispatch(getDetails(id));
@@ -21,19 +23,32 @@ function Details() {
 
   return (
     <section>
-      {details && details.name ? (
+      <header>
+        <div className={s.navContainer}>
+          {details.name ? (
+            <>
+              <Link className={s.links} to="/home">
+                Home
+              </Link>
+              <div className={s.menus}>
+                <Search />
+              </div>
+              <Link className={s.create} to="/home/create">
+                Create a Recipe
+              </Link>
+            </>
+          ) : null}
+        </div>
+      </header>
+      {details.name && details.image ? (
         <div className={s.container}>
           <div className={s.imageContainer}>
-            <h2>{details.name}</h2>
             <img src={details.image} alt="recipe" />
-            <h4>Health Score</h4>
-            <p>{details.healthScore}</p>
-            <h4>Dish Types:</h4>
-            {details.dishTypes ? (
-              details.dishTypes.map((type, i) => <p key={i}>{type}</p>)
-            ) : (
-              <p>No particular dish types related to this recipe</p>
-            )}
+            <h2>{details.name}</h2>
+            <div className={s.healthScore}>
+              <h4>Health Score:</h4>
+              <p>{details.healthScore}</p>
+            </div>
             {details.summary ? (
               <div>
                 <h4>Summary</h4>
@@ -42,6 +57,12 @@ function Details() {
             ) : null}
           </div>
           <div className={s.content}>
+            <h4>Dishes:</h4>
+            {details.dishTypes ? (
+              details.dishTypes.map((type, i) => <p key={i}>{type}</p>)
+            ) : (
+              <p>No particular dish types related to this recipe</p>
+            )}
             {details.diets ? (
               <div>
                 <h4>Diets</h4>
@@ -50,14 +71,14 @@ function Details() {
                 ))}
               </div>
             ) : null}
-            {details.steps && <h4>Steps</h4>}
+            {details.steps && <h4>Preparation</h4>}
             {details.steps &&
               details.steps.map((step, i) => <p key={i}>{step}</p>)}
           </div>
         </div>
-      ) : !details.name && !error ? (
+      ) : !details.name && !error.response ? (
         <Loader />
-      ) : error ? (
+      ) : error.response ? (
         <Error
           customMsg={`You were linked to an invalid recipe. Click bellow and try again with another one form the catalog`}
         />
