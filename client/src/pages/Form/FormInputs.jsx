@@ -13,7 +13,6 @@ const FormInputs = ({
 }) => {
   const content = (
     <div className="form-inputs">
-
       <div className="form-flex-col">
         <div className="form-split-container">
           <div className="form-flex-col">
@@ -75,7 +74,9 @@ const FormInputs = ({
           />
           <p className="form-warning-text">{errors?.image}</p>
         </div>
+      </div>
 
+      <div className="form-flex-col">
         <Diets
           data={data}
           handleDietChange={handleDietChange}
@@ -83,9 +84,6 @@ const FormInputs = ({
           deleteDiet={deleteDiet}
           errors={errors}
         />
-      </div>
-
-      <div className="form-flex-col">
         <Steps
           data={data}
           handleStepSubmit={handleStepSubmit}
@@ -93,7 +91,6 @@ const FormInputs = ({
           errors={errors}
         />
       </div>
-      
     </div>
   );
 

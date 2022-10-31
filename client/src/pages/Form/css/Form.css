@@ -2,10 +2,15 @@
   align-items: center;
   background-color: #fff;
   display: flex;
-  font-family: Nunito;
+  font-family: Nunito, sans-serif;
   font-size: 1.3rem;
   justify-content: center;
   min-height: 100vh;
+}
+
+.form-header button,
+a {
+  font-family: inherit;
 }
 
 .form-container h2 {
@@ -13,6 +18,7 @@
 }
 
 .form-container button {
+  margin-bottom: 0.2rem;
   cursor: pointer;
 }
 
@@ -30,7 +36,8 @@
   display: flex;
   flex-flow: column nowrap;
   padding: 2rem 4rem;
-  width: 60vw;
+  min-width: 70vw;
+  min-height: 70vh;
 }
 
 .form-header {
@@ -80,6 +87,7 @@
   margin-bottom: 1rem;
   margin-top: 1.2rem;
   width: 100%;
+  min-height: 60vh;
 }
 
 .form-split-container {
@@ -116,7 +124,7 @@
 
 .form-delete-button {
   background-color: #dc3545;
-  border: 1px solid #dc3545;
+  border: none;
   border-radius: 5px;
   color: #fff;
   height: 1.2rem;
@@ -126,15 +134,17 @@
 
 .form-flex-col input,
 textarea,
+button,
 select {
   border: 1px solid lightgrey;
   border-radius: 5px;
   font-family: inherit;
   padding: 0.3rem;
+  font-size: 1rem;
 }
 
 .form-flex-col textarea {
-  height: 5rem;
+  height: 12rem;
 }
 
 .form-warning-text {

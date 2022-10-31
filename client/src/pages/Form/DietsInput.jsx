@@ -13,7 +13,7 @@ const Diets = ({ data, diets, handleDietChange, deleteDiet, errors }) => {
         ))}
       </select>
       <p className="form-warning-text">{errors?.diets}</p>
-      
+
       {data.diets.map((diet, idx) => (
         <div className="form-stored-input" key={idx}>
           <p>{diet.charAt(0).toUpperCase() + diet.slice(1)}</p>

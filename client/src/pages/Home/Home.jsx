@@ -18,7 +18,7 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Pagination variables
-  const recipesPerPage = 9;
+  const recipesPerPage = 12;
   const indexOfLastRecipe = currentPage * recipesPerPage;
   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
   const currentRecipes = filteredRecipes.slice(
@@ -75,25 +75,23 @@ const Home = () => {
                     pageSetter={setCurrentPage}
                   />
                   <div>
-                    <button onClick={handleRecipesReset}>
-                      Restore Catalog
+                    <button className={s.resetBtn} onClick={handleRecipesReset}>
+                      Reset Catalog
                     </button>
                   </div>
                 </div>
-                <Link className={s.links} to="/home/create">
+                <Link className={s.create} to="/home/create">
                   Create a Recipe
                 </Link>
               </>
             ) : null}
           </div>
         </header>
-        {state.loading ? (
-          <Loader />
-        ) : state.requestError.message || state.filterErrorMsg ? (
+        {state.requestError.message || state.filterErrorMsg ? (
           <div className={s.errorBackground}>
             <Error />
           </div>
-        ) : (
+        ) : state.recipes.length && state.diets ? (
           <div>
             <Pagination
               currentPage={currentPage}
@@ -109,6 +107,10 @@ const Home = () => {
               pageSetter={setCurrentPage}
             />
           </div>
+        ) : state.loading ? (
+          <Loader />
+        ) : (
+          <Loader />
         )}
       </section>
     </>

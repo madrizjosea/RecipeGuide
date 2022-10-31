@@ -1,47 +1,36 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { getByName } from '../../redux/actions';
+import s from './Search.module.css';
 
-class Search extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: '',
-    };
-  }
+const Search = () => {
+  const histoty = useHistory();
+  const dispatch = useDispatch();
+  const [inputValue, setInputValue] = useState('');
 
-  handleChange(e) {
-    this.setState({
-      value: e.target.value,
-    });
-  }
+  const handleChange = e => {
+    setInputValue(e.target.value);
+  };
 
-  handleSearch(e) {
+  const handleSearch = e => {
     e.preventDefault();
-    const name = this.state.value.toLowerCase();
-    this.props.getByName(name);
-    this.setState({
-      value: '',
-    });
-  }
+    const name = inputValue.toLowerCase();
+    dispatch(getByName(name));
+    setInputValue('');
+    histoty.push('/home');
+  };
 
-  render() {
-    return (
-      <form onSubmit={e => this.handleSearch(e)}>
-        <input
-          type="text"
-          placeholder="Recipe name..."
-          value={this.state.value}
-          onChange={e => this.handleChange(e)}
-        />
-        <button>Search</button>
-      </form>
-    );
-  }
-}
-
-export const mapDispatchToProps = {
-  getByName,
+  return (
+    <form className={s.container} onSubmit={e => handleSearch(e)}>
+      <input
+        placeholder="Recipe name..."
+        value={inputValue}
+        onChange={e => handleChange(e)}
+      />
+      <button>Search</button>
+    </form>
+  );
 };
 
-export default connect(null, mapDispatchToProps)(Search);
+export default Search;
