@@ -6,6 +6,7 @@ import { getDetails, clearDetails } from '../../redux/actions';
 import Search from '../../components/Search/Search';
 import Error from '../../components/Error/Error.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
+import Logo from '../../assets/pi-logo.jpg';
 import s from './Details.module.css';
 
 function Details() {
@@ -27,8 +28,8 @@ function Details() {
         <div className={s.navContainer}>
           {details.name ? (
             <>
-              <Link className={s.links} to="/home">
-                Home
+              <Link to="/home">
+                <img className={s.logo} src={Logo} alt="logo" />
               </Link>
               <div className={s.menus}>
                 <Search />
