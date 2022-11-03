@@ -1,32 +1,52 @@
 .container {
-  width: 375px;
-  height: 200px;
-  border-radius: 12px;
+  font-family: Nunito, sans-serif;
+  align-items: center;
+  width: 900px;
+  height: 450px;
+  border-radius: 10px;
   background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
   display: flex;
   flex-direction: column;
-  padding: 25px;
+  justify-content: center;
+  padding: 3rem;
 }
 
+.background {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  position: fixed;
+  width: 98vw;
+}
 .container .title {
-  color: red;
-  font-size: 27px;
+  font-weight: bold;
+  color: #dc3545;
+  font-size: 2.4rem;
   display: inline-block;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 4rem;
+}
+
+.container p {
+  margin-top: 2rem;
+  font-size: 1.8rem;
+  text-align: center;
 }
 
 .closeBtn {
+  position: absolute;
   display: flex;
   justify-content: flex-end;
-}
-
-.closeBtn button {
-  background-color: transparent;
-  border: none;
-  font-size: 25px;
+  background-color: #dc3545;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-size: 1.4rem;
   cursor: pointer;
+  margin-left: 57%;
+  margin-bottom: 23%;
 }
 
 .container .body {
@@ -54,12 +74,13 @@
 }
 
 .btn {
-  background-color: #212529;
-  margin-top: 10px;
+  font-size: 1.4rem;
+  background-color: #426715;
+  margin: 2rem 2rem;
   color: #f8f9fa;
   border-radius: 0.3rem;
   font-weight: bold;
-  padding: 15px 30px;
+  padding: 0.8rem 2.4rem;
   border: none;
   outline: none;
   cursor: pointer;
