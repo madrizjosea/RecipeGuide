@@ -13,12 +13,16 @@ import Search from '../../components/Search/Search';
 import './css/Form.css';
 import Logo from '../../assets/pi-logo.jpg';
 import s from './css/Nav.module.css';
+import Error from '../../components/Error/Error';
+import Loader from '../../components/Loader/Loader';
 
 const Form = () => {
   const dispatch = useDispatch();
   const diets = useSelector(state => state.diets);
   const successMsg = useSelector(state => state.successMsg);
   const creationErr = useSelector(state => state.requestError);
+  const requestError = useSelector(state => state.requestError);
+  const loading = useSelector(state => state.loading);
 
   const [data, setData] = useState({
     name: '',
@@ -183,6 +187,12 @@ const Form = () => {
         </form>
       </section>
     </>
+  ) : loading ? (
+    <Loader />
+  ) : requestError ? (
+    <div className={s.errorBackground}>
+      <Error />
+    </div>
   ) : null;
 };
 

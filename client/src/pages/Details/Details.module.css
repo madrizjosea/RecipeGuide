@@ -74,6 +74,7 @@ h4 {
 }
 
 .menus {
+  margin-left: 6rem;
   align-items: center;
   display: flex;
   flex-direction: row;

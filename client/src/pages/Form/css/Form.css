@@ -32,7 +32,6 @@ a {
 }
 
 .form {
-  
   background-color: #fff;
   border: 2px solid #426715;
   border-radius: 10px;
@@ -163,4 +162,14 @@ select {
   gap: 0.1rem;
   margin: 0.1rem;
   width: 100%;
+}
+
+.errorBackground {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  position: fixed;
+  width: 100vw;
 }
