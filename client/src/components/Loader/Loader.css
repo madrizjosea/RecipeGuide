@@ -1,11 +1,17 @@
-.loadingio-spinner-container {
-  position: absolute;
-  top: 40%;
-  left: 44%;
+.loadingio-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 }
 
-@keyframes
-  ldio-76ka5mzzeh9 {
+.loadingio-spinner-container {
+  top: 50%;
+  left: 50%;
+}
+
+@keyframes ldio-76ka5mzzeh9 {
   0% {
     opacity: 1;
     backface-visibility: hidden;

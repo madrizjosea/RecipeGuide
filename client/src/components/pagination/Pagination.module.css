@@ -26,3 +26,18 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.currentPage {
+  border: 1px solid #426715;
+  min-width: 2.6rem;
+  text-align: center;
+  text-decoration: none;
+  color: #426715;
+  font-weight: bold;
+  font-size: 1.2rem;
+  font-family: 'Roboto';
+  padding: 5px 10px 5px 10px;
+  background-color: #f6fbf1;
+  border-radius: 5px;
+  cursor: pointer;
+}

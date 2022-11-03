@@ -34,18 +34,20 @@ const Steps = ({ data, handleStepSubmit, deleteStep }) => {
         </div>
       </div>
 
-      {data.steps.map((step, index) => (
-        <div className="form-stored-input" key={index}>
-          <p>{step}</p>
-          <button
-            className="form-delete-button"
-            type="button"
-            onClick={() => deleteStep(index)}
-          >
-            x
-          </button>
-        </div>
-      ))}
+      <div>
+        {data.steps.map((step, index) => (
+          <div className="form-stored-input" key={index}>
+            <p>{step}</p>
+            <button
+              className="form-delete-button"
+              type="button"
+              onClick={() => deleteStep(index)}
+            >
+              x
+            </button>
+          </div>
+        ))}
+      </div>
     </>
   );
 

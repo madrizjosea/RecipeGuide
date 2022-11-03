@@ -9,13 +9,20 @@ import {
   imageValidator,
 } from '../../helpers/validators.js';
 import FormInputs from './FormInputs';
+import Search from '../../components/Search/Search';
 import './css/Form.css';
+import Logo from '../../assets/pi-logo.jpg';
+import s from './css/Nav.module.css';
+import Error from '../../components/Error/Error';
+import Loader from '../../components/Loader/Loader';
 
 const Form = () => {
   const dispatch = useDispatch();
   const diets = useSelector(state => state.diets);
   const successMsg = useSelector(state => state.successMsg);
   const creationErr = useSelector(state => state.requestError);
+  const requestError = useSelector(state => state.requestError);
+  const loading = useSelector(state => state.loading);
 
   const [data, setData] = useState({
     name: '',
@@ -130,42 +137,60 @@ const Form = () => {
   }, [dispatch, diets.length]);
 
   return diets.length ? (
-    <section className="form-container">
-      <form className="form" onSubmit={e => handleSubmit(e)}>
+    <div className="form-main-container">
+      <header>
+        <div className={s.navContainer}>
+          {diets.length ? (
+            <>
+              <Link to="/home">
+                <img className={s.logo} src={Logo} alt="logo" />
+              </Link>
+              <div className={s.menus}>
+                <Search />
+              </div>
+              <Link className={s.create} to="/home/create">
+                Create a Recipe
+              </Link>
+            </>
+          ) : null}
+        </div>
+      </header>
+      <section className="form-container">
+        <form className="form" onSubmit={e => handleSubmit(e)}>
+          <section className="form-header">
+            <Link to="/home">Home</Link>
+            <h2>NEW RECIPE</h2>
+            <button className="form-reset-button" onClick={() => resetForm()}>
+              Reset
+            </button>
+          </section>
 
-        <header className="form-header">
-          <Link to="/home">Home</Link>
-          <h2>NEW RECIPE</h2>
-          <button
-            className="form-reset-button"
-            onClick={() => resetForm()}
-          >
-            Reset
+          {<p>{successMsg}</p> || <p>{submitErr}</p>}
+          {creationErr.message ? (
+            <p>Creation failed due to: {creationErr.message}</p>
+          ) : null}
+
+          <FormInputs
+            data={data}
+            diets={diets}
+            handleChange={handleChange}
+            handleStepSubmit={handleStepSubmit}
+            deleteStep={deleteStep}
+            handleDietChange={handleDietChange}
+            deleteDiet={deleteDiet}
+            errors={errors}
+          />
+
+          <button type="submit" className="form-button" disabled={!canSubmit}>
+            Create
           </button>
-        </header>
-
-        {<p>{successMsg}</p> || <p>{submitErr}</p>}
-        {creationErr.message ? (
-          <p>Creation failed due to: {creationErr.message}</p>
-        ) : null}
-
-        <FormInputs
-          data={data}
-          diets={diets}
-          handleChange={handleChange}
-          handleStepSubmit={handleStepSubmit}
-          deleteStep={deleteStep}
-          handleDietChange={handleDietChange}
-          deleteDiet={deleteDiet}
-          errors={errors}
-        />
-
-        <button type="submit" className="form-button" disabled={!canSubmit}>
-          Create
-        </button>
-
-      </form>
-    </section>
+        </form>
+      </section>
+    </div>
+  ) : loading ? (
+    <Loader />
+  ) : requestError ? (
+    <Error />
   ) : null;
 };
 

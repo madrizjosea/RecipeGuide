@@ -6,6 +6,7 @@ import { getDetails, clearDetails } from '../../redux/actions';
 import Search from '../../components/Search/Search';
 import Error from '../../components/Error/Error.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
+import Logo from '../../assets/pi-logo.jpg';
 import s from './Details.module.css';
 
 function Details() {
@@ -22,13 +23,13 @@ function Details() {
   }, [dispatch, id]);
 
   return (
-    <section>
+    <section className={s.mainContainer}>
       <header>
         <div className={s.navContainer}>
           {details.name ? (
             <>
-              <Link className={s.links} to="/home">
-                Home
+              <Link to="/home">
+                <img className={s.logo} src={Logo} alt="logo" />
               </Link>
               <div className={s.menus}>
                 <Search />
@@ -78,7 +79,7 @@ function Details() {
         </div>
       ) : !details.name && !error.response ? (
         <Loader />
-      ) : error.response ? (
+      ) : error ? (
         <Error
           customMsg={`You were linked to an invalid recipe. Click bellow and try again with another one form the catalog`}
         />

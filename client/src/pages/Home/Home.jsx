@@ -9,6 +9,7 @@ import Loader from '../../components/Loader/Loader.jsx';
 import Recipes from '../../components/Recipes/Recipes.jsx';
 import Pagination from '../../components/Pagination/Pagination.jsx';
 import Error from '../../components/Error/Error.jsx';
+import Logo from '../../assets/pi-logo.jpg';
 import s from './Home.module.css';
 
 const Home = () => {
@@ -56,8 +57,8 @@ const Home = () => {
           <div className={s.navContainer}>
             {state.recipes.length && state.diets ? (
               <>
-                <Link className={s.links} to="/home">
-                  Home
+                <Link to="/home">
+                  <img className={s.logo} src={Logo} alt="logo" />
                 </Link>
                 <div className={s.menus}>
                   <Search />
@@ -88,9 +89,9 @@ const Home = () => {
           </div>
         </header>
         {state.requestError.message || state.filterErrorMsg ? (
-          <div className={s.errorBackground}>
+          
             <Error />
-          </div>
+         
         ) : state.recipes.length && state.diets ? (
           <div>
             <Pagination

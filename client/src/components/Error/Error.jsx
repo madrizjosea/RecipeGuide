@@ -22,57 +22,59 @@ function Error({ customMsg }) {
   }, [dispatch]);
 
   return (
-    <section className={styles.container}>
-      {customMsg ? (
-        <div>
-          <h1 className={styles.title}>Something went wrong!</h1>
-          <div className={styles.body}>
-            <p>{customMsg}</p>
-          </div>
-          <button className={styles.btn}>
-            <Link onClick={handleClick} to="/home">
-              Recipes
-            </Link>
-          </button>
-        </div>
-      ) : filterErrorMsg ? (
-        <div>
-          <div className={styles.closeBtn}>
-            <button onClick={handleClick}>X</button>
-          </div>
-          <h1 className={styles.title}>Something went wrong!</h1>
-          <div className={styles.body}>
-            <p>{filterErrorMsg}</p>
-          </div>
-        </div>
-      ) : requestError.message &&
-        (requestError.message === 'Network Error' ||
-          requestError.message === 'Request failed with status code 500') ? (
-        <div>
-          <h1 className={styles.title}>Something went wrong!</h1>
-          <div className={styles.body}>
-            <p>
-              Couldn't get a response from the server. Please try againt later
-            </p>
-          </div>
-          <button className={styles.btn}>
-            <Link onClick={handleClick} to="/">
-              Back to landing
-            </Link>
-          </button>
-        </div>
-      ) : requestError.response ? (
-        <div>
-          <div className={styles.closeBtn}>
-            <button onClick={handleClick}>X</button>
-          </div>
-          <h1 className={styles.title}>Something went wrong!</h1>
-          <div className={styles.body}>
-            <p>{requestError.response.data.message}</p>
-          </div>
-        </div>
-      ) : null}
-    </section>
+    <div className={styles.mainContainer}>
+      <section className={styles.container}>
+        {customMsg ? (
+          <>
+            <h1 className={styles.title}>Something went wrong</h1>
+            <div className={styles.body}>
+              <p>{customMsg}</p>
+            </div>
+            <button className={styles.btn}>
+              <Link onClick={handleClick} to="/home">
+                Recipes
+              </Link>
+            </button>
+          </>
+        ) : filterErrorMsg ? (
+          <>
+            <h1 className={styles.title}>Something went wrong</h1>
+            <div className={styles.body}>
+              <p>{filterErrorMsg}</p>
+            </div>
+            <button className={styles.btn} onClick={handleClick}>
+              X
+            </button>
+          </>
+        ) : requestError.message &&
+          (requestError.message === 'Network Error' ||
+            requestError.message === 'Request failed with status code 500') ? (
+          <>
+            <h1 className={styles.title}>Something went wrong</h1>
+            <div className={styles.body}>
+              <p>
+                Couldn't get a response from the server. Please try againt later
+              </p>
+            </div>
+            <button className={styles.btn}>
+              <Link onClick={handleClick} to="/">
+                Back to landing
+              </Link>
+            </button>
+          </>
+        ) : requestError.response ? (
+          <>
+            <h1 className={styles.title}>Something went wrong</h1>
+            <div className={styles.body}>
+              <p>{requestError.response.data.message}</p>
+            </div>
+            <button className={styles.closeBtn} onClick={handleClick}>
+              X
+            </button>
+          </>
+        ) : null}
+      </section>
+    </div>
   );
 }
 
