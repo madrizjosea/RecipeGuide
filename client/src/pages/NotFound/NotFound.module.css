@@ -1,29 +1,102 @@
+.mainContainer {
+  min-height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
+  margin-top: 2rem;
+  font-family: Nunito, sans-serif;
+  align-items: center;
+  width: 900px;
+  height: 450px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.background {
   align-items: center;
-  background-color: #f8f9fa;
-  border-radius: 15px;
-  border: 1px solid #ced4da;
-  width: 500px;
-  height: 150px;
-  padding: 10px;
+  background-color: transparent;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  position: fixed;
+  width: 98vw;
+}
+
+.title {
+  font-weight: bolder;
+  color: #dc3545;
+  font-size: 4rem;
+  display: inline-block;
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.container p {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.closeBtn {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -100px;
-  margin-left: -250px;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #dc3545;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-left: 57%;
+  margin-bottom: 23%;
+}
+
+.container .body {
+  flex: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landingLink {
+  margin-top: 10px;
+}
+
+.landingLink a {
+  padding: 6px 24px;
+  height: 50px;
+  margin: 10px;
+  border: none;
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .btn {
-  background-color: #212529;
-  margin-top: 10px;
+  font-size: 1.4rem;
+  background-color: #426715;
+  margin: 2rem 2rem;
   color: #f8f9fa;
   border-radius: 0.3rem;
   font-weight: bold;
-  padding: 10px 30px;
+  padding: 0.8rem 2.4rem;
   border: none;
   outline: none;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+}
+
+.btn a {
+  text-decoration: none;
+  color: #f8f9fa;
 }

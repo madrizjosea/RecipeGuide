@@ -1,4 +1,12 @@
+.mainContainer {
+  min-height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
+  margin-top: 2rem;
   font-family: Nunito, sans-serif;
   align-items: center;
   width: 900px;

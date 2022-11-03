@@ -137,7 +137,7 @@ const Form = () => {
   }, [dispatch, diets.length]);
 
   return diets.length ? (
-    <>
+    <div className="form-main-container">
       <header>
         <div className={s.navContainer}>
           {diets.length ? (
@@ -186,13 +186,11 @@ const Form = () => {
           </button>
         </form>
       </section>
-    </>
+    </div>
   ) : loading ? (
     <Loader />
   ) : requestError ? (
-    <div className={s.errorBackground}>
-      <Error />
-    </div>
+    <Error />
   ) : null;
 };
 

@@ -23,7 +23,7 @@ function Details() {
   }, [dispatch, id]);
 
   return (
-    <section>
+    <section className={s.mainContainer}>
       <header>
         <div className={s.navContainer}>
           {details.name ? (
@@ -79,7 +79,7 @@ function Details() {
         </div>
       ) : !details.name && !error.response ? (
         <Loader />
-      ) : error.response ? (
+      ) : error ? (
         <Error
           customMsg={`You were linked to an invalid recipe. Click bellow and try again with another one form the catalog`}
         />

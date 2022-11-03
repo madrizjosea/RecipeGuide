@@ -1,3 +1,9 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+}
+
 .container {
   padding: 4rem;
   font-family: Nunito, sans-serif;

@@ -89,9 +89,9 @@ const Home = () => {
           </div>
         </header>
         {state.requestError.message || state.filterErrorMsg ? (
-          <div className={s.errorBackground}>
+          
             <Error />
-          </div>
+         
         ) : state.recipes.length && state.diets ? (
           <div>
             <Pagination

@@ -1,4 +1,5 @@
 .container {
+  min-height: 100vh;
   font-family: Nunito, sans-serif;
 }
 
@@ -76,10 +77,10 @@ input {
   align-items: center;
   background-color: transparent;
   display: flex;
-  height: 100vh;
+  /* height: 100vh; */
   justify-content: center;
   position: fixed;
-  width: 98vw;
+  /* width: 98vw; */
 }
 
 .create {
