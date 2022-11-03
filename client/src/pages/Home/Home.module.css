@@ -24,6 +24,12 @@ input {
   text-decoration: none;
 }
 
+.logo {
+  border-radius: 100%;
+  width: 4rem;
+  margin-left: 1.5rem;
+}
+
 .btn {
   border-radius: 0.3rem;
   border: none;
