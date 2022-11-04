@@ -1,7 +1,7 @@
 .navContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 80px;
   background-color: #426715;
@@ -16,7 +16,6 @@
 }
 
 .menus {
-  margin-left: 6rem;
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -36,6 +35,9 @@
 }
 
 .logo {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
   border-radius: 100%;
   width: 4rem;
   margin-left: 1.5rem;
