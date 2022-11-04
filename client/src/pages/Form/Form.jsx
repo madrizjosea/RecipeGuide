@@ -7,7 +7,7 @@ import {
   summaryValidator,
   healthScoreValidator,
   imageValidator,
-} from '../../helpers/validators.js';
+} from '../../utils/validators.js';
 import FormInputs from './FormInputs';
 import Search from '../../components/Search/Search';
 import './css/Form.css';
@@ -140,18 +140,13 @@ const Form = () => {
     <div className="form-main-container">
       <header>
         <div className={s.navContainer}>
+          <Link to="/home">
+            <img className={s.logo} src={Logo} alt="logo" />
+          </Link>
           {diets.length ? (
-            <>
-              <Link to="/home">
-                <img className={s.logo} src={Logo} alt="logo" />
-              </Link>
-              <div className={s.menus}>
-                <Search />
-              </div>
-              <Link className={s.create} to="/home/create">
-                Create a Recipe
-              </Link>
-            </>
+            <div className={s.menus}>
+              <Search />
+            </div>
           ) : null}
         </div>
       </header>
