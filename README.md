@@ -44,27 +44,29 @@ You'll need to have a modern Browser, Git, NodeJS and PostgreSQL installed in yo
 git clone https://github.com/madrizjosea/recipe-guide.git
 ```
 
-2. On a terminal window of your preference navigate to the path where you cloned the repo.
+2. Create an account on the [spoonacular](https://spoonacular.com/food-api) API so you have access to an API key
 
-3. On each folder create a .env file following the instructions in their respective .env.example files.
+3. On a terminal window of your preference navigate to the path where you cloned the repo.
 
-4. Using the shell or GUI from your postgres data base create a new database to which you'll have to make reference in the api .env file.
+4. On each folder create a .env file following the instructions in their respective .env.example files.
 
-5. Open a terminal for each of the folders in the repo -- api and client.
+5. Using the shell or GUI from your postgres data base create a new database to which you'll have to make reference in the api .env file.
 
-6. On each prompt run the command "npm install" to set up the project dependicies.
+6. Open a terminal for each of the folders in the repo -- api and client.
+
+7. On each prompt run the command "npm install" to set up the project dependicies.
 
 ```sh
 npm install
 ```
 
-7. On the terminal prompt in the api folder run the command
+8. On the terminal prompt in the api folder run the command
 
 ```sh
 npm run dev
 ```
 
-8. On the terminal prompt in the client folder run the command
+9. On the terminal prompt in the client folder run the command
 
 ```sh
 npm start
